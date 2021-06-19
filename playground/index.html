@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Misty Blockly</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="Content/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="Content/animate.css">
+		<link rel="stylesheet" type="text/javascript" href="Content/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+		<script type="text/javascript" src="Scripts/jquery/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="Content/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+		<link rel="shortcut icon" href="#" />
+		<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
+	</head>
+	<body>
+		<script>
+			function takePicture() {
+				$("#display-picture").attr("src", "");
+				$("#display-picture").attr("width", "465");
+                $("#4k-modal").modal("show");
+                $("#display-picture").attr("src", "http://" + ip + "/api/cameras/rgb?OverwriteExisting=true&Base64=false&CacheBreak=" + Math.floor(Math.random() * 1000));
+            }    
+		</script>
+		<div id="4k-modal" class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">4K photo</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<img id="display-picture" class="display-picture" src="">
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="dashboard">
+			<nav class="navbar navbar-expand-xl navbar-dark">
+				<img class="navbar-brand d-none d-md-block" src="Content/media/misty_robotics@2x.png" width="245" height="20" alt="misty robotics" srcset="Content/media/misty_robotics@2x.png 508w, img/misty_robotics@2x-300x24.png 300w" sizes="(max-width: 508px) 100vw, 508px">	<div class="text"></div>
+				<!--<img class="navbar-brand d-none d-md-block" src="Content/media/MistyRobotics.White.png" />
+				<img class="navbar-brand d-md-none" src="Content/media/MistySymbol.White.png" />-->
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<div class="navbar-nav ml-auto">
+						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link" id="run-script" href="#">Run<span class="sr-only">(current)</span></a>
+						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link run-abort" id="abort-script" href="#">Abort</a>
+						<a class="nav-item pr-lg-0 pr-xl-4 nav-link disabled" href="#" id="browse-files">Load Project</a>
+						<input class="nav-item dependent disabled pl-0 pr-lg-0 pr-xl-4 btn btn-link btn-btn-light my-2 my-sm-0" id="export-session" type="button" onclick="exportBlocklySession()" value="Save Project" />
+						<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-javascript" href="#">Show JavaScript</a>
+						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link disabled" id="help" target="_blank" href="https://docs.mistyrobotics.com/onboarding/3-ways-to-interact-with-misty/blockly/">Help</a>
+						<!--Take picture button-->
+						<a class="nav-item pr-lg-0 pr-xl-4 nav-link" id="display-picture-button" href="#" onclick="takePicture()">Take Photo</a>
+						<!--<button class="btn btn-outline-light btn-btn-light my-2 my-sm-0" id="display-picture-button" onclick="takePicture()">Take Photo</button>-->
+					</div>
+					<form class="form-inline my-lg-0 text-right">
+						<input class="form-control mr-sm-2 ip-address" id="ip-address" placeholder="Robot IP Address" aria-label="Search">
+						<button class="btn btn-outline-light btn-btn-light my-2 my-sm-0" id="connect-to-robot">Connect</button>
+					</form>
+				</div>
+			</nav>
+			<input type="file" id="fileSelected" onchange="uploadBlocklyFile()" accept=".txt" onabort="fileSelectionCanceled()" />
+			<input type="file" id="image-file" onchange="validateImageFile()" onabort="fileSelectionCanceled()" />
+			<input type="file" id="audio-file" onchange="validateAudioFile()" onabort="fileSelectionCanceled()" />
+		</section>
+		<div id="blocklyArea" class="container-fluid">
+			<div id="blocklyDiv">
+				<form id="levelForm" method="post">
+					<label for="level">Choose a level:</label>
+					<select name="level" id="level" onchange="change()">
+						<option value="Beginner">Beginner</option>
+						<option value="Standard" selected="selected">Standard</option>
+						<!--<option value="Advanced">Advanced</option>-->
+						<!--<option value="Expert">Expert</option>-->
+					</select>
+				</form>
+
+
+			</div>
+		</div>
+
+
+		<xml id="toolbox" style="display:none;" class="list-group">
+			<category name="Blockly Blocks" colour="#4285F4" class="list-group-item">
+				<block type="controls_if"></block>
+				<block type="logic_compare">
+					<field name="OP">EQ</field>
+				</block>
+				<block type="logic_operation">
+					<field name="OP">AND</field>
+				</block>
+				<block type="logic_negate"></block>
+				<block type="logic_boolean">
+					<field name="BOOL">TRUE</field>
+				</block>
+				<block type="controls_repeat_ext">
+					<value name="TIMES">
+						<shadow type="math_number">
+							<field name="NUM">10</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_number">
+					<field name="NUM">0</field>
+				</block>
+				<block type="math_arithmetic">
+					<field name="OP">ADD</field>
+					<value name="A">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="B">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="math_random_int">
+					<value name="FROM">
+						<shadow type="math_number">
+							<field name="NUM">1</field>
+						</shadow>
+					</value>
+					<value name="TO">
+						<shadow type="math_number">
+							<field name="NUM">100</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="text">
+					<field name="TEXT"></field>
+				</block>
+				<block type="text_print">
+					<value name="TEXT">
+						<shadow type="text">
+							<field name="TEXT">abc</field>
+						</shadow>
+					</value>
+				</block>
+				<block type="colour_picker">
+					<field name="COLOUR">#ff0000</field>
+				</block>
+			</category>
+
+			<category name="Variables" colour="#990099" custom="VARIABLE"></category>
+			<category name="Functions" colour="#9966FF" custom="PROCEDURE"></category>
+		</xml>
+		<div id="toast"></div>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-101328068-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'UA-101328068-1');
+		</script>
+		<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
+		<script type="text/javascript" src="Scripts/javascript_compressed.js"></script>
+		<script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/misty_helper_functions.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/misty_ajax.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/misty_blocks.js"></script>
+		<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
+		<script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script>
+		<script type="text/javascript" src="Content/Blockly/js/acorn_interpreter.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/misty_index_setup.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/robot.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/levels.js"></script>
+		<script type="text/javascript" src="Content/Misty/js/GetHelp.js"></script>
+	</body>
+
+</html>
