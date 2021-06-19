@@ -1,11 +1,16 @@
 /**
  * -----------------------------------------------------------------------------------------------
- * misty_levels.js
  * This file groups the API commands into different levels of Blockly blocks.
  * On Blockly, you can select a level (beginner, standard, advanced, or expert) and you will have 
  * access to the blocks specified for that level as well as any lesser level.
  * This ensures that Blockly is as complicated/simple as the user wants to make it.
- * Created April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
+ *
+ * MODIFIED:
+ *    By team of VisualPDDL project (JUN-2021)
+ *
+ * ORIGIN:
+ *    Apache 2.0 License - Copyright 2020 Misty Robotics
+ *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
  * -----------------------------------------------------------------------------------------------
  */
 

@@ -1,9 +1,13 @@
 ﻿/**
- * -----------------------------------------------------------------------------------------------
- * robot.js
- * This file initializes the setup with the Misty robot
- * Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson (added support for levels and comments throughout)
- * -----------------------------------------------------------------------------------------------
+ * This file initializes the setup for VisualPDDL
+ *
+ * MODIFIED:
+ *    By team of VisualPDDL project (JUN-2021)
+ *
+ * ORIGIN:
+ *    Apache 2.0 License - Copyright 2020 Misty Robotics
+ *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
+ *
  */
 
 var ip = "";
@@ -13,7 +17,7 @@ var instanceOfBrowseInMistyTabblockName;
 // Alert to to tell users that the robot is not responding
 var disconnectedAlert;
 var abortScript = false;
-var notImplemented = [];
+
 var GetListOfImages = [];
 var GetListOfAudioFiles = [];
 var level = 2;
@@ -31,8 +35,8 @@ connectingAnimation += '</svg>';
 $(document).ready(function () {
 	bindEvents();
 	//var starterCommands = JSON.parse(robot.result);
-	var starterCommands = pddlAPI.result;
-	matchToolboxToRobotVersion();
+	var starterCommands = vpddlAPI.result;
+
 	setLevelCommands(level);
 	listOfImages.push(["No files", ""]);
 	listOfAudioFiles.push(["No files", ""]);
@@ -86,8 +90,8 @@ function loadBlocklyBlocksXMLperLevel(file,level) {
 	  var myResponseText = this.responseText;
       document.getElementById("toolbox").innerHTML = this.responseText;
 	}
-	var starterCommands = pddlAPI.result;
-	matchToolboxToRobotVersion();
+	var starterCommands = vpddlAPI.result;
+
 	setLevelCommands(level);
 	createAllCommands(starterCommands, level);
   }
@@ -218,9 +222,9 @@ function addressChanged(e) {
 	// If the ip address isn't blank
 	if (ip !== "")
 	{
-		// Get information from the new ip (the sendGetRequestToRobot function is defined in misty_ajax.js)
+		// Get information from the new ip (the sendGetRequestToEngine function is defined in vpddl_dispatcher.js)
 		// Then update the version, redefine list of not defined skills, update toolbox blocks 
-		sendGetRequestToRobot("device", ip, function (data)
+		sendGetRequestToEngine("device", ip, function (data)
 		{
 			// make sure there is an acceptable connection to the robot
 			if (data === "timeout") {
@@ -232,9 +236,6 @@ function addressChanged(e) {
 			let version = data.robotVersion; // global
 			let versionArray = version.split("."); // global
 			robotVersion = parseInt(versionArray[0]);
-
-			// redefine list of not defined skills
-			matchToolboxToRobotVersion();
 
 			// try to update the toolbox
 			try {
@@ -249,22 +250,6 @@ function addressChanged(e) {
 	{
 		showToastMessage("IP Address needs to be in the format of ###.###.###.### where ### is a number between 0-255.");
 		$("#connect-to-robot").html("Connect").removeClass("active");
-	}
-}
-
-
-/**
- * matchToolboxToRobotVersion
- * Defines the list of not implemented skills
- * If the robot is version 1, add MoveArms and MoveArm to the list of not implemented skills
- * @private
- */
-function matchToolboxToRobotVersion()
-{
-	if (robotVersion === 1) {
-		notImplemented = ["MoveHead", "RobotMode", "PerformTargetedUpdate", "GetCameraData", "SlamGetDepthImage", "SlamGetVisibleImage", "GetDeviceInformation", "GetImage", "GetStringSensorValues", "GetSkills", "GetRunningSkills", "GetStoreUpdateAvailable", "GetWebsocketHelp", "GetWebsocketVersion", "GetVideoFile", "SaveSkillFiles", "ReloadSkills", "RunSkill", "CancelSkill", "TriggerSkillEvent", "SetWebsocketVersion", "StartRecordingVideo", "StopRecordingVideo", "GetLogFile", "RestartRobot", "MoveArm", "MoveArms"];
-	} else {
-		notImplemented = ["MoveHead", "RobotMode", "PerformTargetedUpdate", "GetCameraData", "SlamGetDepthImage", "SlamGetVisibleImage", "GetDeviceInformation", "GetImage", "GetStringSensorValues", "GetSkills", "GetRunningSkills", "GetStoreUpdateAvailable", "GetWebsocketHelp", "GetWebsocketVersion", "GetVideoFile", "SaveSkillFiles", "ReloadSkills", "RunSkill", "CancelSkill", "TriggerSkillEvent", "SetWebsocketVersion", "StartRecordingVideo", "StopRecordingVideo", "GetLogFile", "RestartRobot"];
 	}
 }
 
@@ -324,9 +309,9 @@ function updateToolboxBlocks(input) {
 	// Insert connectingAnimation at the start of blocklyDiv
 	$(connectingAnimation).prependTo('#blocklyDiv');
 
-	// Get information from the new ip (the sendGetRequestToRobot function is defined in misty_ajax.js)
+	// Get information from the new ip (the sendGetRequestToEngine function is defined in vpddl_dispatcher.js)
 	// Then update the version, redefine list of not defined skills, update toolbox blocks 
-	sendGetRequestToRobot("help", ip, function (result) {
+	sendGetRequestToEngine("help", ip, function (result) {
 
 		// make sure there is an acceptable connection to the robot
 		if (result === "timeout") {
@@ -635,7 +620,7 @@ function restoreBlocklySession() {
  * @private
  */
 function updateAudioList(callback) {
-	sendGetRequestToRobot("audio/list", ip, function (result) {	// result variable filled when results are returned from the robot
+	sendGetRequestToEngine("audio/list", ip, function (result) {	// result variable filled when results are returned from the robot
 		listOfAudioFiles = [];
 		if (result.status === "error" || result === "error") {		// if there was some error getting the results from the robot
 			listOfAudioFiles.push("Output not supported", "");
@@ -660,7 +645,7 @@ function updateAudioList(callback) {
  * @private
  */
 function updateImageList(callback) {
-	sendGetRequestToRobot("images/list", ip, function (result) {	// result variable filled when results are returned from the robot
+	sendGetRequestToEngine("images/list", ip, function (result) {	// result variable filled when results are returned from the robot
 		listOfImages = [];
 		if (result.status === "error" || result === "error") {	// if there was some error getting the results from the robot
 			listOfImages.push(["Output not supported", ""]);
@@ -696,7 +681,7 @@ function runJavaScript(e) {
 
 	Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';	// highlights the currently executing block as the code runs
 	// next two lines generates Javascript in the workspace so it can be easily executed in the destination web page
-	Blockly.JavaScript.addReservedWords('highlightBlock', 'sendGetRequestToRobotWrapper', 'sendPostRequestToRobotWrapper', 'sendDeleteRequestToRobotWrapper', 'sleep');
+	Blockly.JavaScript.addReservedWords('highlightBlock', 'sendGetRequestToEngineWrapper', 'sendPostRequestToEngineWrapper', 'sendDeleteRequestToEngineWrapper', 'sleep');
 	var code = Blockly.JavaScript.workspaceToCode(workspace);
 
 	var initFunc = function (interpreter, scope) {
@@ -707,20 +692,20 @@ function runJavaScript(e) {
 		* POST: used to send data to the Misty server
 		* DELETE: used to delete a specified resource
 		*/
-		var sendGetRequestToRobotWrapper = interpreter.createAsyncFunction(function (endpoint, ip, callback) {
-			return sendGetRequestToRobot(endpoint, ip, callback);
+		var sendGetRequestToEngineWrapper = interpreter.createAsyncFunction(function (endpoint, ip, callback) {
+			return sendGetRequestToEngine(endpoint, ip, callback);
 		});
-		interpreter.setProperty(scope, 'sendGetRequestToRobot', sendGetRequestToRobotWrapper);
+		interpreter.setProperty(scope, 'sendGetRequestToEngine', sendGetRequestToEngineWrapper);
 
-		var sendPostRequestToRobotWrapper = interpreter.createAsyncFunction(function (endpoint, ip, payload, callback) {
-			return sendPostRequestToRobot(endpoint, ip, payload, callback);
+		var sendPostRequestToEngineWrapper = interpreter.createAsyncFunction(function (endpoint, ip, payload, callback) {
+			return sendPostRequestToEngine(endpoint, ip, payload, callback);
 		});
-		interpreter.setProperty(scope, 'sendPostRequestToRobot', sendPostRequestToRobotWrapper);
+		interpreter.setProperty(scope, 'sendPostRequestToEngine', sendPostRequestToEngineWrapper);
 
-		var sendDeleteRequestToRobotWrapper = interpreter.createAsyncFunction(function (endpoint, ip, callback) {
-			return sendDeleteRequestToRobot(endpoint, ip, callback);
+		var sendDeleteRequestToEngineWrapper = interpreter.createAsyncFunction(function (endpoint, ip, callback) {
+			return sendDeleteRequestToEngine(endpoint, ip, callback);
 		});
-		interpreter.setProperty(scope, 'sendDeleteRequestToRobot', sendDeleteRequestToRobotWrapper);
+		interpreter.setProperty(scope, 'sendDeleteRequestToEngine', sendDeleteRequestToEngineWrapper);
 
 		var waitForMsWrapper = interpreter.createAsyncFunction(function (pauseDuration, callback) {
 			return setTimeout(callback, pauseDuration);

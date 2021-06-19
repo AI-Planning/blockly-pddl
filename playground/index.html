@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿<!--
+ * MODIFIED:
+ *    By team of VisualPDDL project (JUN-2021)
+ *
+ * ORIGIN:
+ *    Apache 2.0 License - Copyright 2020 Misty Robotics
+ *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
+-->
+<!DOCTYPE html>
 	<html>
 	<head>
 		<title>VisualPDDL with Blockly</title>
@@ -149,27 +157,33 @@
 
 			gtag('config', 'UA-101328068-1');
 		</script>
+
+<!--
+ NOTE: order of invokation is important
+-->
+
 		<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
 		<script type="text/javascript" src="Scripts/javascript_compressed.js"></script>
 		<script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script>
 		<script type="text/javascript" src="Content/Misty/js/misty_helper_functions.js"></script>
-		<script type="text/javascript" src="Content/Misty/js/misty_ajax.js"></script>
-		<script type="text/javascript" src="Content/Misty/js/misty_blocks.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_dispatcher.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_blocks.js"></script>
 		<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
 		<script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script>
 		<script type="text/javascript" src="Content/Blockly/js/acorn_interpreter.js"></script>
-		<script type="text/javascript" src="Content/Misty/js/levels.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_index_setup.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/vpddlAPI.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/levels.js"></script>
+<!--
+		<script type="text/javascript" src="Content/Misty/js/GetHelp.js"></script>
+-->
 
-		<script type="text/javascript" src="Content/VisualPDDL/js/pddlAPI.js"></script>
-
-		<script type="text/javascript" src="Content/Misty/js/misty_index_setup.js"></script>
+<!--
+ TODO: web-browser blocks access to XML rendering when trying to modify set of original Blockly blocks
+-->
 		<script type="text/javascript" >
-                     change();
+                     change();    
                 </script>
-
-
-
-
 	</body>
 
 </html>

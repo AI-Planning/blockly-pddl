@@ -1,20 +1,17 @@
 ﻿/**
- * -----------------------------------------------------------------------------------------------
- * eng-r: ORIGINAL TEXT FROM Misty:
+ * This file is VisualPDDL API JSON file
+ * The site utilizes this JSON file to get commands to populate the Blockly framework
  *
- * robot.js
- * This file is an initial static version of the GetHelp API JSON file that the robot gets when it connects.
- * The site utilizes this JSON file to get commands to populate the Blockly framework until it receives another JSON file from a Misty robot in GetHelp.
- * Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson (added support for speak block)
- * -----------------------------------------------------------------------------------------------
+ * MODIFIED:
+ *    By team of VisualPDDL project (JUN-2021)
  *
- *
- * eng-r: 19-JUN-2021: VisualPDDL -- now this is API for PDDL Blockly
- *
+ * ORIGIN:
+ *    Apache 2.0 License - Copyright 2020 Misty Robotics
+ *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
  *
  */
 
-var pddlAPI = {
+var vpddlAPI = {
     "result": {
         "get": [
             {

@@ -1,10 +1,14 @@
 ﻿/**
  * -----------------------------------------------------------------------------------------------
- * misty_blocks.js
- * This file formats all the API calls and Misty skills that are available to the browser.
+ * This file formats all the API calls that are available to the browser.
  * It deals with the page setup of the blocks.
- * Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson (added support for levels, 
- * new speak block, new turn block, multiple versions of blocks, and comments throughout)
+ *
+ * MODIFIED:
+ *    By team of VisualPDDL project (JUN-2021)
+ *
+ * ORIGIN:
+ *    Apache 2.0 License - Copyright 2020 Misty Robotics
+ *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
  * -----------------------------------------------------------------------------------------------
  */
 
@@ -105,7 +109,7 @@ var hardCodedCommands = {
 
 /**
  * createAllCommands
- * Turns commands from robot into Blockly blocks. Helper function to updateToolboxBlocks in misty_index_setup.js
+ * Turns commands from robot into Blockly blocks. Helper function to updateToolboxBlocks in vpddl_index_setup.js
  * @param {Object} commands arrays of each of the command types (ie delete, get, post, put) and their associated API commands.
  * @private
  */
@@ -220,7 +224,6 @@ function constructCommandObjects(commands, callback, level) {
 		for (var x = 0; x < sublist.length; x++) {
 			let thisCommand = sublist[x];
 			if(level == 5){
-				if ((!notImplemented.includes(thisCommand.baseApiCommand) && thisCommand.apiCommand.category != "Alpha" && thisCommand.apiCommand.category != "Beta") | thisCommand.apiCommand.name == "Speak") {
 					// This is where the commands are put into each of the blockly blocks
 					let commandObject = {
 						"Category": thisCommand.apiCommand.apiCommandGroup,
@@ -231,7 +234,6 @@ function constructCommandObjects(commands, callback, level) {
 						"RequestType": key
 					};
 					commandObjects.push(commandObject);
-				}
 			} else if (level <= 4){
 				if (implemented.includes(thisCommand.baseApiCommand)) {
 					// This is where the commands are put into each of the blockly blocks
@@ -780,13 +782,13 @@ function addBlock(commandObject, categoryTab, colour, level) {
 			var code;
 			if (requestType === "GET") {
 				if (!payload["Command"] || payload["Command"] === "Command") {
-					code = "sendGetRequestToRobot(\"" + endpoint + "\",\"" + ip + "\");";
+					code = "sendGetRequestToEngine(\"" + endpoint + "\",\"" + ip + "\");";
 				} else {
 					newEndpoint = "help?command=" + payload["Command"].toLowerCase();
-					code = "sendGetRequestToRobot(\"" + newEndpoint + "\",\"" + ip + "\");";
+					code = "sendGetRequestToEngine(\"" + newEndpoint + "\",\"" + ip + "\");";
 				}
 			} else {
-				code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 			}
 			return code;
 		};
@@ -914,8 +916,8 @@ function addBlock(commandObject, categoryTab, colour, level) {
  *	       
  *	       // Use stringify to make a string representation of the payload
  *	       // Concatenate a JavaScript command as a string, using the robot's endpoint and ip address and the payload
- *	       // The definition of sendPostRequestToRobot() can be found under misty_ajax.js
- *	       var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+ *	       // The definition of sendPostRequestToEngine() can be found under vpddl_dispatcher.js
+ *	       var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
  *	       
  *	       // Return the string of request to the robot
  *	       return code;
@@ -954,7 +956,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					payload[arg] = hexToRgb(input)[arg];
 				} 
 				// Tell the robot what to do based on the payload
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 
@@ -1022,7 +1024,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				const payload = {};
 				var arg = args[0].Name;
 				var input = block.getFieldValue("FIELD_GetLogFile_Date");
-				var code = "sendGetRequestToRobot(\"" + endpoint + "?date=" + input + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendGetRequestToEngine(\"" + endpoint + "?date=" + input + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 			break;
@@ -1054,7 +1056,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					"Alpha": alpha
 					
 				};
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 
@@ -1087,7 +1089,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					"AssetId": block.childBlocks_[0].inputList[0].fieldRow[1].value_,
 					"Volume": parseFloat(block.getFieldValue("FIELD_PlayAudioClip_Volume"))
 				};
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 			break;
@@ -1119,7 +1121,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					return;
 				}
 				else {
-					var code = "sendDeleteRequestToRobot(\"" + endpoint + "?FileName="+ encodeURI(input) + "\",\"" + ip + "\");";
+					var code = "sendDeleteRequestToEngine(\"" + endpoint + "?FileName="+ encodeURI(input) + "\",\"" + ip + "\");";
 					return code;
 				}			
 			};
@@ -1152,7 +1154,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					return;
 				}
 				else {
-					var code = "sendDeleteRequestToRobot(\"" + endpoint + "?FileName="+ encodeURI(input) + "\",\"" + ip + "\");";
+					var code = "sendDeleteRequestToEngine(\"" + endpoint + "?FileName="+ encodeURI(input) + "\",\"" + ip + "\");";
 					return code;
 				}
 			};
@@ -1189,7 +1191,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var time = parseInt(block.getFieldValue("FIELD_DriveTime_TimeMs"));				
 				var linearVelocity = direction === "F" ? velocity : -velocity;
 				let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":0,"TimeMs":'+time+'}';
-				var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+500);
+				var code = 'sendPostRequestToEngine("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+500);
 				return code;
 			};
 			break;
@@ -1255,7 +1257,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					var angularVelocity = Blockly.JavaScript.valueToCode(block, "FIELD_DriveTime_Angular", Blockly.JavaScript.ORDER_ATOMIC);
 					var time = Blockly.JavaScript.valueToCode(block, "FIELD_DriveTime_TimeMs", Blockly.JavaScript.ORDER_ATOMIC);
 					let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+'}';
-					var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
+					var code = 'sendPostRequestToEngine("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
 					return code;
 				};
 			break;
@@ -1291,7 +1293,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var linearVelocity = 0;
 				var degree = direction === "L" ? 90 : -90;
 				let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
-				var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
+				var code = 'sendPostRequestToEngine("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
 				return code;
 			};
 			break;
@@ -1336,7 +1338,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var linearVelocity = 0;
 				var degree = direction === "L" ? 90 : -90;
 				let payload = '{"LinearVelocity":'+linearVelocity+',"AngularVelocity":'+angularVelocity+',"TimeMs":'+time+',"Degree":'+degree+'}';
-				var code = 'sendPostRequestToRobot("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
+				var code = 'sendPostRequestToEngine("' + endpoint + '","' + ip + '",' + payload + ');'+delayJS(time+'+500');
 				return code;
 			};
 			break;
@@ -1387,7 +1389,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					"X": parseInt(block.getFieldValue("X")),
 					"Y": parseInt(block.getFieldValue("Y"))
 				};
-				var code = "sendPostRequestToRobot(\"SlamGetPath\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"SlamGetPath\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 			break;
@@ -1417,7 +1419,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					"Roll": 0,
 					"Units": "position" 
 				};
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 				return code;
 			};
 			break;
@@ -1450,7 +1452,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				yaw = block.getFieldValue("FIELD_MoveHead_Yaw");
 			
 				let payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1510,7 +1512,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				yaw = Blockly.JavaScript.valueToCode(block, "FIELD_MoveHead_Yaw", Blockly.JavaScript.ORDER_ATOMIC);
 
 				let payload = '{"Pitch":'+pitch+',"Yaw":'+yaw+',"Roll":'+roll+',"Units": "degrees"}';
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1540,7 +1542,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var velocity = parseInt(block.getFieldValue("FIELD_MoveArm_Velocity"));
 		
 				let payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1586,7 +1588,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_Position", Blockly.JavaScript.ORDER_ATOMIC);
 				var velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_Velocity", Blockly.JavaScript.ORDER_ATOMIC);
 				let payload = '{"Arm":'+"\""+arm+"\""+',"Position":'+position+',"Velocity":'+velocity+',"Units":"Position"}'
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1618,7 +1620,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var right_position = parseInt(block.getFieldValue("FIELD_MoveArm_LeftPosition"));
 				var right_velocity = parseInt(block.getFieldValue("FIELD_MoveArm_LeftVelocity"));
 				let payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1682,7 +1684,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 				var right_position = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightPosition", Blockly.JavaScript.ORDER_ATOMIC);
 				var right_velocity = Blockly.JavaScript.valueToCode(block, "FIELD_MoveArm_RightVelocity", Blockly.JavaScript.ORDER_ATOMIC);
 				let payload = '{"LeftArmPosition":'+left_position+',"RightArmPosition":'+right_position+',"LeftArmVelocity":'+left_velocity+',"RightArmVelocity":'+right_velocity+',"Units": "Position"}'
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
 				return code;
 			};
 			break;
@@ -1809,7 +1811,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					"Flush": false,
 					"UtteranceId": "First"
 				};
-				var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
+				var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + JSON.stringify(payload) + ");";
 
 				return code;
 			}
@@ -1846,7 +1848,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
                 var pitch = block.getFieldValue('FIELD_pitch_setting');
                 var rate = block.getFieldValue('FIELD_rate_setting');
                 let payload = '{"Text": "<speak><prosody volume='+"'"+volume+"' pitch='"+pitch+"' rate='"+rate+"'>"+'"+'+text_speak_string+'+"</prosody></speak>","Flush":'+false+',"UtteranceId": "First"}';
-                var code = "sendPostRequestToRobot(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
+                var code = "sendPostRequestToEngine(\"" + endpoint + "\",\"" + ip + "\"," + payload + ");";
                 return code;
             }
 			break;		
