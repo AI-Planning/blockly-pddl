@@ -75,11 +75,6 @@ function sendGetRequestToRobot(endpoint, ip, callback) {
 
 	if (endpoint.includes('help')) {
 
-		if (callback) {
-			getHelp(endpoint, ip, callback);
-		} else {
-			getHelp(endpoint, ip);
-		}
 	}
 
 	else {

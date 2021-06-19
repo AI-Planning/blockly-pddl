@@ -1,13 +1,20 @@
 ﻿/**
  * -----------------------------------------------------------------------------------------------
+ * eng-r: ORIGINAL TEXT FROM Misty:
+ *
  * robot.js
  * This file is an initial static version of the GetHelp API JSON file that the robot gets when it connects.
  * The site utilizes this JSON file to get commands to populate the Blockly framework until it receives another JSON file from a Misty robot in GetHelp.
  * Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson (added support for speak block)
  * -----------------------------------------------------------------------------------------------
+ *
+ *
+ * eng-r: 19-JUN-2021: VisualPDDL -- now this is API for PDDL Blockly
+ *
+ *
  */
 
-var robot = {
+var pddlAPI = {
     "result": {
         "get": [
             {
@@ -184,27 +191,7 @@ var robot = {
                 "baseApiCommand": "GetDeviceInformation",
                 "endpoint": "device"
             },
-            {
-                "apiCommand": {
-                    "apiCommandGroup": "System",
-                    "arguments": {
-                        "command": {
-                            "getValueType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-                            "name": "Command",
-                            "ordinalNumber": 0,
-                            "value": ""
-                        }
-                    },
-                    "category": "Current",
-                    "commandTimeout": 20000,
-                    "commandType": "Information",
-                    "id": "GetHelp",
-                    "name": "GetHelp",
-                    "resultType": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.List`1[[Misty.HomeRobot.Api.ApiCommandDetails, Misty.HomeRobot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-                },
-                "baseApiCommand": "GetHelp",
-                "endpoint": "help"
-            },
+
             {
                 "apiCommand": {
                     "apiCommandGroup": "Assets",
@@ -1366,7 +1353,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "linearVelocity": {
                             "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1393,7 +1380,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "linearVelocity": {
                             "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1432,7 +1419,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "destination": {
                             "getValueType": "System.Collections.Generic.List`1[[Misty.HomeRobot.GridCell, Misty.HomeRobot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1498,7 +1485,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "motorMask": {
                             "getValueType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1519,7 +1506,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "leftTrackSpeed": {
                             "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1546,7 +1533,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "arm": {
                             "getValueType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1591,7 +1578,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "leftArmPosition": {
                             "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1642,7 +1629,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "pitch": {
                             "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -1976,7 +1963,7 @@ var robot = {
             },
             {
                 "apiCommand": {
-                    "apiCommandGroup": "Movement",
+                    "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "hold": {
                             "getValueType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",

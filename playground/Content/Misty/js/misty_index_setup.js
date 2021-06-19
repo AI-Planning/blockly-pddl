@@ -31,7 +31,7 @@ connectingAnimation += '</svg>';
 $(document).ready(function () {
 	bindEvents();
 	//var starterCommands = JSON.parse(robot.result);
-	var starterCommands = robot.result;
+	var starterCommands = pddlAPI.result;
 	matchToolboxToRobotVersion();
 	setLevelCommands(level);
 	listOfImages.push(["No files", ""]);
@@ -86,7 +86,7 @@ function loadBlocklyBlocksXMLperLevel(file,level) {
 	  var myResponseText = this.responseText;
       document.getElementById("toolbox").innerHTML = this.responseText;
 	}
-	var starterCommands = robot.result;
+	var starterCommands = pddlAPI.result;
 	matchToolboxToRobotVersion();
 	setLevelCommands(level);
 	createAllCommands(starterCommands, level);

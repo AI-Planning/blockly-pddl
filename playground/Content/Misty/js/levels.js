@@ -25,43 +25,43 @@ var beginner = {
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "PauseCode"
                 }
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "MoveHead"
                 }
         },  
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "MoveHead2"
                 }
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "MoveArm"
                 }
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "MoveArms"
                 }
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "DriveTime"
                 }
         },
         {
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "Stop"
                 }
         }, 
@@ -108,13 +108,13 @@ var advanced =  {
     "advancedCommands": [
 		{
             "apiCommand": {
-                "apiCommandGroup": "Movement",
+                "apiCommandGroup": "PDDLCore",
                 "baseApiCommand": "Drive"
                 }
         }, 
 		{
 		"apiCommand": {
-			"apiCommandGroup": "Movement",
+			"apiCommandGroup": "PDDLCore",
 			"baseApiCommand": "LocomotionTrack"
 			
 			}
@@ -235,7 +235,7 @@ var advanced =  {
         },
         {
             "apiCommand": {
-               "apiCommandGroup": "Movement",
+               "apiCommandGroup": "PDDLCore",
                "baseApiCommand": "Halt"
                }
         },
@@ -359,12 +359,7 @@ var expert = {
                "baseApiCommand": "GetBatteryLevel"
                }
         },
-        {
-            "apiCommand": {
-               "apiCommandGroup": "System",
-               "baseApiCommand": "GetHelp"
-               }
-        },
+
         {
             "apiCommand": {
                "apiCommandGroup": "System",

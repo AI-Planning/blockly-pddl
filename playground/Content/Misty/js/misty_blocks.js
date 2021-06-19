@@ -127,8 +127,8 @@ function createAllCommands(commands, level) {
 
 	// implementedCommands holds all of the Misty commands and stores which Blockly block they belong to
 		
-	implementedCommands.push({ "Category": "Movement", "Name": "PauseCode", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
-	//implementedCommands.push({ "Category": "Movement", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PauseCode", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	//implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 	if (level > 1){
 		
 		
@@ -140,7 +140,7 @@ function createAllCommands(commands, level) {
 		implementedCommands.push({ "Category": "Assets", "Name": "BrowseToImageFile", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 		implementedCommands.push({ "Category": "Assets", "Name": "BrowseToAudioFile", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 	}
-			//implementedCommands.push({ "Category": "Movement", "Name": "MoveHead", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
+			//implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 // smh		} else {	// smh - add both MoveHead and MoveHead2
 			
 			
@@ -154,27 +154,27 @@ function createAllCommands(commands, level) {
 			implementedCommands.push(commandObjects[object]);
 
 			if (commandObjects[object].Name == "MoveHead"){
-				implementedCommands.push({ "Category": "Movement", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
+				implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 			} else if (commandObjects[object].Name == "DriveTime"){
-				implementedCommands.push({ "Category": "Movement", "Name": "Turn", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
+				implementedCommands.push({ "Category": "PDDLCore", "Name": "Turn", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
 			}
 			if (level > 1){
 				switch(commandObjects[object].Name){
 					case "DriveTime":
-						implementedCommands.push({ "Category": "Movement", "Name": "DriveTime2", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
-						implementedCommands.push({ "Category": "Movement", "Name": "Turn2", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
+						implementedCommands.push({ "Category": "PDDLCore", "Name": "DriveTime2", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
+						implementedCommands.push({ "Category": "PDDLCore", "Name": "Turn2", "Endpoint": "drive/time", "Arguments": [], "CommandCategory": "Current" });
 					break;
 
 					case "MoveArm":
-						implementedCommands.push({ "Category": "Movement", "Name": "MoveArm2", "Endpoint": "arms", "Arguments": [], "CommandCategory": "Current" });
+						implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveArm2", "Endpoint": "arms", "Arguments": [], "CommandCategory": "Current" });
 					break;
 					
 					case "MoveArms":
-						implementedCommands.push({ "Category": "Movement", "Name": "MoveArms2", "Endpoint": "arms/set", "Arguments": [], "CommandCategory": "Current" });
+						implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveArms2", "Endpoint": "arms/set", "Arguments": [], "CommandCategory": "Current" });
 					break;
 
 					case "MoveHead":
-						implementedCommands.push({ "Category": "Movement", "Name": "MoveHead3", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
+						implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead3", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 					break;
 
 					case "Speak":
@@ -339,7 +339,7 @@ function updateMistyBlocks(commandGroups, categories, level) {
 				categoryTab.setAttribute("colour", colours[0]);
 				usedColors.push(blocklyColours[0]);
 				break;
-			case 'Movement':
+			case 'PDDLCore':
 				categoryTab.setAttribute("colour", colours[1]);
 				usedColors.push(blocklyColours[1]);
 				break;
@@ -458,7 +458,7 @@ function addBlock(commandObject, categoryTab, colour, level) {
 						break;
 
 					/***********************************
-					 * MOVEMENT
+					 * PDDLCore
 					 **********************************/
 	
 					///////////////////////
@@ -549,12 +549,6 @@ function addBlock(commandObject, categoryTab, colour, level) {
 						this.setTooltip("Obtains Misty's current battery level");
 						break;
 
-					///////////////////////
-					// GetHelp
-					///////////////////////
-					case "GetHelp": 	
-						this.setTooltip("Obtains information about a specified API command");
-						break;
 
 					///////////////////////
 					// GetSavedWifiNetworks
