@@ -114,7 +114,7 @@ var advanced =  {
 		{
             "apiCommand": {
                 "apiCommandGroup": "PDDLCore",
-                "baseApiCommand": "Drive"
+                "baseApiCommand": "DriveXXX"
                 }
         }, 
 		{

@@ -473,7 +473,7 @@ function addBlock(commandObject, categoryTab, colour, level) {
 					///////////////////////
 					// Drive
 					///////////////////////
-					case "Drive": 	
+					case "DriveXXX": 	
 						this.setTooltip("Drives Misty at a specified linear velocity (between -100 and 100) and a specified angular velocity (between -100 and 100) ***WARNING: can NOT be the last block in a project (must be followed by Stop or some other block)***");
 						break;
 

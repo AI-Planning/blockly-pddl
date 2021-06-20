@@ -1353,13 +1353,13 @@ var vpddlAPI = {
                     "apiCommandGroup": "PDDLCore",
                     "arguments": {
                         "linearVelocity": {
-                            "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                            "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null",
                             "name": "LinearVelocity",
                             "ordinalNumber": 0,
                             "value": 0.0
                         },
                         "angularVelocity": {
-                            "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                            "getValueType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null",
                             "name": "AngularVelocity",
                             "ordinalNumber": 1,
                             "value": 0.0
@@ -1368,11 +1368,11 @@ var vpddlAPI = {
                     "category": "Current",
                     "commandTimeout": 20000,
                     "commandType": "Action",
-                    "id": "Drive",
-                    "name": "Drive",
+                    "id": "DriveXXX",
+                    "name": "DriveXXX",
                     "resultType": "Misty.HomeRobot.Kinematics.CommandGroup, Misty.HomeRobot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
                 },
-                "baseApiCommand": "Drive",
+                "baseApiCommand": "DriveXXX",
                 "endpoint": "drive"
             },
             {
