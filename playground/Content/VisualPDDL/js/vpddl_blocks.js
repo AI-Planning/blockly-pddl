@@ -84,7 +84,15 @@ var hardCodedCommands = {
 
 	"MoveHead2": null,
 	"MoveHead3": null,
+
 	"PDDL1": null,
+	"PDDL2": null,
+	"PDDL3": null,
+	"PDDL4": null,
+	"PDDL5": null,
+	"PDDL6": null,
+	"PDDL7": null,
+
 	"PlayAudioClip": {
 		"RelatedCommand": "GetAudioList",
 		"Category": "Assets",
@@ -132,6 +140,13 @@ function createAllCommands(commands, level) {
 	// implementedCommands holds all of the Misty commands and stores which Blockly block they belong to
 		
 	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL1", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL2", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL3", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL4", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL5", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL6", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL7", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+
 	//implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 	if (level > 1){
 		
@@ -466,9 +481,11 @@ function addBlock(commandObject, categoryTab, colour, level) {
 					///////////////////////
 					// PDDL1
 					///////////////////////
+/*
 					case "PDDL1": 	// this is where it is, not in legacy blocks
 						this.setTooltip("PDDL1 construct");
 						break;
+*/
 
 					///////////////////////
 					// Drive
@@ -1347,28 +1364,6 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 		///////////////////////
 		case "PDDL1":
 			Blockly.Blocks["PDDL1"] = {
-/* Misty ref for the original 'PauseCode'
-				init: function () {
-					this.appendDummyInput()
-						.appendField("Pause for a duration of")
-						.appendField(new Blockly.FieldNumber(500, 100, 10000, 100), "FIELD_PauseCode_Duration")
-						.appendField("ms");
-					this.setInputsInline(true);
-					this.setPreviousStatement(true, null);
-					this.setNextStatement(true, null);
-					this.setColour(colour);
-					this.setTooltip("Pauses code for set amount of time (1000ms = 1 second)");
-					this.setHelpUrl("PDDL1");
-				}
-			};
-
-			Blockly.JavaScript["PDDL1"] = function (block) {
-				var pauseDuration = Number(block.getFieldValue("FIELD_PauseCode_Duration"));
-				var code = delayJS(pauseDuration);
-				return code;
-			};
-*/
-
 			  init: function() {
 			    this.appendDummyInput()
 			        .appendField(new Blockly.FieldTextInput("domain_name"), "NAME");
@@ -1394,7 +1389,137 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 			};
 
 			Blockly.JavaScript["PDDL1"] = function (block) {
-				var code = 'I am placeholder - Replace me with PDDL syntax';
+				var code = 'PDDL1: I am placeholder - Replace me with PDDL syntax';
+				return code;
+			};
+
+			break;
+
+		case "PDDL2":
+			Blockly.Blocks["PDDL2"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldTextInput("action_name"), "NAME");
+			    this.appendStatementInput("params")
+			        .setCheck(null)
+			        .appendField("parameters");
+			    this.appendValueInput("pre")
+			        .setCheck(null)
+			        .appendField("preconditions");
+			    this.appendValueInput("eff")
+			        .setCheck(null)
+			        .appendField("effects");
+			    this.setPreviousStatement(true, null);
+			    this.setNextStatement(true, null);
+			    this.setColour(230);
+				 this.setTooltip("");
+				 this.setHelpUrl("");
+			  }
+			};
+
+			Blockly.JavaScript["PDDL2"] = function (block) {
+				var code = 'PDDL_Action_Placeholder';
+				return code;
+			};
+
+			break;
+
+		case "PDDL3":
+			Blockly.Blocks["PDDL3"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldTextInput("predicate_name"), "NAME");
+			    this.appendStatementInput("NAME")
+			        .setCheck("type")
+			        .appendField("parameters");
+			    this.setPreviousStatement(true, "predicate");
+			    this.setNextStatement(true, "predicate");
+			    this.setColour(230);
+			 this.setTooltip("basic PDDL predicate");
+			 this.setHelpUrl("");
+			  }
+			};                      		
+
+			Blockly.JavaScript["PDDL3"] = function (block) {
+				var code = 'PDDL_Predicative_Placeholder';
+				return code;
+			};
+
+			break;
+
+		case "PDDL4":
+			Blockly.Blocks["PDDL4"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldTextInput("type_name"), "NAME");
+			    this.setInputsInline(false);
+			    this.setPreviousStatement(true, null);
+			    this.setNextStatement(true, null);
+			    this.setColour(230);
+			 this.setTooltip("");
+			 this.setHelpUrl("");
+			  }
+			};
+
+			Blockly.JavaScript["PDDL4"] = function (block) {
+				var code = 'PDDL_TypeName_Placeholder';
+				return code;
+			};
+
+			break;
+
+		case "PDDL5":
+			Blockly.Blocks["PDDL5"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField("holding_key");
+			    this.setOutput(true, "Boolean");
+			    this.setColour(165);
+			 this.setTooltip("");
+			 this.setHelpUrl("");
+			  }
+			};
+
+			Blockly.JavaScript["PDDL5"] = function (block) {
+				var code = 'PDDL_HoldingKey_Placeholder';
+				return code;
+			};
+
+			break;
+
+		case "PDDL6":
+			Blockly.Blocks["PDDL6"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField("door_open");
+			    this.setOutput(true, "Boolean");
+			    this.setColour(165);
+			 this.setTooltip("");
+			 this.setHelpUrl("");
+			  }
+			};
+
+			Blockly.JavaScript["PDDL6"] = function (block) {
+				var code = 'PDDL_DoorOpen_Placeholder';
+				return code;
+			};
+
+			break;
+
+		case "PDDL7":
+			Blockly.Blocks["PDDL7"] = {
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField("found_key");
+			    this.setOutput(true, "Boolean");
+			    this.setColour(165);
+			 this.setTooltip("");
+			 this.setHelpUrl("");
+			  }
+			};
+
+			Blockly.JavaScript["PDDL7"] = function (block) {
+				var code = 'PDDL_FoundKey_Placeholder';
 				return code;
 			};
 

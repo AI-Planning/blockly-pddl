@@ -36,7 +36,42 @@ var beginner = {
                 "baseApiCommand": "PDDL1"
                 }
         },
-
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL2"
+                }
+        },
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL3"
+                }
+        },
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL4"
+                }
+        },
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL5"
+                }
+        },
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL6"
+                }
+        },
+        {
+            "apiCommand": {
+                "apiCommandGroup": "PDDLCore",
+                "baseApiCommand": "PDDL7"
+                }
+        },
 /*
         {
             "apiCommand": {
