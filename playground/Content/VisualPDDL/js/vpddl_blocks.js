@@ -1347,7 +1347,7 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 		///////////////////////
 		case "PDDL1":
 			Blockly.Blocks["PDDL1"] = {
-/* Misty ref:
+/* Misty ref for the original 'PauseCode'
 				init: function () {
 					this.appendDummyInput()
 						.appendField("Pause for a duration of")
@@ -1391,6 +1391,11 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 	  			this.setTooltip("This is the pddl domain");
 				this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
 			  }
+			};
+
+			Blockly.JavaScript["PDDL1"] = function (block) {
+				var code = 'I am placeholder - Replace me with PDDL syntax';
+				return code;
 			};
 
 			break;
