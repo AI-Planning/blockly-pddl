@@ -20,7 +20,7 @@ var abortScript = false;
 
 var GetListOfImages = [];
 var GetListOfAudioFiles = [];
-var level = 2;
+var level = 1; // 2;
 var robotVersion = 2;
 var connectingAnimation = '<svg id="connecting-animation" data-name="Layer 1" style="height: 50%; position: absolute; top: 20%; right: 30%; z-index:1000;" viewBox="0 0 1285 725">';
 connectingAnimation += '<rect class="cls-1" x="382" y="335" width="95" height="95"/><rect class="cls-2" x= "596" y= "335" width= "95" height="95"/><rect class="cls-3" x= "797" y= "335" width= "95" height="95"/>';
@@ -109,8 +109,12 @@ function loadBlocklyBlocksXMLperLevel(file,level) {
 */
 function change(){
   //gets the level from the dropdown
-	var level_pulldown = document.getElementById("level");  //  smh - renamed to avoid masking global 'level'
-	var val = level_pulldown.options[level_pulldown.selectedIndex].value;
+
+        // eng-r: 22-JUN-2021 - hiding 'level' at UI
+//	var level_pulldown = document.getElementById("level");  //  smh - renamed to avoid masking global 'level'
+//	var val = level_pulldown.options[level_pulldown.selectedIndex].value;
+
+        val= "Beginner";  // override         
   
   //sets the value for level based on the text in the dropdown
 	if (val == "Beginner") {

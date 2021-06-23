@@ -16,6 +16,7 @@
 
 var beginner = {
     "beginnerCommands": [
+/*
         {
          "apiCommand": {
             "apiCommandGroup": "Assets",
@@ -28,12 +29,15 @@ var beginner = {
             "baseApiCommand": "GetListOfImages"
             }
         },
+*/
         {
             "apiCommand": {
                 "apiCommandGroup": "PDDLCore",
-                "baseApiCommand": "PauseCode"
+                "baseApiCommand": "PDDL1"
                 }
         },
+
+/*
         {
             "apiCommand": {
                 "apiCommandGroup": "PDDLCore",
@@ -100,6 +104,7 @@ var beginner = {
                 "baseApiCommand": "Speak"
                 }
         }
+*/
         ]
 }
 

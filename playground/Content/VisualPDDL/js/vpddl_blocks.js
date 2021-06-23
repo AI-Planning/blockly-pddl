@@ -84,7 +84,7 @@ var hardCodedCommands = {
 
 	"MoveHead2": null,
 	"MoveHead3": null,
-	"PauseCode": null,
+	"PDDL1": null,
 	"PlayAudioClip": {
 		"RelatedCommand": "GetAudioList",
 		"Category": "Assets",
@@ -131,7 +131,7 @@ function createAllCommands(commands, level) {
 
 	// implementedCommands holds all of the Misty commands and stores which Blockly block they belong to
 		
-	implementedCommands.push({ "Category": "PDDLCore", "Name": "PauseCode", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL1", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 	//implementedCommands.push({ "Category": "PDDLCore", "Name": "MoveHead2", "Endpoint": "head", "Arguments": [], "CommandCategory": "Current" });
 	if (level > 1){
 		
@@ -464,10 +464,10 @@ function addBlock(commandObject, categoryTab, colour, level) {
 					 **********************************/
 	
 					///////////////////////
-					// PauseCode
+					// PDDL1
 					///////////////////////
-					case "PauseCode": 	// this is where it is, not in legacy blocks
-						this.setTooltip("Pauses code execution");
+					case "PDDL1": 	// this is where it is, not in legacy blocks
+						this.setTooltip("PDDL1 construct");
 						break;
 
 					///////////////////////
@@ -1345,8 +1345,9 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 		///////////////////////
 		// Pause Code
 		///////////////////////
-		case "PauseCode":
-			Blockly.Blocks["PauseCode"] = {
+		case "PDDL1":
+			Blockly.Blocks["PDDL1"] = {
+/* Misty ref:
 				init: function () {
 					this.appendDummyInput()
 						.appendField("Pause for a duration of")
@@ -1357,15 +1358,41 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 					this.setNextStatement(true, null);
 					this.setColour(colour);
 					this.setTooltip("Pauses code for set amount of time (1000ms = 1 second)");
-					this.setHelpUrl("PauseCode");
+					this.setHelpUrl("PDDL1");
 				}
 			};
 
-			Blockly.JavaScript["PauseCode"] = function (block) {
+			Blockly.JavaScript["PDDL1"] = function (block) {
 				var pauseDuration = Number(block.getFieldValue("FIELD_PauseCode_Duration"));
 				var code = delayJS(pauseDuration);
 				return code;
 			};
+*/
+
+			  init: function() {
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldTextInput("domain_name"), "NAME");
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldCheckbox("TRUE"), "fluents")
+			        .appendField("numeric fluents");
+			    this.appendDummyInput()
+			        .appendField(new Blockly.FieldCheckbox("TRUE"), "timed_literals")
+			        .appendField("timed initial literals");
+			    this.appendStatementInput("types")
+			        .setCheck("type")
+			        .appendField("types");
+			    this.appendStatementInput("predicates")
+			        .setCheck("predicate")
+			        .appendField("predicates");
+			    this.appendStatementInput("actions")
+			        .setCheck("action")
+			        .appendField("actions");
+			    this.setColour(120);
+	  			this.setTooltip("This is the pddl domain");
+				this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
+			  }
+			};
+
 			break;
 		///////////////////////
 		// Get Slam Path
@@ -1854,3 +1881,54 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 			break;		
 	}
 }
+
+
+/*
+Blockly.Blocks['string_length'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": 'length of %1',
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "VALUE",
+          "check": "String"
+        }
+      ],
+      "output": "Number",
+      "colour": 160,
+      "tooltip": "Returns number of letters in the provided text.",
+      "helpUrl": "http://www.w3schools.com/jsref/jsref_length_string.asp"
+    });
+  }
+};
+
+
+Blockly.Blocks['string_length'] = {
+  init: function() {
+    this.appendValueInput('VALUE')
+        .setCheck('String')
+        .appendField('length of');
+    this.setOutput(true, 'Number');
+    this.setColour(160);
+    this.setTooltip('Returns number of letters in the provided text.');
+    this.setHelpUrl('http://www.w3schools.com/jsref/jsref_length_string.asp');
+  }
+};
+
+
+function pddlBlocks() {
+	Blockly.Blocks['string_length_my'] = {
+	  init: function() {
+	    this.appendValueInput('VALUE')
+	        .setCheck('String')
+	        .appendField('length of');
+	    this.setOutput(true, 'Number');
+	    this.setColour(160);
+	    this.setTooltip('Returns number of letters in the provided text.');
+	    this.setHelpUrl('http://www.w3schools.com/jsref/jsref_length_string.asp');
+	  }
+	};
+}
+
+*/

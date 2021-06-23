@@ -22,6 +22,8 @@
 		<link rel="shortcut icon" href="#" />
 		<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
 
+		<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
+		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_1.js"></script>
 	</head>
 	<body>
 		<div id="4k-modal" class="modal" tabindex="-1" role="dialog">
@@ -63,18 +65,21 @@
 			<input type="file" id="audio-file" onchange="validateAudioFile()" onabort="fileSelectionCanceled()" />
 -->
 		</section>
+
+
 		<div id="blocklyArea" class="container-fluid">
 			<div id="blocklyDiv">
+<!--
 				<form id="levelForm" method="post">
 					<label for="level">Choose a level:</label>
 					<select name="level" id="level" onchange="change()">
-						<option value="Beginner">Beginner</option>
+						<option value="Beginner" selected="selected">Beginner</option>
 						<option value="Standard">Standard</option>
 						<option value="Advanced">Advanced</option>
-						<option value="Expert" selected="selected">Expert</option>
+						<option value="Expert">Expert</option>
 					</select>
 				</form>
-
+-->
 
 			</div>
 		</div>
@@ -82,7 +87,9 @@
 
 		<xml id="toolbox" style="display:none;" class="list-group">
 			<category name="Blockly Blocks" colour="#4285F4" class="list-group-item">
+
 				<block type="controls_if"></block>
+
 				<block type="logic_compare">
 					<field name="OP">EQ</field>
 				</block>
@@ -96,6 +103,7 @@
 				<block type="logic_null"></block>
 				<block type="logic_ternary"></block>
 
+<!--
 				<block type="controls_repeat_ext">
 					<value name="TIMES">
 						<shadow type="math_number">
@@ -139,9 +147,12 @@
 						</shadow>
 					</value>
 				</block>
+-->
 				<block type="math_number">
 					<field name="NUM">0</field>
 				</block>
+
+<!--
 				<block type="math_single">
 					<field name="OP">ROOT</field>
 					<value name="NUM">
@@ -158,9 +169,11 @@
 						</shadow>
 					</value>
 				</block>
+-->
 				<block type="math_constant">
 					<field name="CONSTANT">PI</field>
 				</block>
+<!--
 				<block type="math_number_property">
 					<mutation divisor_input="false"></mutation>
 					<field name="PROPERTY">EVEN</field>
@@ -170,6 +183,7 @@
 						</shadow>
 					</value>
 				</block>
+-->
 				<block type="math_arithmetic">
 					<field name="OP">ADD</field>
 					<value name="A">
@@ -183,6 +197,7 @@
 						</shadow>
 					</value>
 				</block>
+<!--
 				<block type="math_on_list">
 					<mutation op="SUM"></mutation>
 					<field name="OP">SUM</field>
@@ -416,6 +431,7 @@
 						</shadow>
 					</value>
 				</block>
+-->
 			</category>
 
 			<category name="Variables" colour="#990099" custom="VARIABLE"></category>
@@ -460,5 +476,6 @@
                      change();    
                 </script>
 	</body>
+
 
 </html>

@@ -8,11 +8,9 @@ To see how it works, download Repo, use eng-r_bfactory_1 branch, and open [HTML]
 [Misty Robotics](https://github.com/MistyCommunity) Community Edition [![Google Blockly](https://tinyurl.com/built-on-Blockly)](https://github.com/google/blockly) 
 
 ## WIP - refs
-
 * https://developers.google.com/blockly/guides/configure/web/custom-blocks
-
 * https://developers.google.com/blockly/guides/configure/web/toolbox
-
+* https://blockly-demo.appspot.com/static/demos/index.html
 
 
 # Known Issues
