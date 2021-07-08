@@ -205,6 +205,24 @@
           <block type="field_input" id="x(l%S@/}1d{~2V}(~sZ^">
             <field name="TEXT">type_name</field>
             <field name="FIELDNAME">NAME</field>
+            <next>
+              <block type="field_label_serializable" id="6D^L`VHa8PXh9HpSWn+d">
+                <field name="TEXT"> - </field>
+                <field name="FIELDNAME">sss</field>
+                <next>
+                  <block type="field_dropdown" id="OIFf22qT,u?/:u!K;Sg]">
+                    <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                    <field name="FIELDNAME">ss</field>
+                    <field name="USER0">object</field>
+                    <field name="CPU0">ad</field>
+                    <field name="USER1">op1</field>
+                    <field name="CPU1">sdf</field>
+                    <field name="USER2">op2</field>
+                    <field name="CPU2">sdasd</field>
+                  </block>
+                </next>
+              </block>
+            </next>
           </block>
         </statement>
       </block>
