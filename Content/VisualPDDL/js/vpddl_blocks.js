@@ -85,7 +85,7 @@ var hardCodedCommands = {
 	"MoveHead2": null,
 	"MoveHead3": null,
 
-	"PDDL1": null,
+	"predicate": null,
 	"PDDL2": null,
 	"PDDL3": null,
 	"PDDL4": null,
@@ -139,7 +139,7 @@ function createAllCommands(commands, level) {
 
 	// implementedCommands holds all of the Misty commands and stores which Blockly block they belong to
 		
-	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL1", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
+	implementedCommands.push({ "Category": "PDDLCore", "Name": "predicate", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL2", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL3", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
 	implementedCommands.push({ "Category": "PDDLCore", "Name": "PDDL4", "Endpoint": null, "Arguments": [], "CommandCategory": "Current" });
@@ -1362,34 +1362,190 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 		///////////////////////
 		// Pause Code
 		///////////////////////
-		case "PDDL1":
-			Blockly.Blocks["PDDL1"] = {
-			  init: function() {
-			    this.appendDummyInput()
-			        .appendField(new Blockly.FieldTextInput("domain_name"), "NAME");
-			    this.appendDummyInput()
-			        .appendField(new Blockly.FieldCheckbox("TRUE"), "fluents")
-			        .appendField("numeric fluents");
-			    this.appendDummyInput()
-			        .appendField(new Blockly.FieldCheckbox("TRUE"), "timed_literals")
-			        .appendField("timed initial literals");
-			    this.appendStatementInput("types")
-			        .setCheck("type")
-			        .appendField("types");
-			    this.appendStatementInput("predicates")
-			        .setCheck("predicate")
-			        .appendField("predicates");
-			    this.appendStatementInput("actions")
-			        .setCheck("action")
-			        .appendField("actions");
-			    this.setColour(120);
-	  			this.setTooltip("This is the pddl domain");
-				this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
-			  }
+		case "predicate":
+			Blockly.Blocks['predicate'] = {
+				init: function() {
+				  	this.appendDummyInput()
+					  	.appendField(new Blockly.FieldTextInput("predicate_name"), "NAME");
+				  	this.appendStatementInput("NAME")
+					  	.setCheck(null)
+					  	.appendField("params");
+				  	this.setPreviousStatement(true, "predicate");
+				  	this.setNextStatement(true, "predicate");
+				  	this.setColour(300);
+					this.setTooltip("");
+			   		this.setHelpUrl("");
+			   		this.arguments_ = [];
+				},
+				/**
+				 * Return the signature of this procedure definition.
+				 * @return {!Array} Tuple containing three elements:
+				 *     - the name of the defined procedure,
+				 *     - a list of all its arguments,
+				 *     - that it DOES NOT have a return value.
+				 * @this Blockly.Block
+				 */
+				getProcedureDef: function() {
+				  return [this.getFieldValue('NAME'), this.arguments_, false];
+				},
+				callType_: 'procedures_pddlpredicates'
 			};
 
-			Blockly.JavaScript["PDDL1"] = function (block) {
-				var code = 'PDDL1: I am placeholder - Replace me with PDDL syntax';
+			Blockly.Blocks['procedures_pddlpredicates'] = {
+				/**
+				 * Block for calling a procedure with no return value.
+				 * @this Blockly.Block
+				 */
+				init: function() {
+				  this.appendDummyInput('TOPROW')
+					  .appendField(this.id, 'NAME');
+				  this.setPreviousStatement(true);
+				  this.setNextStatement(true);
+				  this.setColour(300);
+				  // Tooltip is set in renameProcedure.
+				  this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL);
+				  this.arguments_ = [];
+				  this.quarkConnections_ = {};
+				  this.quarkIds_ = null;
+				},
+				/**
+				 * Returns the name of the procedure this block calls.
+				 * @return {string} Procedure name.
+				 * @this Blockly.Block
+				 */
+				getProcedureCall: function() {
+				  // The NAME field is guaranteed to exist, null will never be returned.
+				  return /** @type {string} */ (this.getFieldValue('NAME'));
+				},
+				/**
+				 * Notification that a procedure is renaming.
+				 * If the name matches this block's procedure, rename it.
+				 * @param {string} oldName Previous name of procedure.
+				 * @param {string} newName Renamed procedure.
+				 * @this Blockly.Block
+				 */
+				renameProcedure: function(oldName, newName) {
+				  if (Blockly.Names.equals(oldName, this.getProcedureCall())) {
+					this.setFieldValue(newName, 'NAME');
+					this.setTooltip(
+						(this.outputConnection ? Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP :
+						 Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP)
+						.replace('%1', newName));
+				  }
+				},
+				/**
+				 * Create XML to represent the (non-editable) name and arguments.
+				 * @return {!Element} XML storage element.
+				 * @this Blockly.Block
+				 */
+				mutationToDom: function() {
+				  var container = document.createElement('mutation');
+				  container.setAttribute('name', this.getProcedureCall());
+				  for (var i = 0; i < this.arguments_.length; i++) {
+					var parameter = document.createElement('arg');
+					parameter.setAttribute('name', this.arguments_[i]);
+					container.appendChild(parameter);
+				  }
+				  return container;
+				},
+				/**
+				 * Parse XML to restore the (non-editable) name and parameters.
+				 * @param {!Element} xmlElement XML storage element.
+				 * @this Blockly.Block
+				 */
+				domToMutation: function(xmlElement) {
+				  var name = xmlElement.getAttribute('name');
+				  this.renameProcedure(this.getProcedureCall(), name);
+				},
+				/**
+				 * Procedure calls cannot exist without the corresponding procedure
+				 * definition.  Enforce this link whenever an event is fired.
+				 * @param {!Blockly.Events.Abstract} event Change event.
+				 * @this Blockly.Block
+				 */
+				onchange: function(event) {
+				  if (!this.workspace || this.workspace.isFlyout) {
+					// Block is deleted or is in a flyout.
+					return;
+				  }
+				  if (event.type == Blockly.Events.BLOCK_CREATE &&
+					  event.ids.indexOf(this.id) != -1) {
+					// Look for the case where a procedure call was created (usually through
+					// paste) and there is no matching definition.  In this case, create
+					// an empty definition block with the correct signature.
+					var name = this.getProcedureCall();
+					var def = Blockly.Procedures.getDefinition(name, this.workspace);
+					if (def && (def.type != this.defType_ ||
+						JSON.stringify(def.arguments_) != JSON.stringify(this.arguments_))) {
+					  // The signatures don't match.
+					  def = null;
+					}
+					if (!def) {
+					  Blockly.Events.setGroup(event.group);
+					  /**
+					   * Create matching definition block.
+					   * <xml>
+					   *   <block type="procedures_defreturn" x="10" y="20">
+					   *     <mutation name="test">
+					   *       <arg name="x"></arg>
+					   *     </mutation>
+					   *     <field name="NAME">test</field>
+					   *   </block>
+					   * </xml>
+					   */
+					  var xml = goog.dom.createDom('xml');
+					  var block = goog.dom.createDom('block');
+					  block.setAttribute('type', this.defType_);
+					  var xy = this.getRelativeToSurfaceXY();
+					  var x = xy.x + Blockly.SNAP_RADIUS * (this.RTL ? -1 : 1);
+					  var y = xy.y + Blockly.SNAP_RADIUS * 2;
+					  block.setAttribute('x', x);
+					  block.setAttribute('y', y);
+					//   var mutation = this.mutationToDom();
+					//   block.appendChild(mutation);
+					  var field = goog.dom.createDom('field');
+					  field.setAttribute('name', 'NAME');
+					  field.appendChild(document.createTextNode(this.getProcedureCall()));
+					  block.appendChild(field);
+					  xml.appendChild(block);
+					  Blockly.Xml.domToWorkspace(xml, this.workspace);
+					  Blockly.Events.setGroup(false);
+					}
+				  } else 
+				  if (event.type == Blockly.Events.BLOCK_DELETE) {
+					// Look for the case where a procedure definition has been deleted,
+					// leaving this block (a procedure call) orphaned.  In this case, delete
+					// the orphan.
+					var name = this.getProcedureCall();
+					var def = Blockly.Procedures.getDefinition(name, this.workspace);
+					if (!def) {
+					  Blockly.Events.setGroup(event.group);
+					  this.dispose(true, false);
+					  Blockly.Events.setGroup(false);
+					}
+				  }
+				},
+				/**
+				 * Add menu option to find the definition block for this call.
+				 * @param {!Array} options List of menu options to add to.
+				 * @this Blockly.Block
+				 */
+				customContextMenu: function(options) {
+				//   var option = {enabled: true};
+				//   option.text = 'Predicates';
+				//   var name = this.getProcedureCall();
+				//   var workspace = this.workspace;
+				//   option.callback = function() {
+				// 	var def = Blockly.Procedures.getDefinition(name, workspace);
+				// 	def && def.select();
+				//   };
+				//   options.push(option);
+				},
+				defType_: 'predicate'
+			};
+
+			Blockly.JavaScript["predicate"] = function (block) {
+				var code = 'predicate: I am placeholder - Replace me with PDDL syntax';
 				return code;
 			};
 
