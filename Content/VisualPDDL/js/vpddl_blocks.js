@@ -1365,8 +1365,11 @@ function legacyBlocks(block, blockName, newBlock, args, colour, endpoint, level)
 		case "predicate":
 			Blockly.Blocks['predicate'] = {
 				init: function() {
+					var nameField = new Blockly.FieldTextInput('',
+						Blockly.Procedures.rename);
+					nameField.setSpellcheck(false);
 				  	this.appendDummyInput()
-					  	.appendField(new Blockly.FieldTextInput("predicate_name"), "NAME");
+					  	.appendField(nameField, "NAME");
 				  	this.appendStatementInput("NAME")
 					  	.setCheck(null)
 					  	.appendField("params");
