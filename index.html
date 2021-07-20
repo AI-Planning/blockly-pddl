@@ -7,69 +7,87 @@
  *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
 -->
 <!DOCTYPE html>
-	<html>
-	<head>
-		<title>VisualPDDL with Blockly</title>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="Content/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="Content/animate.css">
-		<link rel="stylesheet" type="text/javascript" href="Content/jquery-ui-1.12.1.custom/jquery-ui.min.css">
-		<script type="text/javascript" src="Scripts/jquery/jquery-3.6.0.min.js"></script>
-		<script type="text/javascript" src="Content/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script src="Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-		<link rel="shortcut icon" href="#" />
-		<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
+<html>
 
-		<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_1.js"></script>
-	</head>
-	<body>
-		<div id="4k-modal" class="modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">4K photo</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<img id="display-picture" class="display-picture" src="">
-					</div>
+<head>
+	<title>VisualPDDL with Blockly</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Content/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="Content/animate.css">
+	<link rel="stylesheet" type="text/javascript" href="Content/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+	<script type="text/javascript" src="Scripts/jquery/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="Content/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<link rel="shortcut icon" href="#" />
+	<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
+	
+	<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
+	<script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_defs.js"></script>
+	<!-- <script type="text/javascript" src="Scripts/javascript_compressed.js"></script> -->
+	<!-- <script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_codegen.js"></script> -->
+	<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
+	<script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script>
+</head>
+
+<body>
+	<div id="4k-modal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">4K photo</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<img id="display-picture" class="display-picture" src="">
 				</div>
 			</div>
 		</div>
-		<section class="dashboard">
-			<nav class="navbar navbar-expand-xl navbar-dark">
-				<img class="navbar-brand d-none d-md-block" src="Content/media/logo1_508x40.png" width="245" height="20" alt="VisualPDDL with Blockly" srcset="Content/media/logo1_508x40.png 508w" sizes="(max-width: 508px) 100vw, 508px">	<div class="text"></div>
+	</div>
+	<section class="dashboard">
+		<nav class="navbar navbar-expand-xl navbar-dark">
+			<img class="navbar-brand d-none d-md-block" src="Content/media/logo1_508x40.png" width="245" height="20"
+				alt="VisualPDDL with Blockly" srcset="Content/media/logo1_508x40.png 508w"
+				sizes="(max-width: 508px) 100vw, 508px">
+			<div class="text"></div>
 
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<div class="navbar-nav ml-auto">
-						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link" id="run-script" href="#">Run<span class="sr-only">(current)</span></a>
-						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link run-abort" id="abort-script" href="#">Abort</a>
-						<a class="nav-item pr-lg-0 pr-xl-4 nav-link disabled" href="#" id="browse-files">Load Project</a>
-						<input class="nav-item dependent disabled pl-0 pr-lg-0 pr-xl-4 btn btn-link btn-btn-light my-2 my-sm-0" id="export-session" type="button" onclick="exportBlocklySession()" value="Save Project" />
-						<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-javascript" href="#">Show PDDL Script</a>
-						<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link disabled" id="help" target="_blank" href="https://github.com/AI-Planning/blockly-pddl/">Help</a>
-					</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<div class="navbar-nav ml-auto">
+					<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link" id="run-script" href="#">Run<span
+							class="sr-only">(current)</span></a>
+					<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link run-abort" id="abort-script"
+						href="#">Abort</a>
+					<a class="nav-item pr-lg-0 pr-xl-4 nav-link disabled" href="#" id="browse-files">Load Project</a>
+					<input
+						class="nav-item dependent disabled pl-0 pr-lg-0 pr-xl-4 btn btn-link btn-btn-light my-2 my-sm-0"
+						id="export-session" type="button" onclick="exportBlocklySession()" value="Save Project" />
+					<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-javascript" href="#">Show
+						PDDL Script</a>
+					<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link disabled" id="help" target="_blank"
+						href="https://github.com/AI-Planning/blockly-pddl/">Help</a>
 				</div>
-			</nav>
-			<input type="file" id="fileSelected" onchange="uploadBlocklyFile()" accept=".txt" onabort="fileSelectionCanceled()" />
-<!--
+			</div>
+		</nav>
+		<input type="file" id="fileSelected" onchange="uploadBlocklyFile()" accept=".txt"
+			onabort="fileSelectionCanceled()" />
+		<!--
 			<input type="file" id="image-file" onchange="validateImageFile()" onabort="fileSelectionCanceled()" />
 			<input type="file" id="audio-file" onchange="validateAudioFile()" onabort="fileSelectionCanceled()" />
 -->
-		</section>
+	</section>
 
 
-		<div id="blocklyArea" class="container-fluid">
-			<div id="blocklyDiv">
-<!--
+	<div id="blocklyArea" class="container-fluid">
+		<div id="blocklyDiv">
+			<!--
 				<form id="levelForm" method="post">
 					<label for="level">Choose a level:</label>
 					<select name="level" id="level" onchange="change()">
@@ -81,401 +99,73 @@
 				</form>
 -->
 
-			</div>
 		</div>
+	</div>
+	<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none" class="list-group">
+		<category name="PDDL Core" colour="#5b67a5" class="list-group-item">
+			<block type="pddl_domain">
+				<field name="NAME">domain_name</field>
+				<field name="fluents">TRUE</field>
+				<field name="timed_literals">TRUE</field>
+			</block>
+			<block type="action">
+				<field name="NAME">action_name</field>
+			</block>
+			<!-- <block type="pddl_type">
+				<field name="NAME">type_name</field>
+				<field name="sss"> - </field>
+				<field name="ss">ad</field>
+			</block> -->
+			<block type="parameter">
+				<field name="par_name">parameter_name</field>
+				<field name="type">a</field>
+			</block>
+			<block type="predicate">
+				<field name="NAME">predicate_name</field>
+			</block>
+		</category>
 
+		<!-- <category name="PDDL Predicates" colour="#5ba55b" custom="COLOUR_PALETTE"></category> -->
+	</xml>
 
-		<xml id="toolbox" style="display:none;" class="list-group">
-			<category name="Blockly Blocks" colour="#4285F4" class="list-group-item">
+	<div id="toast"></div>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101328068-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
 
-				<block type="controls_if"></block>
+		gtag('config', 'UA-101328068-1');
+	</script> -->
 
-				<block type="logic_compare">
-					<field name="OP">EQ</field>
-				</block>
-				<block type="logic_operation">
-					<field name="OP">AND</field>
-				</block>
-				<block type="logic_negate"></block>
-				<block type="logic_boolean">
-					<field name="BOOL">TRUE</field>
-				</block>
-				<block type="logic_null"></block>
-				<block type="logic_ternary"></block>
-
-<!--
-				<block type="controls_repeat_ext">
-					<value name="TIMES">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-				
-				</block>
-				<block type="controls_whileUntil">
-					<field name="MODE">WHILE</field>
-				</block>
-				<block type="controls_for">
-					<field name="VAR">i</field>
-					<value name="FROM">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-					<value name="TO">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-					<value name="BY">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="controls_forEach">
-					<field name="VAR">j</field>
-				</block>
-				<block type="controls_flow_statements">
-					<field name="FLOW">BREAK</field>
-				</block>
-				<block type="math_round">
-					<field name="OP">ROUND</field>
-					<value name="NUM">
-						<shadow type="math_number">
-							<field name="NUM">3.1</field>
-						</shadow>
-					</value>
-				</block>
--->
-				<block type="math_number">
-					<field name="NUM">0</field>
-				</block>
-
-<!--
-				<block type="math_single">
-					<field name="OP">ROOT</field>
-					<value name="NUM">
-						<shadow type="math_number">
-							<field name="NUM">9</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="math_trig">
-					<field name="OP">SIN</field>
-					<value name="NUM">
-						<shadow type="math_number">
-							<field name="NUM">45</field>
-						</shadow>
-					</value>
-				</block>
--->
-				<block type="math_constant">
-					<field name="CONSTANT">PI</field>
-				</block>
-<!--
-				<block type="math_number_property">
-					<mutation divisor_input="false"></mutation>
-					<field name="PROPERTY">EVEN</field>
-					<value name="NUMBER_TO_CHECK">
-						<shadow type="math_number">
-							<field name="NUM">0</field>
-						</shadow>
-					</value>
-				</block>
--->
-				<block type="math_arithmetic">
-					<field name="OP">ADD</field>
-					<value name="A">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-					<value name="B">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-				</block>
-<!--
-				<block type="math_on_list">
-					<mutation op="SUM"></mutation>
-					<field name="OP">SUM</field>
-				</block>
-				<block type="math_modulo">
-					<value name="DIVIDEND">
-						<shadow type="math_number">
-							<field name="NUM">64</field>
-						</shadow>
-					</value>
-					<value name="DIVISOR">
-						<shadow type="math_number">
-							<field name="NUM">10</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="math_constrain">
-					<value name="VALUE">
-						<shadow type="math_number">
-							<field name="NUM">50</field>
-						</shadow>
-					</value>
-					<value name="LOW">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-					<value name="HIGH">
-						<shadow type="math_number">
-							<field name="NUM">100</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="math_random_int">
-					<value name="FROM">
-						<shadow type="math_number">
-							<field name="NUM">1</field>
-						</shadow>
-					</value>
-					<value name="TO">
-						<shadow type="math_number">
-							<field name="NUM">100</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="math_random_float"></block>
-				<block type="text_charAt">
-					<mutation at="true"></mutation>
-					<field name="WHERE">FROM_START</field>
-					<value name="VALUE">
-						<block type="variables_get">
-							<field name="VAR">text</field>
-						</block>
-					</value>
-				</block>
-				<block type="text">
-					<field name="TEXT"></field>
-				</block>
-				<block type="text_append">
-					<field name="VAR">item</field>
-					<value name="TEXT">
-						<shadow type="text">
-							<field name="TEXT"></field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_length">
-					<value name="VALUE">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_isEmpty">
-					<value name="VALUE">
-						<shadow type="text">
-							<field name="TEXT"></field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_indexOf">
-					<field name="END">FIRST</field>
-					<value name="VALUE">
-						<block type="variables_get">
-							<field name="VAR">text</field>
-						</block>
-					</value>
-					<value name="FIND">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_join">
-					<mutation items="2"></mutation>
-				</block>
-				<block type="text_getSubstring">
-					<mutation at1="true" at2="true"></mutation>
-					<field name="WHERE1">FROM_START</field>
-					<field name="WHERE2">FROM_START</field>
-					<value name="STRING">
-						<block type="variables_get">
-							<field name="VAR">text</field>
-						</block>
-					</value>
-				</block>
-				<block type="text_changeCase">
-					<field name="CASE">UPPERCASE</field>
-					<value name="TEXT">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_trim">
-					<field name="MODE">BOTH</field>
-					<value name="TEXT">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="text_print">
-					<value name="TEXT">
-						<shadow type="text">
-							<field name="TEXT">abc</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="lists_indexOf">
-					<field name="END">FIRST</field>
-					<value name="VALUE">
-						<block type="variables_get">
-							<field name="VAR">list</field>
-						</block>
-					</value>
-				</block>
-				<block type="lists_create_with">
-					<mutation items="0"></mutation>
-				</block>
-				<block type="lists_repeat">
-					<value name="NUM">
-						<shadow type="math_number">
-							<field name="NUM">5</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="lists_length"></block>
-				<block type="lists_isEmpty"></block>
-				<block type="lists_create_with">
-					<mutation items="3"></mutation>
-				</block>
-				<block type="lists_getIndex">
-					<mutation statement="false" at="true"></mutation>
-					<field name="MODE">GET</field>
-					<field name="WHERE">FROM_START</field>
-					<value name="VALUE">
-						<block type="variables_get">
-							<field name="VAR">list</field>
-						</block>
-					</value>
-				</block>
-				<block type="lists_setIndex">
-					<mutation at="true"></mutation>
-					<field name="MODE">SET</field>
-					<field name="WHERE">FROM_START</field>
-					<value name="LIST">
-						<block type="variables_get">
-							<field name="VAR">list</field>
-						</block>
-					</value>
-				</block>
-				<block type="lists_getSublist">
-					<mutation at1="true" at2="true"></mutation>
-					<field name="WHERE1">FROM_START</field>
-					<field name="WHERE2">FROM_START</field>
-					<value name="LIST">
-						<block type="variables_get">
-							<field name="VAR">list</field>
-						</block>
-					</value>
-				</block>
-				<block type="lists_split">
-					<mutation mode="SPLIT"></mutation>
-					<field name="MODE">SPLIT</field>
-					<value name="DELIM">
-						<shadow type="text">
-							<field name="TEXT">,</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="lists_sort">
-					<field name="TYPE">NUMERIC</field>
-					<field name="DIRECTION">1</field>
-				</block>
-				<block type="colour_picker">
-					<field name="COLOUR">#ff0000</field>
-				</block>
-				<block type="colour_random"></block>
-				<block type="colour_rgb">
-					<value name="RED">
-						<shadow type="math_number">
-							<field name="NUM">100</field>
-						</shadow>
-					</value>
-					<value name="GREEN">
-						<shadow type="math_number">
-							<field name="NUM">50</field>
-						</shadow>
-					</value>
-					<value name="BLUE">
-						<shadow type="math_number">
-							<field name="NUM">0</field>
-						</shadow>
-					</value>
-				</block>
-				<block type="colour_blend">
-					<value name="COLOUR1">
-						<shadow type="colour_picker">
-							<field name="COLOUR">#ff0000</field>
-						</shadow>
-					</value>
-					<value name="COLOUR2">
-						<shadow type="colour_picker">
-							<field name="COLOUR">#3333ff</field>
-						</shadow>
-					</value>
-					<value name="RATIO">
-						<shadow type="math_number">
-							<field name="NUM">0.5</field>
-						</shadow>
-					</value>
-				</block>
--->
-			</category>
-
-			<category name="Variables" colour="#990099" custom="VARIABLE"></category>
-			<category name="Functions" colour="#9966FF" custom="PROCEDURE"></category>
-		</xml>
-
-		<div id="toast"></div>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-101328068-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() { dataLayer.push(arguments); }
-			gtag('js', new Date());
-
-			gtag('config', 'UA-101328068-1');
-		</script>
-
-<!--
+	<!--
  NOTE: order of invokation is important
 -->
 
-		<script type="text/javascript" src="Content/Blockly/js/blockly_compressed.js"></script>
-		<script type="text/javascript" src="Scripts/javascript_compressed.js"></script>
-		<script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script>
-		<script type="text/javascript" src="Content/Misty/js/misty_helper_functions.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_dispatcher.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_blocks.js"></script>
-		<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
-		<script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script>
-		<script type="text/javascript" src="Content/Blockly/js/acorn_interpreter.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_index_setup.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/vpddlAPI.js"></script>
-		<script type="text/javascript" src="Content/VisualPDDL/js/levels.js"></script>
-<!--
+<script type="text/javascript" src="Content/VisualPDDL/js/workspace.js"></script>
+
+	<!-- <script type="text/javascript" src="Content/Misty/js/misty_helper_functions.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_dispatcher.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_blocks.js"></script>
+	<script type="text/javascript" src="Content/Blockly/js/acorn_interpreter.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_index_setup.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddlAPI.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/levels.js"></script> -->
+	<!--
 		<script type="text/javascript" src="Content/Misty/js/GetHelp.js"></script>
 -->
 
-<!--
+	<!--
  TODO: web-browser blocks access to XML rendering when trying to modify set of original Blockly blocks
 -->
-		<script type="text/javascript" >
-                     change();    
-                </script>
-	</body>
+	<!-- <script type="text/javascript">
+		// change();
+		workspace.registerToolboxCategoryCallback(
+			'COLOUR_PALETTE', coloursFlyoutCallback);
+	</script> -->
+</body>
+
 
 
 </html>

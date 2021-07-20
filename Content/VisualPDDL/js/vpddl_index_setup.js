@@ -80,6 +80,29 @@ var blocklyDiv = document.getElementById('blocklyDiv');
 var workspace = Blockly.inject(blocklyDiv, options);
 
 /**
+* Construct the blocks required by the flyout for the colours category.
+* @param {!Blockly.Workspace} workspace The workspace this flyout is for.
+* @return {!Array.<!Element>} Array of XML block elements.
+*/
+function coloursFlyoutCallback(workspace) {
+	// Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
+	var colourList = ['#4286f4', '#ef0447'];
+	var xmlList = [];
+	if (Blockly.Blocks['colour_picker']) {
+		for (var i = 0; i < colourList.length; i++) {
+			var blockText = '<block type="colour_picker">' +
+				'<field name="COLOUR">' + colourList[i] + '</field>' +
+				'</block>';
+			var block = Blockly.Xml.textToDom(blockText);
+			xmlList.push(block);
+		}
+	}
+	xmlList.push(block);
+	return xmlList;
+};
+
+
+/**
 * loadBlocklyBlocksXMLperLevel()
 * handles loads and updates of XML files that define Blockly blocks for different levels
 */

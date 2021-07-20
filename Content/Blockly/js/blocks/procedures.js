@@ -45,7 +45,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         Blockly.Procedures.rename);
     nameField.setSpellcheck(false);
     this.appendDummyInput()
-        .appendField(Blockly.Msg.PROCEDURES_DEFNORETURN_TITLE)
+        .appendField('test')
         .appendField(nameField, 'NAME')
         .appendField('', 'PARAMS');
     this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
