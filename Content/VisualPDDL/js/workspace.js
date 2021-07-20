@@ -42,3 +42,13 @@ var workspace = Blockly.inject(blocklyDiv, options);
 
 /* Load blocks to workspace. */
 // Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+
+var workspace_pddl_types = [['object','object']];
+
+// function updateTypesList(event) {
+// 	if (event.type == 'change') {
+// 	  alert('block change event');
+// 	  workspace.removeChangeListener(updateTypesList);
+// 	}
+// }
+// workspace.addChangeListener(updateTypesList);

@@ -16,7 +16,7 @@ Blockly.Blocks['pddl_domain'] = {
         .appendField(new Blockly.FieldCheckbox("TRUE"), "timed_literals")
         .appendField("timed initial literals");
     this.appendStatementInput("types")
-        .setCheck("pddl_type")
+        .setCheck("type")
         .appendField("types");
     this.appendStatementInput("predicates")
         .setCheck("predicate")
@@ -27,6 +27,28 @@ Blockly.Blocks['pddl_domain'] = {
     this.setColour(120);
  this.setTooltip("This is the pddl domain");
  this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
+ this.typesList_ = [["object","object"]];
+  },
+
+  onchange: function(event) {
+    if (!this.workspace || this.workspace.isFlyout) {
+      // Block is deleted or is in a flyout.
+      return;
+    }
+    if (event.type == 'ui' || event.type == 'move') {
+      var childList = this.getDescendants(true);
+      for (let i in childList) {
+        if (childList[i].type == 'type') {
+          for (let j in this.typesList_) {
+            if (this.typesList_[j][0] === (childList[i].getField('NAME').text_)) {
+              return;
+            }
+          }
+          this.typesList_.push([childList[i].getField('NAME').text_, childList[i].getField('NAME').text_]);
+          console.log(this.typesList_);
+        }
+      }
+    }
   }
 };
 
@@ -53,16 +75,37 @@ Blockly.Blocks['action'] = {
 
 Blockly.Blocks['type'] = {
   init: function() {
+    var typesList = new Blockly.FieldDropdown(this.generateTypesList);
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("type_name"), "NAME")
         .appendField(" - ")
-        .appendField(new Blockly.FieldDropdown([["object","ad"], ["op1","sdf"], ["op2","sdasd"]]), "parent_list");
+        .appendField(typesList, "parent_list");
     this.setInputsInline(false);
     this.setPreviousStatement(true, "type");
     this.setNextStatement(true, "type");
     this.setColour(240);
  this.setTooltip("");
  this.setHelpUrl("");
+  },
+
+  // onchange: function(event) {
+  //   if (!this.workspace || this.workspace.isFlyout) {
+  //     // Block is deleted or is in a flyout.
+  //     return;
+  //   }
+  //   console.log(event.type);
+  //   if (event.type == 'ui' || event.type == 'move') {
+  //     if (this.getParent()) {
+  //       console.log(this.getField('parent_list'));
+  //       this.typesList.doValueUpdate_(this.getParent().typesList_);
+  //     }
+  //   }
+  // },
+
+  generateTypesList: function() {
+    console.log(this);
+    // console.log(this.getSourceBlock());
+    // return workspace_pddl_types;
   }
 };
 
