@@ -35,17 +35,20 @@ Blockly.Blocks['pddl_domain'] = {
       // Block is deleted or is in a flyout.
       return;
     }
+    // console.log(event.type);
     if (event.type == 'ui' || event.type == 'move') {
       var childList = this.getDescendants(true);
+      // console.log(childList);
       for (let i in childList) {
         if (childList[i].type == 'type') {
           for (let j in this.typesList_) {
-            if (this.typesList_[j][0] === (childList[i].getField('NAME').text_)) {
+            // console.log(childList[i].getField('NAME'));
+            if (this.typesList_[j][0] === (childList[i].getField('NAME').getValue())) {
               return;
             }
           }
-          this.typesList_.push([childList[i].getField('NAME').text_, childList[i].getField('NAME').text_]);
-          console.log(this.typesList_);
+          this.typesList_.push([childList[i].getField('NAME').getValue(), childList[i].getField('NAME').getValue()]);
+          // console.log(this.typesList_);
         }
       }
     }
@@ -103,8 +106,18 @@ Blockly.Blocks['type'] = {
   // },
 
   generateTypesList: function() {
-    console.log(this);
-    console.log(this.getSourceBlock());
+    // console.log(this);
+      // return workspace_pddl_types;
+    if (this.getSourceBlock() == null)
+      return workspace_pddl_types;
+    if (this.getSourceBlock().isInFlyout)
+      return workspace_pddl_types;
+    if (this.getSourceBlock().getParent() == null)
+      return workspace_pddl_types;
+    if (this.getSourceBlock().getParent() != null) {
+      console.log(this.getSourceBlock().getParent().typesList_);
+      return this.getSourceBlock().getParent().typesList_;
+    }
     return workspace_pddl_types;
   }
 };
