@@ -104,8 +104,8 @@ Blockly.Blocks['type'] = {
 
   generateTypesList: function() {
     console.log(this);
-    // console.log(this.getSourceBlock());
-    // return workspace_pddl_types;
+    console.log(this.getSourceBlock());
+    return workspace_pddl_types;
   }
 };
 
