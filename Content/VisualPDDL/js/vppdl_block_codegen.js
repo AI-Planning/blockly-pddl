@@ -22,7 +22,7 @@ Blockly.JavaScript['action'] = function(block) {
 
 Blockly.JavaScript['type'] = function(block) {
   var text_name = block.getFieldValue('NAME');
-  var dropdown_ss = block.getFieldValue('ss');
+  var dropdown_parent_list = block.getFieldValue('parent_list');
   // TODO: Assemble JavaScript into code variable.
   var code = '...;\n';
   return code;

@@ -51,15 +51,15 @@ Blockly.Blocks['action'] = {
   }
 };
 
-Blockly.Blocks['pddl_type'] = {
+Blockly.Blocks['type'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("type_name"), "NAME")
-        .appendField(new Blockly.FieldLabelSerializable(" - "), "sss")
-        .appendField(new Blockly.FieldDropdown([["object","ad"], ["op1","sdf"], ["op2","sdasd"]]), "ss");
+        .appendField(" - ")
+        .appendField(new Blockly.FieldDropdown([["object","ad"], ["op1","sdf"], ["op2","sdasd"]]), "parent_list");
     this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "type");
+    this.setNextStatement(true, "type");
     this.setColour(240);
  this.setTooltip("");
  this.setHelpUrl("");
