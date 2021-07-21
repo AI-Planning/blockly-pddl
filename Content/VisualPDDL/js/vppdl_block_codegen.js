@@ -36,9 +36,15 @@ Blockly.JavaScript['parameter'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['predicate'] = function(block) {
+Blockly.JavaScript['predicate_def'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var statements_name = Blockly.JavaScript.statementToCode(block, 'NAME');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...;\n';
+  return code;
+};
+
+Blockly.JavaScript['predicate_call'] = function(block) {
   // TODO: Assemble JavaScript into code variable.
   var code = '...;\n';
   return code;

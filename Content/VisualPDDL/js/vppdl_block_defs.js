@@ -54,16 +54,16 @@ Blockly.Blocks['action'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("action_name"), "NAME");
     this.appendStatementInput("par")
-        .setCheck(null)
+        .setCheck("parameter")
         .appendField("par");
     this.appendStatementInput("con")
-        .setCheck(null)
+        .setCheck("predicate_call")
         .appendField("con");
     this.appendStatementInput("eff")
         .setCheck(null)
         .appendField("eff");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "action");
+    this.setNextStatement(true, "action");
     this.setColour(15);
  this.setTooltip("");
  this.setHelpUrl("");
@@ -120,8 +120,8 @@ Blockly.Blocks['parameter'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("parameter_name"), "par_name")
         .appendField(new Blockly.FieldDropdown([["key","a"], ["door","b"]]), "type");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "parameter");
+    this.setNextStatement(true, "parameter");
     this.setColour(240);
  this.setTooltip("");
  this.setHelpUrl("");
@@ -137,6 +137,18 @@ Blockly.Blocks['predicate_def'] = {
         .appendField("params");
     this.setPreviousStatement(true, "predicate_def");
     this.setNextStatement(true, "predicate_def");
+    this.setColour(300);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['predicate_call'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("predicate_call");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
     this.setColour(300);
  this.setTooltip("");
  this.setHelpUrl("");
