@@ -72,7 +72,7 @@ Blockly.Blocks['action'] = {
 
 Blockly.Blocks['type'] = {
   init: function() {
-    var typesList = new Blockly.FieldDropdown(this.generateTypesList);
+    var typesList = new Blockly.FieldDropdown(this.generateTypesList, this.isTypeSelectionValid);
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("type_name"), "NAME")
         .appendField(" - ")
@@ -85,19 +85,12 @@ Blockly.Blocks['type'] = {
  this.setHelpUrl("");
   },
 
-  // onchange: function(event) {
-  //   if (!this.workspace || this.workspace.isFlyout) {
-  //     // Block is deleted or is in a flyout.
-  //     return;
-  //   }
-  //   console.log(event.type);
-  //   if (event.type == 'ui' || event.type == 'move') {
-  //     if (this.getParent()) {
-  //       console.log(this.getField('parent_list'));
-  //       this.typesList.doValueUpdate_(this.getParent().typesList_);
-  //     }
-  //   }
-  // },
+  isTypeSelectionValid: function(parentTypeName) {
+    if (parentTypeName == this.getSourceBlock().getField('NAME').getValue())
+      return null;
+    else
+      return parentTypeName;
+  },
 
   generateTypesList: function() {
     if (this.getSourceBlock() == null)
