@@ -165,7 +165,8 @@ Blockly.Blocks['parameter'] = {
     if (this.getSourceBlock().isInFlyout)
       return workspace_pddl_types;
     if (this.getSourceBlock().getParent() != null) {
-      return this.getSourceBlock().getParentDomainBlock().typesInThisDomain;
+      if (this.getSourceBlock().getParentDomainBlock() != null)
+        return this.getSourceBlock().getParentDomainBlock().typesInThisDomain;
     }
     return workspace_pddl_types;
   },
@@ -179,10 +180,8 @@ Blockly.Blocks['parameter'] = {
 
   getParentDomainBlock: function() {
     var tempParent = this.getParent();
-    if (tempParent != null) {
-      while(tempParent.type != 'pddl_domain')
-        tempParent = tempParent.getParent();
-    }
+    while(tempParent != null && tempParent.type != 'pddl_domain')
+      tempParent = tempParent.getParent();
     return tempParent;
   }
 };
@@ -190,9 +189,9 @@ Blockly.Blocks['parameter'] = {
 Blockly.Blocks['predicate_def'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("predicate_name"), "NAME");
+        .appendField(new Blockly.FieldTextInput("predicate_name"), "PREDICATE_NAME");
     this.appendStatementInput("NAME")
-        .setCheck(null)
+        .setCheck("parameter")
         .appendField("params");
     this.setPreviousStatement(true, "predicate_def");
     this.setNextStatement(true, "predicate_def");
