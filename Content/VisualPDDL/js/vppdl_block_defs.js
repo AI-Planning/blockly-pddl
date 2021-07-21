@@ -19,7 +19,7 @@ Blockly.Blocks['pddl_domain'] = {
         .setCheck("type")
         .appendField("types");
     this.appendStatementInput("predicates")
-        .setCheck("predicate")
+        .setCheck("predicate_def")
         .appendField("predicates");
     this.appendStatementInput("actions")
         .setCheck("action")
@@ -128,15 +128,15 @@ Blockly.Blocks['parameter'] = {
   }
 };
 
-Blockly.Blocks['predicate'] = {
+Blockly.Blocks['predicate_def'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("predicate_name"), "NAME");
     this.appendStatementInput("NAME")
         .setCheck(null)
         .appendField("params");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "predicate_def");
+    this.setNextStatement(true, "predicate_def");
     this.setColour(300);
  this.setTooltip("");
  this.setHelpUrl("");

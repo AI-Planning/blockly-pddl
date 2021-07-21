@@ -43,7 +43,22 @@ var workspace = Blockly.inject(blocklyDiv, options);
 /* Load blocks to workspace. */
 // Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
 
+
 var workspace_pddl_types = [['object','object']];
+
+predicatesFlyoutCallback = function(workspace) {
+	console.log('predicatesFlyoutCallback');
+	var xmlBlocksList = [];
+	if (Blockly.Blocks['predicate_def']) {
+		var blockText = '<block type="predicate_def">' +
+			'<field name="NAME">predicate_name</field>' +
+			'</block>';
+		var block = Blockly.Xml.textToDom(blockText);
+		xmlBlocksList.push(block);
+	}
+	return xmlBlocksList;
+}
+workspace.registerToolboxCategoryCallback('PREDICATES', predicatesFlyoutCallback);
 
 // function updateTypesList(event) {
 // 	if (event.type == 'change') {
