@@ -35,21 +35,15 @@ Blockly.Blocks['pddl_domain'] = {
       // Block is deleted or is in a flyout.
       return;
     }
-    // console.log(event.type);
-    if (event.type == 'ui' || event.type == 'move') {
+    console.log(event.type);
+    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+      var newTypesList = [['object','object']];
       var childList = this.getDescendants(true);
-      // console.log(childList);
       for (let i in childList) {
         if (childList[i].type == 'type') {
-          for (let j in this.typesList_) {
-            // console.log(childList[i].getField('NAME'));
-            if (this.typesList_[j][0] === (childList[i].getField('NAME').getValue())) {
-              return;
-            }
-          }
-          this.typesList_.push([childList[i].getField('NAME').getValue(), childList[i].getField('NAME').getValue()]);
-          // console.log(this.typesList_);
+            newTypesList.push([childList[i].getField('NAME').getValue(), childList[i].getField('NAME').getValue()]);
         }
+        this.typesList_ = newTypesList;
       }
     }
   }
@@ -119,6 +113,10 @@ Blockly.Blocks['type'] = {
       return this.getSourceBlock().getParent().typesList_;
     }
     return workspace_pddl_types;
+  },
+
+  getParentDomainBlock: function() {
+
   }
 };
 
