@@ -35,7 +35,7 @@ Blockly.Blocks['pddl_domain'] = {
       // Block is deleted or is in a flyout.
       return;
     }
-    console.log(event.type);
+    // console.log(event.type);
     if (event.type == Blockly.Events.BLOCK_CHANGE) {
       var newTypesList = [['object','object']];
       var childList = this.getDescendants(true);

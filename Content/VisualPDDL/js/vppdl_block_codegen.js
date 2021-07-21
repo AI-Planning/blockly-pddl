@@ -6,7 +6,21 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
   var statements_predicates = Blockly.JavaScript.statementToCode(block, 'predicates');
   var statements_actions = Blockly.JavaScript.statementToCode(block, 'actions');
   // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+  var code = '(define (domain ' + text_name + ')\n';
+  code += '(:requirements';
+  code += ' :strips';
+  if (checkbox_fluents)
+    code += ' :fluents';
+  if (checkbox_timed_literals)
+    code += ' :timed-initial-literals';
+  code += ')\n';
+  if (statements_types != '') {
+    code += '(:types ';
+    code += statements_types;
+    code += ')\n';
+  }
+
+  code += ')\n';
   return code;
 };
 
@@ -24,7 +38,7 @@ Blockly.JavaScript['type'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var dropdown_parent_list = block.getFieldValue('parent_list');
   // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+  var code = text_name + ' - ' + dropdown_parent_list + '\n';
   return code;
 };
 

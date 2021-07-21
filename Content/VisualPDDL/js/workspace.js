@@ -209,5 +209,5 @@ function showJavaScript() {
 	var code = Blockly.JavaScript.workspaceToCode(workspace);
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
 	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
-	console.log(code);		// writes the message contained in "code" to the console, useful for testing
+	// console.log(code);		// writes the message contained in "code" to the console, useful for testing
 }
