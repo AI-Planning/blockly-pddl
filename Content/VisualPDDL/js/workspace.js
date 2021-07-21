@@ -154,8 +154,33 @@ function enableButtons() {
  * @private
  */
 function openFilePicker() {
+	console.log("triggered openFilePicker");
 	//allows the user to select a file and assigns the file with the fileSelected id
 	$("input#fileSelected").trigger("click");
+}
+
+/**
+ * uploadBlocklyFile
+ * Loads a blockly file provided by the user
+ * @param none
+ * @private
+ */
+function uploadBlocklyFile() {
+	workspace.clear();
+
+	//finds the file given the id "fileSelected" in index.html, only accepts .txt files
+	var file = document.getElementById("fileSelected").files[0];
+	var reader = new FileReader();
+	reader.onload = function () {
+		//loads the blockly blocks from the user inputted file
+		var text = reader.result;
+		var xml = Blockly.Xml.textToDom(text);
+		//adds the blocks to the workspace
+		Blockly.Xml.domToWorkspace(xml, workspace);
+	};
+	reader.readAsText(file);
+	//removes the selected id from the file that has just been processed
+	document.getElementById("fileSelected").value = "";
 }
 
 /**
