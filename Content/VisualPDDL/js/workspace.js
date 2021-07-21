@@ -12,34 +12,34 @@
 
 var toolbox = document.getElementById("toolbox");
 
-var options = { 
-	toolbox : toolbox, 
+var options = {
+	toolbox: toolbox,
 	collapse: true,
 	comments: true,
 	disable: true,
-	maxBlocks : Infinity, 
-	trashcan : true, 
-	horizontalLayout : false, 
-	toolboxPosition : 'start', 
-	css : true, 
-	media : 'https://blockly-demo.appspot.com/static/media/', 
-	rtl : false, 
+	maxBlocks: Infinity,
+	trashcan: true,
+	horizontalLayout: false,
+	toolboxPosition: 'start',
+	css: true,
+	media: 'https://blockly-demo.appspot.com/static/media/',
+	rtl: false,
 	scrollbars: true,
-	sounds : true, 
-	oneBasedIndex : false, 
-	grid : {
-		spacing : 20, 
-		length : 1, 
-		colour : '#888', 
-		snap : true
-	}, 
-	zoom : {
-		controls : true, 
-		wheel : false, 
-		startScale : 1, 
-		maxScale : 3, 
-		minScale : 0.3, 
-		scaleSpeed : 1.2
+	sounds: true,
+	oneBasedIndex: false,
+	grid: {
+		spacing: 20,
+		length: 1,
+		colour: '#888',
+		snap: true
+	},
+	zoom: {
+		controls: true,
+		wheel: false,
+		startScale: 1,
+		maxScale: 3,
+		minScale: 0.3,
+		scaleSpeed: 1.2
 	}
 };
 
@@ -165,6 +165,8 @@ function openFilePicker() {
  */
 function exportBlocklySession() {
 	var name = window.prompt("Enter a filename:", "blockly");
+	if (name == null)
+		return;
 	name += ".txt";
 	var xml = Blockly.Xml.workspaceToDom(workspace);	// encodes the block block tree (blocks contained in "workspace") to XML
 	var text = Blockly.Xml.domToText(xml);	// converts a DOM structure (tree of XML nodes in "xml") into plain text
