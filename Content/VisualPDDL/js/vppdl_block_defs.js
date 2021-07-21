@@ -100,8 +100,6 @@ Blockly.Blocks['type'] = {
   // },
 
   generateTypesList: function() {
-    // console.log(this);
-      // return workspace_pddl_types;
     if (this.getSourceBlock() == null)
       return workspace_pddl_types;
     if (this.getSourceBlock().isInFlyout)
@@ -109,14 +107,18 @@ Blockly.Blocks['type'] = {
     if (this.getSourceBlock().getParent() == null)
       return workspace_pddl_types;
     if (this.getSourceBlock().getParent() != null) {
-      console.log(this.getSourceBlock().getParent().typesList_);
-      return this.getSourceBlock().getParent().typesList_;
+      return this.getSourceBlock().getParentDomainBlock().typesList_;
     }
     return workspace_pddl_types;
   },
 
   getParentDomainBlock: function() {
-
+    var tempParent = this.getParent();
+    if (tempParent != null) {
+      while(tempParent.type != 'pddl_domain')
+        tempParent = tempParent.getParent();
+    }
+    return tempParent;
   }
 };
 
