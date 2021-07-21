@@ -7,6 +7,8 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
   var statements_actions = Blockly.JavaScript.statementToCode(block, 'actions');
   // TODO: Assemble JavaScript into code variable.
   var code = '(define (domain ' + text_name + ')\n';
+
+  // Add requirements
   code += '(:requirements';
   code += ' :strips';
   if (checkbox_fluents)
@@ -14,12 +16,15 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
   if (checkbox_timed_literals)
     code += ' :timed-initial-literals';
   code += ')\n';
+
+  // Add types
   if (statements_types != '') {
     code += '(:types ';
     code += statements_types;
     code += ')\n';
   }
 
+  // End "define"
   code += ')\n';
   return code;
 };
