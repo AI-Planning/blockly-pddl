@@ -57,20 +57,25 @@ var workspace = Blockly.inject(blocklyDiv, options);
 
 var workspace_pddl_types = [['object','object']];
 
-predicatesFlyoutCallback = function(workspace) {
-	console.log('predicatesFlyoutCallback');
-	var xmlBlocksList = [];
-	if (Blockly.Blocks['predicate_def']) {
-		var blockText = '<block type="predicate_def">' +
-			'<field name="NAME">predicate_name</field>' +
-			'</block>';
-		var block = Blockly.Xml.textToDom(blockText);
-		xmlBlocksList.push(block);
-	}
-	return xmlBlocksList;
-}
-workspace.registerToolboxCategoryCallback('PREDICATES', predicatesFlyoutCallback);
+// predicatesFlyoutCallback = function(workspace) {
+// 	console.log('predicatesFlyoutCallback');
+// 	var xmlBlocksList = [];
+// 	if (Blockly.Blocks['predicate_def']) {
+// 		var blockText = '<block type="predicate_def">' +
+// 			'<field name="NAME">predicate_name</field>' +
+// 			'</block>';
+// 		var block = Blockly.Xml.textToDom(blockText);
+// 		xmlBlocksList.push(block);
+// 	}
+// 	return xmlBlocksList;
+// }
+// workspace.registerToolboxCategoryCallback('PREDICATES', predicatesFlyoutCallback);
 
+if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
+    workspace.registerToolboxCategoryCallback("PREDICATES",
+        Blockly.Predicates.flyoutCategory);
+	workspace.addChangeListener(Blockly.Predicates.mutatorOpenListener);
+}
 // function updateTypesList(event) {
 // 	if (event.type == 'change') {
 // 	  alert('block change event');
