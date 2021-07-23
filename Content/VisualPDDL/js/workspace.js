@@ -88,7 +88,7 @@ workspace.isNameUsed = function(name, workspace, opt_exclude) {
 if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
     workspace.registerToolboxCategoryCallback("PREDICATES",
         Blockly.Predicates.flyoutCategory);
-	workspace.addChangeListener(Blockly.Predicates.mutatorOpenListener);
+	// workspace.addChangeListener(Blockly.Predicates.mutatorOpenListener);
 }
 // function updateTypesList(event) {
 // 	if (event.type == 'change') {

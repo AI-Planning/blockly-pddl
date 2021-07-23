@@ -69,7 +69,6 @@
    var predicates = root.getBlocksByType('predicate_def', false).map(function(block) {
      return /** @type {!Blockly.Predicates.PredicateBlock} */ (block).getPredicateDef();
    });
-   console.log(root.getBlocksByType('predicate_def'));
    predicates.sort(Blockly.Predicates.procTupleComparator_);
    return predicates;
  };
@@ -243,28 +242,28 @@
   *     workspace's flyout is what is being updated.
   * @private
   */
- Blockly.Predicates.updateMutatorFlyout_ = function(workspace) {
-   var usedNames = [];
-   var blocks = workspace.getBlocksByType('predicates_mutatorarg', false);
-   for (var i = 0, block; (block = blocks[i]); i++) {
-     usedNames.push(block.getFieldValue('NAME'));
-   }
+//  Blockly.Predicates.updateMutatorFlyout_ = function(workspace) {
+//    var usedNames = [];
+//    var blocks = workspace.getBlocksByType('predicates_mutatorarg', false);
+//    for (var i = 0, block; (block = blocks[i]); i++) {
+//      usedNames.push(block.getFieldValue('NAME'));
+//    }
  
-   var xml = Blockly.utils.xml.createElement('xml');
-   var argBlock = Blockly.utils.xml.createElement('block');
-   argBlock.setAttribute('type', 'predicates_mutatorarg');
-   var nameField = Blockly.utils.xml.createElement('field');
-   nameField.setAttribute('name', 'NAME');
-   var argValue = Blockly.Variables.generateUniqueNameFromOptions(
-       Blockly.Predicates.DEFAULT_ARG, usedNames);
-   var fieldContent = Blockly.utils.xml.createTextNode(argValue);
+//    var xml = Blockly.utils.xml.createElement('xml');
+//    var argBlock = Blockly.utils.xml.createElement('block');
+//    argBlock.setAttribute('type', 'predicates_mutatorarg');
+//    var nameField = Blockly.utils.xml.createElement('field');
+//    nameField.setAttribute('name', 'NAME');
+//    var argValue = Blockly.Variables.generateUniqueNameFromOptions(
+//        Blockly.Predicates.DEFAULT_ARG, usedNames);
+//    var fieldContent = Blockly.utils.xml.createTextNode(argValue);
  
-   nameField.appendChild(fieldContent);
-   argBlock.appendChild(nameField);
-   xml.appendChild(argBlock);
+//    nameField.appendChild(fieldContent);
+//    argBlock.appendChild(nameField);
+//    xml.appendChild(argBlock);
  
-   workspace.updateToolbox(xml);
- };
+//    workspace.updateToolbox(xml);
+//  };
  
  /**
   * Listens for when a predicate mutator is opened. Then it triggers a flyout
@@ -272,22 +271,22 @@
   * @param {!Blockly.Events.Abstract} e The event that triggered this listener.
   * @package
   */
- Blockly.Predicates.mutatorOpenListener = function(e) {
-   if (!(e.type == Blockly.Events.BUBBLE_OPEN && e.bubbleType === 'mutator' &&
-       e.isOpen)) {
-     return;
-   }
-   var workspaceId = /** @type {string} */ (e.workspaceId);
-   var block = Blockly.Workspace.getById(workspaceId)
-       .getBlockById(e.blockId);
-   var type = block.type;
-   if (type != 'predicate_def') {
-     return;
-   }
-   var workspace = block.mutator.getWorkspace();
-   Blockly.Predicates.updateMutatorFlyout_(workspace);
-   workspace.addChangeListener(Blockly.Predicates.mutatorChangeListener_);
- };
+//  Blockly.Predicates.mutatorOpenListener = function(e) {
+//    if (!(e.type == Blockly.Events.BUBBLE_OPEN && e.bubbleType === 'mutator' &&
+//        e.isOpen)) {
+//      return;
+//    }
+//    var workspaceId = /** @type {string} */ (e.workspaceId);
+//    var block = Blockly.Workspace.getById(workspaceId)
+//        .getBlockById(e.blockId);
+//    var type = block.type;
+//    if (type != 'predicate_def') {
+//      return;
+//    }
+//    var workspace = block.mutator.getWorkspace();
+//    Blockly.Predicates.updateMutatorFlyout_(workspace);
+//    workspace.addChangeListener(Blockly.Predicates.mutatorChangeListener_);
+//  };
  
  /**
   * Listens for changes in a predicate mutator and triggers flyout updates when
@@ -295,17 +294,17 @@
   * @param {!Blockly.Events.Abstract} e The event that triggered this listener.
   * @private
   */
- Blockly.Predicates.mutatorChangeListener_ = function(e) {
-   if (e.type != Blockly.Events.BLOCK_CREATE &&
-       e.type != Blockly.Events.BLOCK_DELETE &&
-       e.type != Blockly.Events.BLOCK_CHANGE) {
-     return;
-   }
-   var workspaceId = /** @type {string} */ (e.workspaceId);
-   var workspace = /** @type {!Blockly.WorkspaceSvg} */
-       (Blockly.Workspace.getById(workspaceId));
-   Blockly.Predicates.updateMutatorFlyout_(workspace);
- };
+//  Blockly.Predicates.mutatorChangeListener_ = function(e) {
+//    if (e.type != Blockly.Events.BLOCK_CREATE &&
+//        e.type != Blockly.Events.BLOCK_DELETE &&
+//        e.type != Blockly.Events.BLOCK_CHANGE) {
+//      return;
+//    }
+//    var workspaceId = /** @type {string} */ (e.workspaceId);
+//    var workspace = /** @type {!Blockly.WorkspaceSvg} */
+//        (Blockly.Workspace.getById(workspaceId));
+//    Blockly.Predicates.updateMutatorFlyout_(workspace);
+//  };
  
  /**
   * Find all the callers of a named predicate.
