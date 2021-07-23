@@ -45,6 +45,12 @@ Blockly.Blocks['pddl_domain'] = {
         }
         this.typesInThisDomain = newTypesList;
       }
+      
+      // Check if type name is duplicate
+      if (workspace.isNameUsed(this.getFieldValue('NAME'), this.workspace, this))
+        this.setWarningText("This name is already in use.");
+      else
+        this.setWarningText(null);
     }
   }
 };
@@ -67,6 +73,20 @@ Blockly.Blocks['action'] = {
     this.setColour(15);
  this.setTooltip("");
  this.setHelpUrl("");
+  },
+
+  onchange: function(event) {
+    if (!this.workspace || this.workspace.isFlyout) {
+      // Block is deleted or is in a flyout.
+      return;
+    }
+    if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_MOVE) {
+      // Check if type name is duplicate
+      if (workspace.isNameUsed(this.getFieldValue('NAME'), this.workspace, this))
+        this.setWarningText("This name is already in use.");
+      else
+        this.setWarningText(null);
+    }
   }
 };
 
@@ -84,6 +104,7 @@ Blockly.Blocks['type'] = {
  this.setTooltip("");
  this.setHelpUrl("");
  this.typesList_ = [['object','object']];
+ this.typesListForChild_ = [['object','object']];
   },
 
   onchange: function(event) {
@@ -93,18 +114,31 @@ Blockly.Blocks['type'] = {
     }
     if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_MOVE) {
       if (this.getParent() == null) {
-        this.typesList_ = [['object','object']];
+        // TODO: Should the list be reset if the block is temporarily unparented (or created by copy-paste)?
+        // this.typesListForChild_ = [['object','object']];
       }
       else {
         if (this.getParent().type != "type") {
           this.typesList_ = [['object','object']];
-          this.typesList_.push([this.getField('NAME').getValue(), this.getField('NAME').getValue()]);
+          // this.typesListForChild_.push([this.getField('NAME').getValue(), this.getField('NAME').getValue()]);
         }
         else {
-          this.typesList_ = this.getParent().getTypesList();
-          this.typesList_.push([this.getField('NAME').getValue(), this.getField('NAME').getValue()]);
+          this.typesList_ = this.getParent().getTypesListForChild();
+          // this.typesListForChild_.push([this.getField('NAME').getValue(), this.getField('NAME').getValue()]);
         }
+        this.typesListForChild_ = [];
+        for (let i in this.typesList_) {
+          this.typesListForChild_.push(this.typesList_[i]);
+        }
+        // this.typesListForChild_ = this.typesList_;
+        this.typesListForChild_.push([this.getField('NAME').getValue(), this.getField('NAME').getValue()]);
       }
+
+      // Check if type name is duplicate
+      if (workspace.isNameUsed(this.getFieldValue('NAME'), this.workspace, this))
+        this.setWarningText("This name is already in use.");
+      else
+        this.setWarningText(null);
     }
   },
 
@@ -116,22 +150,28 @@ Blockly.Blocks['type'] = {
   },
 
   generateTypesList: function() {
-    if (this.getSourceBlock() == null)
+    if (this.getSourceBlock() == null || this.getSourceBlock().isInFlyout) {
       return workspace_pddl_types;
-    if (this.getSourceBlock().getParent() != null) {
-      if (this.getSourceBlock().getParent().type != "type")
-        return [['object','object']];
-      else {
-        return this.getSourceBlock().getParent().getTypesList();
-      }
     }
-    return workspace_pddl_types;
+    else
+      return this.getSourceBlock().typesList_;
+
+    // if (this.getSourceBlock() == null)
+    //   return workspace_pddl_types;
+    // if (this.getSourceBlock().getParent() != null) {
+    //   if (this.getSourceBlock().getParent().type != "type")
+    //     return [['object','object']];
+    //   else {
+    //     return this.getSourceBlock().getParent().getTypesListForChild();
+    //   }
+    // }
+    // return workspace_pddl_types;
   },
 
-  getTypesList: function() {
+  getTypesListForChild: function() {
     var returnObj = [];
-    for (let i in this.typesList_) {
-      returnObj.push(this.typesList_[i]);
+    for (let i in this.typesListForChild_) {
+      returnObj.push(this.typesListForChild_[i]);
     }
     return returnObj;
   }
@@ -150,7 +190,7 @@ Blockly.Blocks['parameter'] = {
   init: function() {
     var typesList = new Blockly.FieldDropdown(this.generateTypesList, this.isTypeSelectionValid);
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("parameter_name"), "par_name")
+        .appendField(new Blockly.FieldTextInput("parameter_name"), "NAME")
         .appendField(typesList, "type");
     this.setPreviousStatement(true, "parameter");
     this.setNextStatement(true, "parameter");
@@ -171,11 +211,11 @@ Blockly.Blocks['parameter'] = {
     return workspace_pddl_types;
   },
 
-  isTypeSelectionValid: function(parentTypeName) {
-    if (parentTypeName == this.getSourceBlock().getField('par_name').getValue())
+  isTypeSelectionValid: function(typeName) {
+    if (typeName == this.getSourceBlock().getField('NAME').getValue())
       return null;
     else
-      return parentTypeName;
+      return typeName;
   },
 
   getParentDomainBlock: function() {
@@ -226,21 +266,18 @@ Blockly.Blocks['predicate_def'] = {
         Blockly.Predicates.rename);
     nameField.setSpellcheck(false);
     this.appendDummyInput()
-        .appendField(nameField, "NAME")
-        .appendField('', 'PARAMS');
-    this.setMutator(new Blockly.Mutator(['predicates_mutatorarg']));
-    if ((this.workspace.options.comments ||
-         (this.workspace.options.parentWorkspace &&
-          this.workspace.options.parentWorkspace.options.comments)) &&
-        'PREDICATE_DEF_COMMENT') {
-      this.setCommentText('PREDICATE_DEF_COMMENT');
-    }
+        .appendField(nameField, "NAME");
+        // .appendField('', 'PARAMS');
+    this.appendStatementInput("NAME")
+        .setCheck("parameter")
+        .appendField("params");
+    // this.setMutator(new Blockly.Mutator(['predicates_mutatorarg']));
     this.setPreviousStatement(true, "predicate_def");
     this.setNextStatement(true, "predicate_def");
     this.setColour(300);
     // this.setStyle('predicate_blocks');
-    this.setTooltip('PREDICATE_DEF_TOOLTIP');
-    this.setHelpUrl('PREDICATE_DEF_HELPURL');
+    this.setTooltip('');
+    this.setHelpUrl('');
     this.arguments_ = [];
     this.argumentVarModels_ = [];
     this.setStatements_(true);
@@ -257,7 +294,7 @@ Blockly.Blocks['predicate_def'] = {
     }
     if (hasStatements) {
       this.appendStatementInput('STACK')
-          .appendField('PREDICATE_DEF_DO');
+          .appendField('params');
       if (this.getInput('RETURN')) {
         this.moveInputBefore('STACK', 'RETURN');
       }
@@ -273,20 +310,20 @@ Blockly.Blocks['predicate_def'] = {
    */
   updateParams_: function() {
 
-    // Merge the arguments into a human-readable list.
-    var paramString = '';
-    if (this.arguments_.length) {
-      paramString = 'PREDICATES_BEFORE_PARAMS' +
-          ' ' + this.arguments_.join(', ');
-    }
-    // The params field is deterministic based on the mutation,
-    // no need to fire a change event.
-    Blockly.Events.disable();
-    try {
-      this.setFieldValue(paramString, 'PARAMS');
-    } finally {
-      Blockly.Events.enable();
-    }
+    // // Merge the arguments into a human-readable list.
+    // var paramString = '';
+    // if (this.arguments_.length) {
+    //   paramString = 'PREDICATES_BEFORE_PARAMS' +
+    //       ' ' + this.arguments_.join(', ');
+    // }
+    // // The params field is deterministic based on the mutation,
+    // // no need to fire a change event.
+    // Blockly.Events.disable();
+    // try {
+    //   this.setFieldValue(paramString, 'PARAMS');
+    // } finally {
+    //   Blockly.Events.enable();
+    // }
   },
   /**
    * Create XML to represent the argument inputs.
@@ -340,7 +377,7 @@ Blockly.Blocks['predicate_def'] = {
       }
     }
     this.updateParams_();
-    Blockly.Predicates.mutateCallers(this);
+    // Blockly.Predicates.mutateCallers(this);
 
     // Show or hide the statement input.
     this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
@@ -560,7 +597,7 @@ Blockly.Blocks['predicate_def'] = {
     // Add option to create caller.
     var option = {enabled: true};
     var name = this.getFieldValue('NAME');
-    option.text = 'PREDICATES_CREATE_DO'.replace('%1', name);
+    option.text = "Create '%1' call".replace('%1', name);
     var xmlMutation = Blockly.utils.xml.createElement('mutation');
     xmlMutation.setAttribute('name', name);
     for (var i = 0; i < this.arguments_.length; i++) {
@@ -909,19 +946,19 @@ Blockly.Blocks['predicate_call'] = {
       i++;
     }
     // Add 'with:' if there are parameters, remove otherwise.
-    var topRow = this.getInput('TOPROW');
-    if (topRow) {
-      if (this.arguments_.length) {
-        if (!this.getField('WITH')) {
-          topRow.appendField('PREDICATES_CALL_BEFORE_PARAMS', 'WITH');
-          topRow.init();
-        }
-      } else {
-        if (this.getField('WITH')) {
-          topRow.removeField('WITH');
-        }
-      }
-    }
+    // var topRow = this.getInput('TOPROW');
+    // if (topRow) {
+    //   if (this.arguments_.length) {
+    //     if (!this.getField('WITH')) {
+    //       topRow.appendField('PREDICATES_CALL_BEFORE_PARAMS', 'WITH');
+    //       topRow.init();
+    //     }
+    //   } else {
+    //     if (this.getField('WITH')) {
+    //       topRow.removeField('WITH');
+    //     }
+    //   }
+    // }
   },
   /**
    * Create XML to represent the (non-editable) name and arguments.
@@ -1083,7 +1120,7 @@ Blockly.Blocks['predicate_call'] = {
     }
 
     var option = {enabled: true};
-    option.text = 'PREDICATES_HIGHLIGHT_DEF';
+    option.text = 'Highlight corresponding predicate';
     var name = this.getPredicateCall();
     var workspace = this.workspace;
     option.callback = function() {

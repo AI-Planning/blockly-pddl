@@ -57,6 +57,20 @@ var workspace = Blockly.inject(blocklyDiv, options);
 
 var workspace_pddl_types = [['object','object']];
 
+workspace.isNameUsed = function(name, workspace, opt_exclude) {
+	var blocks = workspace.getAllBlocks(false);
+	// Iterate through every block and check the name.
+	for (var i = 0; i < blocks.length; i++) {
+	  if (blocks[i] == opt_exclude) {
+		continue;
+	  }
+	  if (Blockly.Names.equals(blocks[i].getFieldValue('NAME'), name)) {
+		  return true;
+	  }
+	}
+	return false;
+};
+
 // predicatesFlyoutCallback = function(workspace) {
 // 	console.log('predicatesFlyoutCallback');
 // 	var xmlBlocksList = [];

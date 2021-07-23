@@ -55,15 +55,15 @@ Blockly.JavaScript['type'] = function(block) {
 };
 
 Blockly.JavaScript['parameter'] = function(block) {
-  var text_par_name = block.getFieldValue('par_name');
+  var text_name = block.getFieldValue('NAME');
   var dropdown_type = block.getFieldValue('type');
   // TODO: Assemble JavaScript into code variable.
-  var code = ' ?' + text_par_name + ' - ' + dropdown_type;
+  var code = ' ?' + text_name + ' - ' + dropdown_type;
   return code;
 };
 
 Blockly.JavaScript['predicate_def'] = function(block) {
-  var text_name = block.getFieldValue('PREDICATE_NAME');
+  var text_name = block.getFieldValue('NAME');
   var statements_name = Blockly.JavaScript.statementToCode(block, 'NAME');
   // TODO: Assemble JavaScript into code variable.
   var code = '(' + text_name + statements_name + ')\n';
