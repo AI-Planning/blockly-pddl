@@ -266,43 +266,40 @@ Blockly.Blocks['predicate_def'] = {
     nameField.setSpellcheck(false);
     this.appendDummyInput()
         .appendField(nameField, "NAME");
-        // .appendField('', 'PARAMS');
-    this.appendStatementInput("NAME")
+    this.appendStatementInput("PARAM_INPUTS")
         .setCheck("parameter")
         .appendField("params");
-    // this.setMutator(new Blockly.Mutator(['predicates_mutatorarg']));
     this.setPreviousStatement(true, "predicate_def");
     this.setNextStatement(true, "predicate_def");
     this.setColour(300);
-    // this.setStyle('predicate_blocks');
     this.setTooltip('');
     this.setHelpUrl('');
-    this.parametertypeslist_ = [];
-    this.arguments_ = [];
-    this.argumentVarModels_ = [];
-    this.setStatements_(false);
-    this.statementConnection_ = null;
+    this.parameterTypesList_ = [];
+    // this.arguments_ = [];
+    // this.argumentVarModels_ = [];
+    // this.setStatements_(false);
+    // this.statementConnection_ = null;
   },
   /**
    * Add or remove the statement block from this function definition.
    * @param {boolean} hasStatements True if a statement block is needed.
    * @this {Blockly.Block}
    */
-  setStatements_: function(hasStatements) {
-    if (this.hasStatements_ === hasStatements) {
-      return;
-    }
-    if (hasStatements) {
-      this.appendStatementInput('STACK')
-          .appendField('params');
-      if (this.getInput('RETURN')) {
-        this.moveInputBefore('STACK', 'RETURN');
-      }
-    } else {
-      this.removeInput('STACK', true);
-    }
-    this.hasStatements_ = hasStatements;
-  },
+  // setStatements_: function(hasStatements) {
+  //   if (this.hasStatements_ === hasStatements) {
+  //     return;
+  //   }
+  //   if (hasStatements) {
+  //     this.appendStatementInput('STACK')
+  //         .appendField('params');
+  //     if (this.getInput('RETURN')) {
+  //       this.moveInputBefore('STACK', 'RETURN');
+  //     }
+  //   } else {
+  //     this.removeInput('STACK', true);
+  //   }
+  //   this.hasStatements_ = hasStatements;
+  // },
   /**
    * Update the display of parameters for this predicate definition block.
    * @private
@@ -337,21 +334,32 @@ Blockly.Blocks['predicate_def'] = {
     if (opt_paramIds) {
       container.setAttribute('name', this.getFieldValue('NAME'));
     }
-    for (var i = 0; i < this.argumentVarModels_.length; i++) {
-      var parameter = Blockly.utils.xml.createElement('arg');
-      var argModel = this.argumentVarModels_[i];
-      parameter.setAttribute('name', argModel.name);
-      parameter.setAttribute('varid', argModel.getId());
-      if (opt_paramIds && this.paramIds_) {
-        parameter.setAttribute('paramId', this.paramIds_[i]);
-      }
+    // for (var i = 0; i < this.argumentVarModels_.length; i++) {
+    //   var parameter = Blockly.utils.xml.createElement('arg');
+    //   var argModel = this.argumentVarModels_[i];
+    //   parameter.setAttribute('name', argModel.name);
+    //   parameter.setAttribute('varid', argModel.getId());
+    //   if (opt_paramIds && this.paramIds_) {
+    //     parameter.setAttribute('paramId', this.paramIds_[i]);
+    //   }
+    //   container.appendChild(parameter);
+    // }
+    var parTypList = this.parameterTypesList_;
+    for (var i = 0; i < parTypList.length; i++) {
+      var parameter = Blockly.utils.xml.createElement('par');
+      // var argModel = this.argumentVarModels_[i];
+      parameter.setAttribute('name', parTypList[i]);
+      // parameter.setAttribute('varid', argModel.getId());
+      // if (opt_paramIds && this.paramIds_) {
+      //   parameter.setAttribute('paramId', this.paramIds_[i]);
+      // }
       container.appendChild(parameter);
     }
 
     // Save whether the statement input is visible.
-    if (!this.hasStatements_) {
-      container.setAttribute('statements', 'false');
-    }
+    // if (!this.hasStatements_) {
+    //   container.setAttribute('statements', 'false');
+    // }
     return container;
   },
   /**
@@ -360,27 +368,35 @@ Blockly.Blocks['predicate_def'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    this.arguments_ = [];
-    this.argumentVarModels_ = [];
+    // this.arguments_ = [];
+    // this.argumentVarModels_ = [];
+    // for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
+    //   if (childNode.nodeName.toLowerCase() == 'arg') {
+    //     var varName = childNode.getAttribute('name');
+    //     var varId = childNode.getAttribute('varid') || childNode.getAttribute('varId');
+    //     this.arguments_.push(varName);
+    //     var variable = Blockly.Variables.getOrCreateVariablePackage(
+    //         this.workspace, varId, varName, '');
+    //     if (variable != null) {
+    //       this.argumentVarModels_.push(variable);
+    //     } else {
+    //       console.log('Failed to create a variable with name ' + varName + ', ignoring.');
+    //     }
+    //   }
+    // }
+    // this.updateParams_();
+    this.parameterTypesList_ = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
-      if (childNode.nodeName.toLowerCase() == 'arg') {
-        var varName = childNode.getAttribute('name');
-        var varId = childNode.getAttribute('varid') || childNode.getAttribute('varId');
-        this.arguments_.push(varName);
-        var variable = Blockly.Variables.getOrCreateVariablePackage(
-            this.workspace, varId, varName, '');
-        if (variable != null) {
-          this.argumentVarModels_.push(variable);
-        } else {
-          console.log('Failed to create a variable with name ' + varName + ', ignoring.');
-        }
+      if (childNode.nodeName.toLowerCase() == 'par') {
+        var parName = childNode.getAttribute('name');
+        this.parameterTypesList_.push(parName);
       }
     }
     this.updateParams_();
     Blockly.Predicates.mutateCallers(this);
 
     // Show or hide the statement input.
-    this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
+    // this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
   },
   /**
    * Populate the mutator's dialog with this block's components.
@@ -485,31 +501,30 @@ Blockly.Blocks['predicate_def'] = {
   // },
   /**
    * Return the signature of this predicate definition.
-   * @return {!Array} Tuple containing three elements:
+   * @return {!Array} Tuple containing two elements:
    *     - the name of the defined predicate,
-   *     - a list of all its arguments,
-   *     - that it DOES NOT have a return value.
+   *     - a list of all its parameters,
    * @this {Blockly.Block}
    */
   getPredicateDef: function() {
-    return [this.getFieldValue('NAME'), this.arguments_, false];
+    return [this.getFieldValue('NAME'), this.parameterTypesList_, false];
   },
   /**
    * Return all variables referenced by this block.
    * @return {!Array<string>} List of variable names.
    * @this {Blockly.Block}
    */
-  getVars: function() {
-    return this.arguments_;
-  },
+  // getVars: function() {
+  //   return this.arguments_;
+  // },
   /**
    * Return all variables referenced by this block.
    * @return {!Array<!Blockly.VariableModel>} List of variable models.
    * @this {Blockly.Block}
    */
-  getVarModels: function() {
-    return this.argumentVarModels_;
-  },
+  // getVarModels: function() {
+  //   return this.argumentVarModels_;
+  // },
   /**
    * Notification that a variable is renaming.
    * If the ID matches one of this block's variables, rename it.
@@ -520,28 +535,28 @@ Blockly.Blocks['predicate_def'] = {
    * @override
    * @this {Blockly.Block}
    */
-  renameVarById: function(oldId, newId) {
-    var oldVariable = this.workspace.getVariableById(oldId);
-    if (oldVariable.type != '') {
-      // Predicate arguments always have the empty type.
-      return;
-    }
-    var oldName = oldVariable.name;
-    var newVar = this.workspace.getVariableById(newId);
+  // renameVarById: function(oldId, newId) {
+  //   var oldVariable = this.workspace.getVariableById(oldId);
+  //   if (oldVariable.type != '') {
+  //     // Predicate arguments always have the empty type.
+  //     return;
+  //   }
+  //   var oldName = oldVariable.name;
+  //   var newVar = this.workspace.getVariableById(newId);
 
-    var change = false;
-    for (var i = 0; i < this.argumentVarModels_.length; i++) {
-      if (this.argumentVarModels_[i].getId() == oldId) {
-        this.arguments_[i] = newVar.name;
-        this.argumentVarModels_[i] = newVar;
-        change = true;
-      }
-    }
-    if (change) {
-      this.displayRenamedVar_(oldName, newVar.name);
-      Blockly.Predicates.mutateCallers(this);
-    }
-  },
+  //   var change = false;
+  //   for (var i = 0; i < this.argumentVarModels_.length; i++) {
+  //     if (this.argumentVarModels_[i].getId() == oldId) {
+  //       this.arguments_[i] = newVar.name;
+  //       this.argumentVarModels_[i] = newVar;
+  //       change = true;
+  //     }
+  //   }
+  //   if (change) {
+  //     this.displayRenamedVar_(oldName, newVar.name);
+  //     Blockly.Predicates.mutateCallers(this);
+  //   }
+  // },
   /**
    * Notification that a variable is renaming but keeping the same ID.  If the
    * variable is in use on this block, rerender to show the new name.
@@ -550,21 +565,21 @@ Blockly.Blocks['predicate_def'] = {
    * @override
    * @this {Blockly.Block}
    */
-  updateVarName: function(variable) {
-    var newName = variable.name;
-    var change = false;
-    for (var i = 0; i < this.argumentVarModels_.length; i++) {
-      if (this.argumentVarModels_[i].getId() == variable.getId()) {
-        var oldName = this.arguments_[i];
-        this.arguments_[i] = newName;
-        change = true;
-      }
-    }
-    if (change) {
-      this.displayRenamedVar_(oldName, newName);
-      Blockly.Predicates.mutateCallers(this);
-    }
-  },
+  // updateVarName: function(variable) {
+  //   var newName = variable.name;
+  //   var change = false;
+  //   for (var i = 0; i < this.argumentVarModels_.length; i++) {
+  //     if (this.argumentVarModels_[i].getId() == variable.getId()) {
+  //       var oldName = this.arguments_[i];
+  //       this.arguments_[i] = newName;
+  //       change = true;
+  //     }
+  //   }
+  //   if (change) {
+  //     this.displayRenamedVar_(oldName, newName);
+  //     Blockly.Predicates.mutateCallers(this);
+  //   }
+  // },
   /**
    * Update the display to reflect a newly renamed argument.
    * @param {string} oldName The old display name of the argument.
@@ -572,19 +587,19 @@ Blockly.Blocks['predicate_def'] = {
    * @private
    * @this {Blockly.Block}
    */
-  displayRenamedVar_: function(oldName, newName) {
-    this.updateParams_();
-    // Update the mutator's variables if the mutator is open.
-    if (this.mutator && this.mutator.isVisible()) {
-      var blocks = this.mutator.workspace_.getAllBlocks(false);
-      for (var i = 0, block; (block = blocks[i]); i++) {
-        if (block.type == 'predicates_mutatorarg' &&
-            Blockly.Names.equals(oldName, block.getFieldValue('NAME'))) {
-          block.setFieldValue(newName, 'NAME');
-        }
-      }
-    }
-  },
+  // displayRenamedVar_: function(oldName, newName) {
+  //   this.updateParams_();
+  //   // Update the mutator's variables if the mutator is open.
+  //   if (this.mutator && this.mutator.isVisible()) {
+  //     var blocks = this.mutator.workspace_.getAllBlocks(false);
+  //     for (var i = 0, block; (block = blocks[i]); i++) {
+  //       if (block.type == 'predicates_mutatorarg' &&
+  //           Blockly.Names.equals(oldName, block.getFieldValue('NAME'))) {
+  //         block.setFieldValue(newName, 'NAME');
+  //       }
+  //     }
+  //   }
+  // },
   /**
    * Add custom menu options to this block's context menu.
    * @param {!Array} options List of menu options to add to.
@@ -600,9 +615,9 @@ Blockly.Blocks['predicate_def'] = {
     option.text = "Create '%1' call".replace('%1', name);
     var xmlMutation = Blockly.utils.xml.createElement('mutation');
     xmlMutation.setAttribute('name', name);
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var xmlArg = Blockly.utils.xml.createElement('arg');
-      xmlArg.setAttribute('name', this.arguments_[i]);
+    for (var i = 0; i < this.parameterTypesList_.length; i++) {
+      var xmlArg = Blockly.utils.xml.createElement('par');
+      xmlArg.setAttribute('name', this.parameterTypesList_[i]);
       xmlMutation.appendChild(xmlArg);
     }
     var xmlBlock = Blockly.utils.xml.createElement('block');
@@ -612,22 +627,22 @@ Blockly.Blocks['predicate_def'] = {
     options.push(option);
 
     // Add options to create getters for each parameter.
-    if (!this.isCollapsed()) {
-      for (var i = 0; i < this.argumentVarModels_.length; i++) {
-        var argOption = {enabled: true};
-        var argVar = this.argumentVarModels_[i];
-        argOption.text = 'VARIABLES_SET_CREATE_GET'
-            .replace('%1', argVar.name);
+    // if (!this.isCollapsed()) {
+    //   for (var i = 0; i < this.argumentVarModels_.length; i++) {
+    //     var argOption = {enabled: true};
+    //     var argVar = this.argumentVarModels_[i];
+    //     argOption.text = 'VARIABLES_SET_CREATE_GET'
+    //         .replace('%1', argVar.name);
 
-        var argXmlField = Blockly.Variables.generateVariableFieldDom(argVar);
-        var argXmlBlock = Blockly.utils.xml.createElement('block');
-        argXmlBlock.setAttribute('type', 'variables_get');
-        argXmlBlock.appendChild(argXmlField);
-        argOption.callback =
-            Blockly.ContextMenu.callbackFactory(this, argXmlBlock);
-        options.push(argOption);
-      }
-    }
+    //     var argXmlField = Blockly.Variables.generateVariableFieldDom(argVar);
+    //     var argXmlBlock = Blockly.utils.xml.createElement('block');
+    //     argXmlBlock.setAttribute('type', 'variables_get');
+    //     argXmlBlock.appendChild(argXmlField);
+    //     argOption.callback =
+    //         Blockly.ContextMenu.callbackFactory(this, argXmlBlock);
+    //     options.push(argOption);
+    //   }
+    // }
   },
 
   onchange: function(event) {
@@ -642,152 +657,153 @@ Blockly.Blocks['predicate_def'] = {
     if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_CREATE) {
       var childParamBlocks = this.getDescendants();
       // console.log(childParamBlocks);
-      this.parametertypeslist_ = [];
+      var newParamterTypesList = [];
       if (childParamBlocks != null) {
         for (let i in childParamBlocks) {
           if (childParamBlocks[i].type == 'parameter')
-            this.parametertypeslist_.push(childParamBlocks[i].getFieldValue('type'));
+            newParamterTypesList.push(childParamBlocks[i].getFieldValue('type'));
         }
       }
-      // console.log(this.parametertypeslist_);
-      var callers = Blockly.Predicates.getCallers(this.getFieldValue('NAME'), this.workspace);
-      console.log(callers.length);
-      for (let i in callers)
-        callers[i].updateParameterInputs(this.parametertypeslist_);
+      this.parameterTypesList_ = newParamterTypesList;
+      // console.log(this.parameterTypesList_);
+      // var callers = Blockly.Predicates.getCallers(this.getFieldValue('NAME'), this.workspace);
+      // console.log(callers.length);
+      // for (let i in callers)
+      //   callers[i].updateParameterInputs(this.parameterTypesList_);
     }
   },
 
   callType_: 'predicate_call'
 };
 
-Blockly.Blocks['predicates_mutatorcontainer'] = {
-  /**
-   * Mutator block for predicate container.
-   * @this {Blockly.Block}
-   */
-  init: function() {
-    this.appendDummyInput()
-        .appendField('Mutator Container Title');
-    this.appendStatementInput('STACK');
-    this.appendDummyInput('STATEMENT_INPUT')
-        .appendField('Predicates allow statements')
-        .appendField(new Blockly.FieldCheckbox('TRUE'), 'STATEMENTS');
-    this.setStyle('predicate_blocks');
-    this.setTooltip('PREDICATES_MUTATORCONTAINER_TOOLTIP');
-    this.contextMenu = false;
-  },
-};
+// Blockly.Blocks['predicates_mutatorcontainer'] = {
+//   /**
+//    * Mutator block for predicate container.
+//    * @this {Blockly.Block}
+//    */
+//   init: function() {
+//     this.appendDummyInput()
+//         .appendField('Mutator Container Title');
+//     this.appendStatementInput('STACK');
+//     this.appendDummyInput('STATEMENT_INPUT')
+//         .appendField('Predicates allow statements')
+//         .appendField(new Blockly.FieldCheckbox('TRUE'), 'STATEMENTS');
+//     this.setStyle('predicate_blocks');
+//     this.setTooltip('PREDICATES_MUTATORCONTAINER_TOOLTIP');
+//     this.contextMenu = false;
+//   },
+// };
 
-Blockly.Blocks['predicates_mutatorarg'] = {
-  /**
-   * Mutator block for predicate argument.
-   * @this {Blockly.Block}
-   */
-  init: function() {
-    var field = new Blockly.FieldTextInput(
-        Blockly.Predicates.DEFAULT_ARG, this.validator_);
-    // Hack: override showEditor to do just a little bit more work.
-    // We don't have a good place to hook into the start of a text edit.
-    field.oldShowEditorFn_ = field.showEditor_;
-    var newShowEditorFn = function() {
-      this.createdVariables_ = [];
-      this.oldShowEditorFn_();
-    };
-    field.showEditor_ = newShowEditorFn;
+// Blockly.Blocks['predicates_mutatorarg'] = {
+//   /**
+//    * Mutator block for predicate argument.
+//    * @this {Blockly.Block}
+//    */
+//   init: function() {
+//     var field = new Blockly.FieldTextInput(
+//         Blockly.Predicates.DEFAULT_ARG, this.validator_);
+//     // Hack: override showEditor to do just a little bit more work.
+//     // We don't have a good place to hook into the start of a text edit.
+//     field.oldShowEditorFn_ = field.showEditor_;
+//     var newShowEditorFn = function() {
+//       this.createdVariables_ = [];
+//       this.oldShowEditorFn_();
+//     };
+//     field.showEditor_ = newShowEditorFn;
 
-    this.appendDummyInput()
-        .appendField('PREDICATES_MUTATORARG_TITLE')
-        .appendField(field, 'NAME');
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setStyle('predicate_blocks');
-    this.setTooltip('PREDICATES_MUTATORARG_TOOLTIP');
-    this.contextMenu = false;
+//     this.appendDummyInput()
+//         .appendField('PREDICATES_MUTATORARG_TITLE')
+//         .appendField(field, 'NAME');
+//     this.setPreviousStatement(true);
+//     this.setNextStatement(true);
+//     this.setStyle('predicate_blocks');
+//     this.setTooltip('PREDICATES_MUTATORARG_TOOLTIP');
+//     this.contextMenu = false;
 
-    // Create the default variable when we drag the block in from the flyout.
-    // Have to do this after installing the field on the block.
-    field.onFinishEditing_ = this.deleteIntermediateVars_;
-    // Create an empty list so onFinishEditing_ has something to look at, even
-    // though the editor was never opened.
-    field.createdVariables_ = [];
-    field.onFinishEditing_('x');
-  },
+//     // Create the default variable when we drag the block in from the flyout.
+//     // Have to do this after installing the field on the block.
+//     field.onFinishEditing_ = this.deleteIntermediateVars_;
+//     // Create an empty list so onFinishEditing_ has something to look at, even
+//     // though the editor was never opened.
+//     field.createdVariables_ = [];
+//     field.onFinishEditing_('x');
+//   },
 
-  /**
-   * Obtain a valid name for the predicate argument. Create a variable if
-   * necessary.
-   * Merge runs of whitespace.  Strip leading and trailing whitespace.
-   * Beyond this, all names are legal.
-   * @param {string} varName User-supplied name.
-   * @return {?string} Valid name, or null if a name was not specified.
-   * @private
-   * @this Blockly.FieldTextInput
-   */
-  validator_: function(varName) {
-    var sourceBlock = this.getSourceBlock();
-    var outerWs = Blockly.Mutator.findParentWs(sourceBlock.workspace);
-    varName = varName.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
-    if (!varName) {
-      return null;
-    }
+//   /**
+//    * Obtain a valid name for the predicate argument. Create a variable if
+//    * necessary.
+//    * Merge runs of whitespace.  Strip leading and trailing whitespace.
+//    * Beyond this, all names are legal.
+//    * @param {string} varName User-supplied name.
+//    * @return {?string} Valid name, or null if a name was not specified.
+//    * @private
+//    * @this Blockly.FieldTextInput
+//    */
+//   // validator_: function(varName) {
+//   //   var sourceBlock = this.getSourceBlock();
+//   //   var outerWs = Blockly.Mutator.findParentWs(sourceBlock.workspace);
+//   //   varName = varName.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
+//   //   if (!varName) {
+//   //     return null;
+//   //   }
 
-    // Prevents duplicate parameter names in functions
-    var workspace = sourceBlock.workspace.targetWorkspace ||
-        sourceBlock.workspace;
-    var blocks = workspace.getAllBlocks(false);
-    var caselessName = varName.toLowerCase();
-    for (var i = 0; i < blocks.length; i++) {
-      if (blocks[i].id == this.getSourceBlock().id) {
-        continue;
-      }
-      // Other blocks values may not be set yet when this is loaded.
-      var otherVar = blocks[i].getFieldValue('NAME');
-      if (otherVar && otherVar.toLowerCase() == caselessName) {
-        return null;
-      }
-    }
+//   //   // Prevents duplicate parameter names in functions
+//   //   var workspace = sourceBlock.workspace.targetWorkspace ||
+//   //       sourceBlock.workspace;
+//   //   var blocks = workspace.getAllBlocks(false);
+//   //   var caselessName = varName.toLowerCase();
+//   //   for (var i = 0; i < blocks.length; i++) {
+//   //     if (blocks[i].id == this.getSourceBlock().id) {
+//   //       continue;
+//   //     }
+//   //     // Other blocks values may not be set yet when this is loaded.
+//   //     var otherVar = blocks[i].getFieldValue('NAME');
+//   //     if (otherVar && otherVar.toLowerCase() == caselessName) {
+//   //       return null;
+//   //     }
+//   //   }
 
-    // Don't create variables for arg blocks that
-    // only exist in the mutator's flyout.
-    if (sourceBlock.isInFlyout) {
-      return varName;
-    }
+//   //   // Don't create variables for arg blocks that
+//   //   // only exist in the mutator's flyout.
+//   //   if (sourceBlock.isInFlyout) {
+//   //     return varName;
+//   //   }
 
-    var model = outerWs.getVariable(varName, '');
-    if (model && model.name != varName) {
-      // Rename the variable (case change)
-      outerWs.renameVariableById(model.getId(), varName);
-    }
-    if (!model) {
-      model = outerWs.createVariable(varName, '');
-      if (model && this.createdVariables_) {
-        this.createdVariables_.push(model);
-      }
-    }
-    return varName;
-  },
+//   //   var model = outerWs.getVariable(varName, '');
+//   //   if (model && model.name != varName) {
+//   //     // Rename the variable (case change)
+//   //     outerWs.renameVariableById(model.getId(), varName);
+//   //   }
+//   //   if (!model) {
+//   //     model = outerWs.createVariable(varName, '');
+//   //     if (model && this.createdVariables_) {
+//   //       this.createdVariables_.push(model);
+//   //     }
+//   //   }
+//   //   return varName;
+//   // },
 
-  /**
-   * Called when focusing away from the text field.
-   * Deletes all variables that were created as the user typed their intended
-   * variable name.
-   * @param {string} newText The new variable name.
-   * @private
-   * @this Blockly.FieldTextInput
-   */
-  deleteIntermediateVars_: function(newText) {
-    var outerWs = Blockly.Mutator.findParentWs(this.getSourceBlock().workspace);
-    if (!outerWs) {
-      return;
-    }
-    for (var i = 0; i < this.createdVariables_.length; i++) {
-      var model = this.createdVariables_[i];
-      if (model.name != newText) {
-        outerWs.deleteVariableById(model.getId());
-      }
-    }
-  }
-};
+//   /**
+//    * Called when focusing away from the text field.
+//    * Deletes all variables that were created as the user typed their intended
+//    * variable name.
+//    * @param {string} newText The new variable name.
+//    * @private
+//    * @this Blockly.FieldTextInput
+//    */
+//   // deleteIntermediateVars_: function(newText) {
+//   //   var outerWs = Blockly.Mutator.findParentWs(this.getSourceBlock().workspace);
+//   //   if (!outerWs) {
+//   //     return;
+//   //   }
+//   //   for (var i = 0; i < this.createdVariables_.length; i++) {
+//   //     var model = this.createdVariables_[i];
+//   //     if (model.name != newText) {
+//   //       outerWs.deleteVariableById(model.getId());
+//   //     }
+//   //   }
+//   // }
+// };
 
 // Blockly.Blocks['predicate_call'] = {
 //   init: function() {
@@ -814,10 +830,12 @@ Blockly.Blocks['predicate_call'] = {
     // this.setStyle('predicate_blocks');
     // Tooltip is set in renamePredicate.
     this.setHelpUrl("");
-    this.arguments_ = [];
-    this.argumentVarModels_ = [];
-    this.quarkConnections_ = {};
-    this.quarkIds_ = null;
+    // this.arguments_ = [];
+    this.parameters_ = [];
+    this.parameterTypesList_ = [];
+    // this.argumentVarModels_ = [];
+    // this.quarkConnections_ = {};
+    // this.quarkIds_ = null;
     this.previousEnabledState_ = true;
   },
 
@@ -863,76 +881,78 @@ Blockly.Blocks['predicate_call'] = {
     //     Existing param IDs.
     // Note that quarkConnections_ may include IDs that no longer exist, but
     // which might reappear if a param is reattached in the mutator.
-    var defBlock = Blockly.Predicates.getDefinition(this.getPredicateCall(),
-        this.workspace);
-    var mutatorOpen = defBlock && defBlock.mutator &&
-        defBlock.mutator.isVisible();
-    if (!mutatorOpen) {
-      this.quarkConnections_ = {};
-      this.quarkIds_ = null;
-    }
-    if (!paramIds) {
-      // Reset the quarks (a mutator is about to open).
-      return;
-    }
+    // var defBlock = Blockly.Predicates.getDefinition(this.getPredicateCall(),
+    //     this.workspace);
+    // var mutatorOpen = defBlock && defBlock.mutator &&
+    //     defBlock.mutator.isVisible();
+    // if (!mutatorOpen) {
+    //   this.quarkConnections_ = {};
+    //   this.quarkIds_ = null;
+    // }
+    // if (!paramIds) {
+    //   // Reset the quarks (a mutator is about to open).
+    //   return;
+    // }
     // Test arguments (arrays of strings) for changes. '\n' is not a valid
     // argument name character, so it is a valid delimiter here.
-    if (paramNames.join('\n') == this.arguments_.join('\n')) {
-      // No change.
-      this.quarkIds_ = paramIds;
-      return;
-    }
-    if (paramIds.length != paramNames.length) {
-      throw RangeError('paramNames and paramIds must be the same length.');
-    }
-    this.setCollapsed(false);
-    if (!this.quarkIds_) {
-      // Initialize tracking for this block.
-      this.quarkConnections_ = {};
-      this.quarkIds_ = [];
-    }
+    // if (paramNames.join('\n') == this.arguments_.join('\n')) {
+    //   // No change.
+    //   this.quarkIds_ = paramIds;
+    //   return;
+    // }
+    // if (paramIds.length != paramNames.length) {
+    //   throw RangeError('paramNames and paramIds must be the same length.');
+    // }
+    // this.setCollapsed(false);
+    // if (!this.quarkIds_) {
+    //   // Initialize tracking for this block.
+    //   this.quarkConnections_ = {};
+    //   this.quarkIds_ = [];
+    // }
     // Switch off rendering while the block is rebuilt.
     var savedRendered = this.rendered;
     this.rendered = false;
     // Update the quarkConnections_ with existing connections.
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var input = this.getInput('ARG' + i);
-      if (input) {
-        var connection = input.connection.targetConnection;
-        this.quarkConnections_[this.quarkIds_[i]] = connection;
-        if (mutatorOpen && connection &&
-            paramIds.indexOf(this.quarkIds_[i]) == -1) {
-          // This connection should no longer be attached to this block.
-          connection.disconnect();
-          connection.getSourceBlock().bumpNeighbours();
-        }
-      }
-    }
+    // for (var i = 0; i < this.arguments_.length; i++) {
+    //   var input = this.getInput('ARG' + i);
+    //   if (input) {
+    //     var connection = input.connection.targetConnection;
+    //     this.quarkConnections_[this.quarkIds_[i]] = connection;
+    //     if (mutatorOpen && connection &&
+    //         paramIds.indexOf(this.quarkIds_[i]) == -1) {
+    //       // This connection should no longer be attached to this block.
+    //       connection.disconnect();
+    //       connection.getSourceBlock().bumpNeighbours();
+    //     }
+    //   }
+    // }
     // Rebuild the block's arguments.
-    this.arguments_ = [].concat(paramNames);
+    // this.arguments_ = [].concat(paramNames);
     // And rebuild the argument model list.
-    this.argumentVarModels_ = [];
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var variable = Blockly.Variables.getOrCreateVariablePackage(
-          this.workspace, null, this.arguments_[i], '');
-      this.argumentVarModels_.push(variable);
-    }
+    // this.argumentVarModels_ = [];
+    // for (var i = 0; i < this.arguments_.length; i++) {
+    //   var variable = Blockly.Variables.getOrCreateVariablePackage(
+    //       this.workspace, null, this.arguments_[i], '');
+    //   this.argumentVarModels_.push(variable);
+    // }
 
     this.updateShape_();
-    this.quarkIds_ = paramIds;
+    this.parameterTypesList_ = paramNames;
+    this.updateParameterInputs(paramNames);
+    // this.quarkIds_ = paramIds;
     // Reconnect any child blocks.
-    if (this.quarkIds_) {
-      for (var i = 0; i < this.arguments_.length; i++) {
-        var quarkId = this.quarkIds_[i];
-        if (quarkId in this.quarkConnections_) {
-          var connection = this.quarkConnections_[quarkId];
-          if (!Blockly.Mutator.reconnect(connection, this, 'ARG' + i)) {
-            // Block no longer exists or has been attached elsewhere.
-            delete this.quarkConnections_[quarkId];
-          }
-        }
-      }
-    }
+    // if (this.quarkIds_) {
+    //   for (var i = 0; i < this.arguments_.length; i++) {
+    //     var quarkId = this.quarkIds_[i];
+    //     if (quarkId in this.quarkConnections_) {
+    //       var connection = this.quarkConnections_[quarkId];
+    //       if (!Blockly.Mutator.reconnect(connection, this, 'ARG' + i)) {
+    //         // Block no longer exists or has been attached elsewhere.
+    //         delete this.quarkConnections_[quarkId];
+    //       }
+    //     }
+    //   }
+    // }
     // Restore rendering and show the changes.
     this.rendered = savedRendered;
     if (this.rendered) {
@@ -945,32 +965,32 @@ Blockly.Blocks['predicate_call'] = {
    * @this {Blockly.Block}
    */
   updateShape_: function() {
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var field = this.getField('ARGNAME' + i);
-      if (field) {
-        // Ensure argument name is up to date.
-        // The argument name field is deterministic based on the mutation,
-        // no need to fire a change event.
-        Blockly.Events.disable();
-        try {
-          field.setValue(this.arguments_[i]);
-        } finally {
-          Blockly.Events.enable();
-        }
-      } else {
-        // Add new input.
-        field = new Blockly.FieldLabel(this.arguments_[i]);
-        var input = this.appendValueInput('ARG' + i)
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(field, 'ARGNAME' + i);
-        input.init();
-      }
-    }
+    // for (var i = 0; i < this.arguments_.length; i++) {
+    //   var field = this.getField('ARGNAME' + i);
+    //   if (field) {
+    //     // Ensure argument name is up to date.
+    //     // The argument name field is deterministic based on the mutation,
+    //     // no need to fire a change event.
+    //     Blockly.Events.disable();
+    //     try {
+    //       field.setValue(this.arguments_[i]);
+    //     } finally {
+    //       Blockly.Events.enable();
+    //     }
+    //   } else {
+    //     // Add new input.
+    //     field = new Blockly.FieldLabel(this.arguments_[i]);
+    //     var input = this.appendValueInput('ARG' + i)
+    //         .setAlign(Blockly.ALIGN_RIGHT)
+    //         .appendField(field, 'ARGNAME' + i);
+    //     input.init();
+    //   }
+    // }
     // Remove deleted inputs.
-    while (this.getInput('ARG' + i)) {
-      this.removeInput('ARG' + i);
-      i++;
-    }
+    // while (this.getInput('ARG' + i)) {
+    //   this.removeInput('ARG' + i);
+    //   i++;
+    // }
     // Add 'with:' if there are parameters, remove otherwise.
     // var topRow = this.getInput('TOPROW');
     // if (topRow) {
@@ -994,9 +1014,14 @@ Blockly.Blocks['predicate_call'] = {
   mutationToDom: function() {
     var container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('name', this.getPredicateCall());
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var parameter = Blockly.utils.xml.createElement('arg');
-      parameter.setAttribute('name', this.arguments_[i]);
+    // for (var i = 0; i < this.arguments_.length; i++) {
+    //   var parameter = Blockly.utils.xml.createElement('arg');
+    //   parameter.setAttribute('name', this.arguments_[i]);
+    //   container.appendChild(parameter);
+    // }
+    for (var i = 0; i < this.parameterTypesList_.length; i++) {
+      var parameter = Blockly.utils.xml.createElement('par');
+      parameter.setAttribute('name', this.parameterTypesList_[i]);
       container.appendChild(parameter);
     }
     return container;
@@ -1009,32 +1034,32 @@ Blockly.Blocks['predicate_call'] = {
   domToMutation: function(xmlElement) {
     var name = xmlElement.getAttribute('name');
     this.renamePredicate(this.getPredicateCall(), name);
-    var args = [];
+    var pars = [];
     var paramIds = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
-      if (childNode.nodeName.toLowerCase() == 'arg') {
-        args.push(childNode.getAttribute('name'));
-        paramIds.push(childNode.getAttribute('paramId'));
+      if (childNode.nodeName.toLowerCase() == 'par') {
+        pars.push(childNode.getAttribute('name'));
+        // paramIds.push(childNode.getAttribute('paramId'));
       }
     }
-    this.setPredicateParameters_(args, paramIds);
+    this.setPredicateParameters_(pars, paramIds);
   },
   /**
    * Return all variables referenced by this block.
    * @return {!Array<string>} List of variable names.
    * @this {Blockly.Block}
    */
-  getVars: function() {
-    return this.arguments_;
-  },
+  // getVars: function() {
+  //   return this.arguments_;
+  // },
   /**
    * Return all variables referenced by this block.
    * @return {!Array<!Blockly.VariableModel>} List of variable models.
    * @this {Blockly.Block}
    */
-  getVarModels: function() {
-    return this.argumentVarModels_;
-  },
+  // getVarModels: function() {
+  //   return this.argumentVarModels_;
+  // },
   /**
    * Predicate calls cannot exist without the corresponding predicate
    * definition.  Enforce this link whenever an event is fired.
@@ -1057,8 +1082,7 @@ Blockly.Blocks['predicate_call'] = {
       // an empty definition block with the correct signature.
       var name = this.getPredicateCall();
       var def = Blockly.Predicates.getDefinition(name, this.workspace);
-      if (def && (def.type != this.defType_ ||
-          JSON.stringify(def.getVars()) != JSON.stringify(this.arguments_))) {
+      if (def && (def.type != this.defType_ )) {
         // The signatures don't match.
         def = null;
       }

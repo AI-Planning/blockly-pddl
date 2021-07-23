@@ -209,10 +209,10 @@
    function populatePredicates(predicateList, templateName) {
      for (var i = 0; i < predicateList.length; i++) {
        var name = predicateList[i][0];
-       var args = predicateList[i][1];
+       var params = predicateList[i][1];
        // <block type="predicate_call" gap="16">
        //   <mutation name="do something">
-       //     <arg name="x"></arg>
+       //     <par name="x"></par>
        //   </mutation>
        // </block>
        var block = Blockly.utils.xml.createElement('block');
@@ -221,10 +221,10 @@
        var mutation = Blockly.utils.xml.createElement('mutation');
        mutation.setAttribute('name', name);
        block.appendChild(mutation);
-       for (var j = 0; j < args.length; j++) {
-         var arg = Blockly.utils.xml.createElement('arg');
-         arg.setAttribute('name', args[j]);
-         mutation.appendChild(arg);
+       for (var j = 0; j < params.length; j++) {
+         var par = Blockly.utils.xml.createElement('par');
+         par.setAttribute('name', params[j]);
+         mutation.appendChild(par);
        }
        xmlList.push(block);
      }
@@ -340,7 +340,7 @@
    var predicateBlock = /** @type {!Blockly.Predicates.PredicateBlock} */ (
      defBlock);
    var name = predicateBlock.getPredicateDef()[0];
-   var xmlElement = defBlock.mutationToDom(true);
+   var xmlElement = defBlock.mutationToDom(false);
    var callers = Blockly.Predicates.getCallers(name, defBlock.workspace);
    for (var i = 0, caller; (caller = callers[i]); i++) {
      var oldMutationDom = caller.mutationToDom();
