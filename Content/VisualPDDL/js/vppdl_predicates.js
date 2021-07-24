@@ -342,10 +342,7 @@
    var name = predicateBlock.getPredicateDef()[0];
    var xmlElement = defBlock.mutationToDom(false);
    var callers = Blockly.Predicates.getCallers(name, defBlock.workspace);
-  //  for (var i = 0, caller; (caller = callers[i]); i++) {
-    console.log(callers.length);
-  for (var i = 0, caller; i < callers.length ; i++) {
-     caller = callers[i];
+   for (var i = 0, caller; (caller = callers[i]); i++) {
      var oldMutationDom = caller.mutationToDom();
      var oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
      caller.domToMutation(xmlElement);
