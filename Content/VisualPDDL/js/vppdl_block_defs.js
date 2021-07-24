@@ -393,7 +393,7 @@ Blockly.Blocks['predicate_def'] = {
       }
     }
     this.updateParams_();
-    Blockly.Predicates.mutateCallers(this);
+    // Blockly.Predicates.mutateCallers(this);
 
     // Show or hide the statement input.
     // this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
@@ -670,6 +670,7 @@ Blockly.Blocks['predicate_def'] = {
       // console.log(callers.length);
       // for (let i in callers)
       //   callers[i].updateParameterInputs(this.parameterTypesList_);
+      Blockly.Predicates.mutateCallers(this);
     }
   },
 
@@ -910,8 +911,8 @@ Blockly.Blocks['predicate_call'] = {
     //   this.quarkIds_ = [];
     // }
     // Switch off rendering while the block is rebuilt.
-    var savedRendered = this.rendered;
-    this.rendered = false;
+    // var savedRendered = this.rendered;
+    // this.rendered = false;
     // Update the quarkConnections_ with existing connections.
     // for (var i = 0; i < this.arguments_.length; i++) {
     //   var input = this.getInput('ARG' + i);
@@ -954,10 +955,10 @@ Blockly.Blocks['predicate_call'] = {
     //   }
     // }
     // Restore rendering and show the changes.
-    this.rendered = savedRendered;
-    if (this.rendered) {
-      this.render();
-    }
+    // this.rendered = savedRendered;
+    // if (this.rendered) {
+    //   this.render();
+    // }
   },
   /**
    * Modify this block to have the correct number of arguments.
