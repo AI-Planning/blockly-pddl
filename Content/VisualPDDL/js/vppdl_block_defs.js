@@ -10,10 +10,13 @@ Blockly.Blocks['pddl_domain'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("domain_name"), "NAME");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "fluents")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "STRIPS")
+        .appendField("strips");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "FLUENTS")
         .appendField("numeric fluents");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "timed_literals")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "TIMED_LITERALS")
         .appendField("timed initial literals");
     this.appendStatementInput("types")
         .setCheck("type")
@@ -28,6 +31,7 @@ Blockly.Blocks['pddl_domain'] = {
  this.setTooltip("This is the pddl domain");
  this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
  this.typesInThisDomain = [["object","object"]];
+//  this.getField("STRIPS").updateEditable();
   },
 
   onchange: function(event) {

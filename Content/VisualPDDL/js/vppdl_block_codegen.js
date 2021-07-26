@@ -1,7 +1,8 @@
 Blockly.JavaScript['pddl_domain'] = function(block) {
   var text_name = block.getFieldValue('NAME');
-  var checkbox_fluents = block.getFieldValue('fluents') == 'TRUE';
-  var checkbox_timed_literals = block.getFieldValue('timed_literals') == 'TRUE';
+  var checkbox_strips = block.getFieldValue('STRIPS') == 'TRUE';
+  var checkbox_fluents = block.getFieldValue('FLUENTS') == 'TRUE';
+  var checkbox_timed_literals = block.getFieldValue('TIMED_LITERALS') == 'TRUE';
   var statements_types = Blockly.JavaScript.statementToCode(block, 'types');
   var statements_predicates = Blockly.JavaScript.statementToCode(block, 'predicates');
   var statements_actions = Blockly.JavaScript.statementToCode(block, 'actions');
@@ -11,7 +12,8 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
 
   // Add requirements
   code += '(:requirements';
-  code += ' :strips';
+  if (checkbox_strips)
+    code += ' :strips';
   if (checkbox_fluents)
     code += ' :fluents';
   if (checkbox_timed_literals)
