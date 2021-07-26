@@ -21,18 +21,24 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
   // Add types
   if (statements_types != '') {
     code += '(:types ';
-    code += statements_types.replace(/\n?$/g, '');
+    code += statements_types.trim();
     code += ')\n';
   }
 
   // Add predicates
   if (statements_predicates != '') {
     code += '(:predicates ';
-    code += statements_predicates.replace(/\n?$/g, '');
+    code += statements_predicates.trim();
     code += ')\n';
   }
+
+  // Add actions
+  if (statements_actions != '') {
+    code += '\n' + statements_actions.trim();
+  }
+
   // End "define"
-  code += ')\n';
+  code += '\n)';
   return code;
 };
 
@@ -41,8 +47,20 @@ Blockly.JavaScript['action'] = function(block) {
   var statements_par = Blockly.JavaScript.statementToCode(block, 'par');
   var statements_con = Blockly.JavaScript.statementToCode(block, 'con');
   var statements_eff = Blockly.JavaScript.statementToCode(block, 'eff');
+  var code = '';
   // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+  
+  code += '(:action ';
+  code += text_name;
+
+  code += '\n:parameters (' + statements_par.trim() + ')';
+
+  statements_con.trim();
+  code += '\n:condition ' + statements_con.trim();
+
+  code += '\n:effect ' + statements_eff.trim();
+
+  code += ')\n'; // End action
   return code;
 };
 
@@ -50,7 +68,7 @@ Blockly.JavaScript['type'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var dropdown_parent_list = block.getFieldValue('parent_list');
   // TODO: Assemble JavaScript into code variable.
-  var code = text_name + ' - ' + dropdown_parent_list + '\n';
+  var code = '\t' + text_name + ' - ' + dropdown_parent_list + '\n';
   return code;
 };
 
@@ -66,12 +84,20 @@ Blockly.JavaScript['predicate_def'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var statements_param_inputs = Blockly.JavaScript.statementToCode(block, 'PARAM_INPUTS');
   // TODO: Assemble JavaScript into code variable.
-  var code = '(' + text_name + statements_param_inputs + ')\n';
+  var code = '\t(' + text_name + statements_param_inputs + ')\n';
   return code;
 };
 
 Blockly.JavaScript['predicate_call'] = function(block) {
+  var predicate_name = block.getFieldValue('NAME');
+  var code = '\t(' + predicate_name;
+  var fields = block.getInput('TOPROW').fieldRow;
+  for (var i = 0; i < fields.length; i++) {
+    if (fields[i].name != 'NAME') {
+      code += ' ?' + fields[i].getValue();
+    }
+  }
   // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+  code += ')\n';
   return code;
 };
