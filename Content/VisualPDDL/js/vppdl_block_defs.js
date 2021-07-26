@@ -66,10 +66,10 @@ Blockly.Blocks['action'] = {
         .setCheck("parameter")
         .appendField("par");
     this.appendStatementInput("con")
-        .setCheck("predicate_call")
+        .setCheck(["predicate_call", "and_or", "not"])
         .appendField("con");
     this.appendStatementInput("eff")
-        .setCheck(null)
+        .setCheck(["predicate_call", "and_or", "not"])
         .appendField("eff");
     this.setPreviousStatement(true, "action");
     this.setNextStatement(true, "action");
@@ -95,7 +95,7 @@ Blockly.Blocks['action'] = {
       else
         this.setWarningText(null);
     }
-    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+    if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_MOVE) {
       var childParamBlocks = this.getDescendants();
       this.parameters_ = [];
       if (childParamBlocks != null) {
@@ -105,6 +105,46 @@ Blockly.Blocks['action'] = {
         }
       }
     }
+
+    // Generate parameter list with names and types
+    // if (event.type == Blockly.Events.BLOCK_MOVE || event.type == Blockly.Events.BLOCK_CHANGE) {
+    //   var childParamBlocks = this.getDescendants();
+    //   if (childParamBlocks != null) {
+    //     this.parameters_ = [];
+    //     for (var i = 0; i < childParamBlocks.length; i++) {
+    //       if (childParamBlocks[i].type == 'parameter') {
+    //         this.parameters_.push([childParamBlocks[i].getFieldValue('NAME'), childParamBlocks[i].getFieldValue('type')]);
+    //       }
+    //     }
+    //     console.log(this.parameters_);
+    //   }
+    // }
+
+    // if there are more than one conditions or effects, insert logic field
+    // TODO: This requires domToMutation and mutationToDom to be defined.
+    // if (event.type == Blockly.Events.BLOCK_MOVE) {
+    //   if (this.getInputTargetBlock("con") == null || this.getInputTargetBlock("con").getDescendants() == null);
+    //   else if (this.getInputTargetBlock("con").getDescendants().length > 1) {
+    //     if (this.getField("CONDITIONS_LOGIC_AND_OR"));
+    //     else {
+    //       this.getInput("con").insertFieldAt(1, new Blockly.FieldDropdown([["and","AND"], ["or","OR"]]), "CONDITIONS_LOGIC_AND_OR");
+    //     }
+    //   }
+    //   else {
+    //     this.getInput("con").removeField("CONDITIONS_LOGIC_AND_OR", true);
+    //   }
+
+    //   if (this.getInputTargetBlock("eff") == null || this.getInputTargetBlock("eff").getDescendants() == null);
+    //   else if (this.getInputTargetBlock("eff").getDescendants().length > 1) {
+    //     if (this.getField("EFFECTS_LOGIC_AND_OR"));
+    //     else {
+    //       this.getInput("eff").insertFieldAt(1, new Blockly.FieldDropdown([["and","AND"], ["or","OR"]]), "EFFECTS_LOGIC_AND_OR");
+    //     }
+    //   }
+    //   else {
+    //     this.getInput("eff").removeField("EFFECTS_LOGIC_AND_OR", true);
+    //   }
+    // }
   },
 
   getParametersInThisAction: function() {
@@ -663,13 +703,15 @@ Blockly.Blocks['predicate_def'] = {
       // console.log(childParamBlocks);
       var newParamterTypesList = [];
       if (childParamBlocks != null) {
-        for (let i in childParamBlocks) {
+        for (var i = 0; i < childParamBlocks.length; i++) {
           if (childParamBlocks[i].type == 'parameter')
             newParamterTypesList.push(childParamBlocks[i].getFieldValue('type'));
+          if (i > 0 && childParamBlocks[i].type != 'parameter')
+            break;
         }
       }
       this.parameterTypesList_ = newParamterTypesList;
-      // console.log(this.parameterTypesList_);
+      console.log(this.parameterTypesList_);
       // var callers = Blockly.Predicates.getCallers(this.getFieldValue('NAME'), this.workspace);
       // console.log(callers.length);
       // for (let i in callers)
@@ -1212,7 +1254,7 @@ Blockly.Blocks['predicate_call'] = {
           continue;
         }
         else {
-          
+          inputFields[i+1].name = fieldName;
         }
       }
     }
@@ -1224,6 +1266,22 @@ Blockly.Blocks['predicate_call'] = {
   },
   
   generateParameterDropDown: function () {
+    if (this.getSourceBlock() == null)
+      return [["select","SELECT"]];
+    if (this.getSourceBlock().isInFlyout)
+      return [["select","SELECT"]];
+    if (this.getSourceBlock().getParent() != null) {
+      if (this.getSourceBlock().getParentActionBlock() != null) {
+        var returnList = [["select","SELECT"]];
+        var availableParamList = this.getSourceBlock().getParentActionBlock().parameters_;
+        for (var i = 0; i < availableParamList.length; i++) {
+          if (this.name.split(";")[1] == availableParamList[i][1])
+            returnList.push([availableParamList[i][0], availableParamList[i][0]]);
+        }
+        console.log(returnList);
+        return returnList;
+      }
+    }
     return [["select","SELECT"]];
   },
 
@@ -1237,4 +1295,30 @@ Blockly.Blocks['predicate_call'] = {
   },
 
   defType_: 'predicate_def'
+};
+
+Blockly.Blocks['and_or'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+        .setCheck("predicate_call")
+        .appendField(new Blockly.FieldDropdown([["and","AND"], ["or","OR"]]), "LOGIC_OPERATION");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
+    this.setColour(0);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['not'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+        .setCheck("predicate_call")
+        .appendField("not");
+    this.setPreviousStatement(true, ["predicate_call", "not"]);
+    this.setNextStatement(true, ["predicate_call", "not"]);
+    this.setColour(300);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
 };

@@ -121,10 +121,15 @@
 				<field name="NAME">parameter_name</field>
 				<field name="type">object</field>
 			</block>
+			<!-- <block type="not"></block> -->
 		</category>
-
-		<category name="PDDL Predicates" colour="#5ba55b" custom="PREDICATES"></category>
-		<!-- <category name="Functions" colour="#5ba55b" custom="PROCEDURE"></category> -->
+		<category name="PDDL Logic" colour="#5ba55b">
+			<block type="not"></block>
+			<block type="and_or">
+			  <field name="LOGIC_OPERATION">AND</field>
+			</block>
+		</category>
+		<category name="PDDL Predicates" colour="#995ba5" custom="PREDICATES"></category>
 	</xml>
 
 	<div id="toast"></div>

@@ -64,7 +64,7 @@ workspace.isNameUsed = function(name, workspace, opt_exclude) {
 	  if (blocks[i] == opt_exclude) {
 		continue;
 	  }
-	  if (Blockly.Names.equals(blocks[i].getFieldValue('NAME'), name)) {
+	  if (blocks[i].getFieldValue('NAME') && Blockly.Names.equals(blocks[i].getFieldValue('NAME'), name)) {
 		  return true;
 	  }
 	}
