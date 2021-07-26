@@ -1189,20 +1189,22 @@ Blockly.Blocks['predicate_call'] = {
     var numParameterFields = inputFields.length - 1;
     // var availableParameters = this.getParentActionBlock().getParametersInThisAction();
     for (i = 0; i < parameterTypesList.length; i++) {
-      var fieldName = 'paramField%1;%2';
-      fieldName.replace('%1', i);
-      fieldName.replace('%2', parameterTypesList[i]);
+      var fieldName = 'paramField' + i + ';' + parameterTypesList[i];
+      // fieldName.replace('%1', i);
+      // fieldName.replace('%2', parameterTypesList[i]);
       if (i >= numParameterFields) {
         var newDropDown = new Blockly.FieldDropdown(this.generateParameterDropDown);
-        newDropDown.name = fieldName;
+        console.log(fieldName);
+        // newDropDown.name = fieldName;
         // Insert new field
-        this.getInput('TOPROW').insertFieldAt(i+1, newDropDown);
+        this.getInput('TOPROW').insertFieldAt(i+1, newDropDown, fieldName);
       }
       else {
-        if (inputFields[i].name == 'NAME'){
+        console.log(inputFields);
+        if (inputFields[i+1].name == 'NAME'){
           continue;
         }
-        else if (inputFields[i].name.split(";")[1] == parameterTypesList[i]) {
+        else if (inputFields[i+1].name.split(";")[1] == parameterTypesList[i]) {
           continue;
         }
         else {
@@ -1212,7 +1214,7 @@ Blockly.Blocks['predicate_call'] = {
     }
     if (parameterTypesList.length < numParameterFields) {
       for (var i = numParameterFields; i > parameterTypesList.length; i--) {
-        inputFields.removeInput(inputFields[i].name, true);
+        this.getInput('TOPROW').removeField(inputFields[i].name, true);
       }
     }
   },
