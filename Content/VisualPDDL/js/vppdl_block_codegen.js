@@ -66,7 +66,7 @@ Blockly.JavaScript['predicate_def'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var statements_param_inputs = Blockly.JavaScript.statementToCode(block, 'PARAM_INPUTS');
   // TODO: Assemble JavaScript into code variable.
-  var code = '(' + text_name + statements_name + ')\n';
+  var code = '(' + text_name + statements_param_inputs + ')\n';
   return code;
 };
 
