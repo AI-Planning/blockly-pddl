@@ -1188,7 +1188,7 @@ Blockly.Blocks['predicate_call'] = {
     var inputFields = this.getInput('TOPROW').fieldRow;
     var numParameterFields = inputFields.length - 1;
     // var availableParameters = this.getParentActionBlock().getParametersInThisAction();
-    for (let i in parameterTypesList) {
+    for (i = 0; i < parameterTypesList.length; i++) {
       var fieldName = 'paramField%1;%2';
       fieldName.replace('%1', i);
       fieldName.replace('%2', parameterTypesList[i]);
