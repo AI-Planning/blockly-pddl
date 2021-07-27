@@ -18,6 +18,11 @@ Blockly.JavaScript['pddl_domain'] = function(block) {
     code += ' :fluents';
   if (checkbox_timed_literals)
     code += ' :timed-initial-literals';
+  if (true || checkbox_typing)
+    code += ' :typing';
+  if (true || checkbox_neg_preconditions)
+    code += ' :negative-preconditions';
+     
   code += ')\n';
 
   // Add types
@@ -58,7 +63,7 @@ Blockly.JavaScript['action'] = function(block) {
   code += '\n:parameters (' + statements_par.trim() + ')';
 
   statements_con.trim();
-  code += '\n:condition ' + statements_con.trim();
+  code += '\n:precondition ' + statements_con.trim();
 
   code += '\n:effect ' + statements_eff.trim();
 
