@@ -1287,10 +1287,8 @@ Blockly.Blocks['predicate_call'] = {
 
   getParentActionBlock: function() {
     var tempParent = this.getParent();
-    if (tempParent != null) {
-      while(tempParent.type != 'action')
-        tempParent = tempParent.getParent();
-    }
+    while(tempParent != null && tempParent.type != 'action')
+      tempParent = tempParent.getParent();
     return tempParent;
   },
 
