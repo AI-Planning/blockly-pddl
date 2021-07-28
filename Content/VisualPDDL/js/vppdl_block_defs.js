@@ -99,9 +99,11 @@ Blockly.Blocks['action'] = {
       var childParamBlocks = this.getDescendants();
       this.parameters_ = [];
       if (childParamBlocks != null) {
-        for (let i in childParamBlocks) {
+        for (var i = 0; i < childParamBlocks.length; i++) {
           if (childParamBlocks[i].type == 'parameter')
             this.parameters_.push([childParamBlocks[i].getFieldValue('NAME'), childParamBlocks[i].getFieldValue('type')]);
+          if (i > 0 && childParamBlocks[i].type == 'action') // encountered next action, do not read its parameters
+            break;
         }
       }
     }
