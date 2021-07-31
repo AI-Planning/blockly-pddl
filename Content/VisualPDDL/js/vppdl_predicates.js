@@ -223,7 +223,8 @@
        block.appendChild(mutation);
        for (var j = 0; j < params.length; j++) {
          var par = Blockly.utils.xml.createElement('par');
-         par.setAttribute('name', params[j]);
+         par.setAttribute('partype', params[j]);
+         par.setAttribute('parvalue', 'select');
          mutation.appendChild(par);
        }
        xmlList.push(block);
