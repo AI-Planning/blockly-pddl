@@ -343,32 +343,12 @@ Blockly.Predicates.mutateCallers = function (defBlock) {
   var name = predicateBlock.getPredicateDef()[0];
   var xmlElement = defBlock.mutationToDom(false);
   var callers = Blockly.Predicates.getCallers(name, defBlock.workspace);
-  for (var i = 0, caller; i < callers.length; i++) {
-    console.log(callers.length);
-    caller = callers[i];
+  for (var i = 0, caller; (caller = callers[i]); i++) {
     var oldMutationDom = caller.mutationToDom();
     var oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
-    var childNodes = xmlElement.childNodes;
-    // for (var i = 0, childNode; i < childNodes.length; i++) {
-    //   childNode = childNodes[i];
-    //   if (childNode.nodeName.toLowerCase() == 'par') {
-    //     if (i >= oldMutationDom.childNodes.length)
-    //       childNode.setAttribute('parvalue', 'select');
-    //     else {
-    //       // TODO. Do not delete commented lines.
-    //       // if (childNode.getAttribute('parname') == oldMutationDom.childNodes[i].getAttribute('parname'))
-    //       childNode.setAttribute('parvalue', oldMutationDom.childNodes[i].getAttribute('parvalue'));
-    //       // else
-    //       //   childNode.setAttribute('parvalue','select');
-    //     }
-    //   }
-    // }
-
     caller.domToMutation(xmlElement);
     var newMutationDom = caller.mutationToDom();
     var newMutation = newMutationDom && Blockly.Xml.domToText(newMutationDom);
-    // console.log(oldMutation);
-    // console.log(newMutation);
     if (oldMutation != newMutation) {
       // Fire a mutation on every caller block.  But don't record this as an
       // undo action since it is deterministically tied to the predicate's

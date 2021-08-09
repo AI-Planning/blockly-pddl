@@ -374,7 +374,6 @@ Blockly.Blocks['predicate_def'] = {
     for (var i = 0; i < parTypList.length; i++) {
       var parameter = Blockly.utils.xml.createElement('par');
       parameter.setAttribute('partype', parTypList[i]);
-      // parameter.setAttribute('parvalue', '');
       container.appendChild(parameter);
     }
 
@@ -393,8 +392,6 @@ Blockly.Blocks['predicate_def'] = {
         this.parameterTypesList_.push(parName);
       }
     }
-    // console.log("Mutating Callers");
-    // Blockly.Predicates.mutateCallers(this);
   },
   /**
    * Return the signature of this predicate definition.
@@ -456,25 +453,8 @@ Blockly.Blocks['predicate_def'] = {
         }
       }
       this.parameterTypesList_ = newParamterTypesList;
-      console.log("Mutating Callers");
       Blockly.Predicates.mutateCallers(this);
     }
-    // if (event.type == Blockly.Events.BLOCK_MOVE) {
-    //   console.log("Mutating Callers");
-    //   Blockly.Predicates.mutateCallers(this);
-    // }
-    // var descendants = this.getDescendants();
-    // if (event.type == Blockly.Events.BLOCK_MOVE) {
-    //   console.log(event.blockId);
-    //   for (var i = 0; i < descendants.length; i++) {
-    //     if (descendants[i].type == 'parameter' && event.blockId == descendants[i].id) {
-    //       Blockly.Events.disable();
-    //       console.log("Mutating Callers");
-    //       Blockly.Predicates.mutateCallers(this);
-    //       Blockly.Events.enable();
-    //     }
-    //   }
-    // }
   },
 
   callType_: 'predicate_call'
@@ -543,7 +523,6 @@ Blockly.Blocks['predicate_call'] = {
       var fieldName = 'paramField' + i + ';' + paramNames[i];
       if (!this.isInFlyout)
         this.getField(fieldName).setValue(paramValues[i]);
-        // this.setFieldValue([paramValues[i], paramValues[i]], fieldName);
     }
     // Restore rendering and show the changes.
     // this.rendered = savedRendered;
@@ -568,13 +547,10 @@ Blockly.Blocks['predicate_call'] = {
     var container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('name', this.getPredicateCall());
     for (var i = 0; i < this.parameterTypesList_.length; i++) {
-      // console.log(this.parameterTypesList_[i]);
       var parameter = Blockly.utils.xml.createElement('par');
       parameter.setAttribute('partype', this.parameterTypesList_[i]);
       var fieldName = 'paramField' + i + ';' + this.parameterTypesList_[i];
-      console.log(this.getFieldValue(fieldName));
       parameter.setAttribute('parvalue', this.getFieldValue(fieldName));
-      console.log(parameter);
       container.appendChild(parameter);
     }
     return container;
@@ -592,15 +568,12 @@ Blockly.Blocks['predicate_call'] = {
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
       if (childNode.nodeName.toLowerCase() == 'par') {
         parTypes.push(childNode.getAttribute('partype'));
-        console.log(childNode);
         parValues.push(childNode.getAttribute('parvalue'));
       }
     }
     for (var i = 0; i < parValues.length; i++) {
-      console.log(parValues[i]);
       this.parameters_[i] = [parValues[i], parValues[i]];
     }
-    console.log(this.parameters_);
     this.setPredicateParameters_(parTypes, parValues);
   },
   /**
@@ -759,11 +732,9 @@ Blockly.Blocks['predicate_call'] = {
   
   generateParameterDropDown: function () {
     if (this.getSourceBlock() == null) {
-      // console.log('no source block');
       return [["select","SELECT"]];
     }
     if (this.getSourceBlock().isInFlyout) {
-      // console.log('is in fluout');
       return [["select","SELECT"]];
     }
     if (this.getSourceBlock().getParent() != null) {
@@ -783,15 +754,9 @@ Blockly.Blocks['predicate_call'] = {
               returnList.push([availableParamList[i][0], availableParamList[i][0]]);
           }
         }
-        // console.log(returnList);
         return returnList;
       }
     }
-    // else {
-    //   console.log("generate list without parent");
-    //   return this.getSourceBlock().parameters_;
-    // }
-    // console.log('return no list');
     return [["select","SELECT"]];
   },
 
