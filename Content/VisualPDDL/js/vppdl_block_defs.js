@@ -453,7 +453,6 @@ Blockly.Blocks['predicate_def'] = {
         }
       }
       this.parameterTypesList_ = newParamterTypesList;
-      // console.log(this.parameterTypesList_);
       Blockly.Predicates.mutateCallers(this);
     }
   },
@@ -523,7 +522,7 @@ Blockly.Blocks['predicate_call'] = {
     for (var i = 0; i < paramValues.length; i++) {
       var fieldName = 'paramField' + i + ';' + paramNames[i];
       if (!this.isInFlyout)
-        this.setFieldValue(paramValues[i], fieldName);
+        this.getField(fieldName).setValue(paramValues[i]);
     }
     // Restore rendering and show the changes.
     // this.rendered = savedRendered;
@@ -548,12 +547,10 @@ Blockly.Blocks['predicate_call'] = {
     var container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('name', this.getPredicateCall());
     for (var i = 0; i < this.parameterTypesList_.length; i++) {
-      // console.log(this.parameterTypesList_[i]);
       var parameter = Blockly.utils.xml.createElement('par');
       parameter.setAttribute('partype', this.parameterTypesList_[i]);
       var fieldName = 'paramField' + i + ';' + this.parameterTypesList_[i];
       parameter.setAttribute('parvalue', this.getFieldValue(fieldName));
-      // console.log(parameter);
       container.appendChild(parameter);
     }
     return container;
@@ -573,6 +570,9 @@ Blockly.Blocks['predicate_call'] = {
         parTypes.push(childNode.getAttribute('partype'));
         parValues.push(childNode.getAttribute('parvalue'));
       }
+    }
+    for (var i = 0; i < parValues.length; i++) {
+      this.parameters_[i] = [parValues[i], parValues[i]];
     }
     this.setPredicateParameters_(parTypes, parValues);
   },
@@ -731,14 +731,18 @@ Blockly.Blocks['predicate_call'] = {
   },
   
   generateParameterDropDown: function () {
-    if (this.getSourceBlock() == null)
+    if (this.getSourceBlock() == null) {
       return [["select","SELECT"]];
-    if (this.getSourceBlock().isInFlyout)
+    }
+    if (this.getSourceBlock().isInFlyout) {
       return [["select","SELECT"]];
+    }
     if (this.getSourceBlock().getParent() != null) {
       if (this.getSourceBlock().getParentActionBlock() != null) {
         var returnList = [["select","SELECT"]];
         var availableParamList = this.getSourceBlock().getParentActionBlock().parameters_;
+        if (availableParamList.length == 0)
+          return this.getSourceBlock().parameters_;
         var isFirstMatch = true;
         for (var i = 0; i < availableParamList.length; i++) {
           if (this.name.split(";")[1] == availableParamList[i][1]) {
@@ -750,7 +754,6 @@ Blockly.Blocks['predicate_call'] = {
               returnList.push([availableParamList[i][0], availableParamList[i][0]]);
           }
         }
-        // console.log(returnList);
         return returnList;
       }
     }
