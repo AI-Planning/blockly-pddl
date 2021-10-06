@@ -181,6 +181,9 @@ function bindEvents() {
 	// Remove the previously attached click event handler attached to the element with id="browse-files"
 	$("#browse-files").unbind('click').on('click', openFilePicker);
 
+	// Remove the previously attached click event handler attached to the element with id="browse-files"
+	$("#browse-pddl").unbind('click').on('click', openFilePicker);
+
 	// Get the element with the toolbox id and save it as the toolbox variable
 	var toolbox = document.getElementById('toolbox');
 }
@@ -197,6 +200,9 @@ function disableButtons() {
 
 	// Disable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").addClass("disabled");
+
+	// Disable the button with id="browse-files" by giving it the CSS class "disabled"
+	$("#browse-pddl").addClass("disabled");
 
 	// Disable the button with id="export-session" by giving it the CSS class "disabled"
 	$("#export-session").addClass("disabled");
@@ -217,6 +223,9 @@ function enableButtons() {
 
 	// Enable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").removeClass("disabled");
+
+	// Enable the button with id="browse-files" by giving it the CSS class "disabled"
+	$("#browse-pddl").removeClass("disabled");
 
 	// Enable the button with id="export-session" by giving it the CSS class "disabled"
 	$("#export-session").removeClass("disabled");

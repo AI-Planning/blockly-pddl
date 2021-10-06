@@ -123,6 +123,9 @@ function bindEvents() {
 	// Remove the previously attached click event handler attached to the element with id="browse-files"
 	$("#browse-files").unbind('click').on('click', openFilePicker);
 
+	// Remove the previously attached click event handler attached to the element with id="browse-files"
+	$("#browse-pddl").unbind('click').on('click', openFilePicker);
+
 	// Attach a new click event handler to the element with id="show-javascript" that will execute the showJavaScript() function every time the element is clicked
 	$("#show-javascript").on('click', showJavaScript);
 }
@@ -136,6 +139,9 @@ function bindEvents() {
 function disableButtons() {
 	// Disable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").addClass("disabled");
+
+	// Disable the button with id="browse-files" by giving it the CSS class "disabled"
+	$("#browse-pddl").addClass("disabled");
 
 	// Disable the button with id="export-session" by giving it the CSS class "disabled"
 	$("#export-session").addClass("disabled");
@@ -156,6 +162,9 @@ function disableButtons() {
 function enableButtons() {
 	// Enable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").removeClass("disabled");
+
+	// Enable the button with id="browse-files" by giving it the CSS class "disabled"
+	$("#browse-pddl").removeClass("disabled");
 
 	// Enable the button with id="export-session" by giving it the CSS class "disabled"
 	$("#export-session").removeClass("disabled");
@@ -188,13 +197,13 @@ function openFilePicker() {
  */
 function uploadBlocklyFile() {
 	workspace.clear();
-
 	//finds the file given the id "fileSelected" in index.html, only accepts .txt files
 	var file = document.getElementById("fileSelected").files[0];
 	var reader = new FileReader();
 	reader.onload = function () {
 		//loads the blockly blocks from the user inputted file
 		var text = reader.result;
+		alert(text)
 		var xml = Blockly.Xml.textToDom(text);
 		//adds the blocks to the workspace
 		Blockly.Xml.domToWorkspace(xml, workspace);
