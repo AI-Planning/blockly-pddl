@@ -46,6 +46,9 @@ var options = {
 /* Inject your workspace */ 
 var workspace = Blockly.inject(blocklyDiv, options);
 
+flyout = workspace.getFlyout();
+flyout.autoClose = false;
+
 /* Load Workspace Blocks from XML to workspace. Remove all code below if no blocks to load */
 
 /* TODO: Change workspace blocks XML ID if necessary. Can export workspace blocks XML from Workspace Factory. */
