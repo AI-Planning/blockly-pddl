@@ -28,9 +28,9 @@ Blockly.Blocks['pddl_domain'] = {
         .setCheck("action")
         .appendField("actions");
     this.setColour(120);
- this.setTooltip("This is the pddl domain");
- this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
- this.typesInThisDomain = [["object","object"]];
+    this.setTooltip("This is the pddl domain");
+    this.setHelpUrl("https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language");
+    this.typesInThisDomain = [["object","object"]];
 //  this.getField("STRIPS").updateEditable();
   },
 
@@ -78,9 +78,9 @@ Blockly.Blocks['action'] = {
     this.setPreviousStatement(true, "action");
     this.setNextStatement(true, "action");
     this.setColour(15);
- this.setTooltip("");
- this.setHelpUrl("");
- this.parameters_ = [];
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.parameters_ = [];
   },
 
   onchange: function(event) {
@@ -171,6 +171,18 @@ Blockly.Blocks['action'] = {
       returnObj.push(this.parameters_[i]);
     }
     return returnObj;
+  },
+  
+  // Overrides
+  /**
+   * Create a human-readable text representation of this block and any children.
+   * @param {number=} opt_maxLength Truncate the string to this length.
+   * @param {string=} opt_emptyToken The placeholder string used to denote an
+   *     empty field. If not specified, '?' is used.
+   * @return {string} Text of block.
+   */
+  toString: function(opt_maxLength, opt_emptyToken) {
+    return this.getFieldValue('NAME');
   }
 };
 
@@ -185,10 +197,10 @@ Blockly.Blocks['type'] = {
     this.setPreviousStatement(true, "type");
     this.setNextStatement(true, "type");
     this.setColour(240);
- this.setTooltip("");
- this.setHelpUrl("");
- this.typesList_ = [['object','object']];
- this.typesListForChild_ = [['object','object']];
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.typesList_ = [['object','object']];
+    this.typesListForChild_ = [['object','object']];
   },
 
   onchange: function(event) {
