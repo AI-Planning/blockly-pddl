@@ -766,7 +766,7 @@ Blockly.Blocks['predicate_call'] = {
         var returnList = [["select","SELECT"]];
         var availableParamList = this.getSourceBlock().getParentActionBlock().parameters_;
         if (availableParamList.length == 0)
-          return this.getSourceBlock().parameters_;
+          return returnList;
         var isFirstMatch = true;
         for (var i = 0; i < availableParamList.length; i++) {
           if (this.name.split(";")[1] == availableParamList[i][1]) {
