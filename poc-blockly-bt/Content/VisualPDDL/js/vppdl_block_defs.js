@@ -819,3 +819,55 @@ Blockly.Blocks['not'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['sequence_BT'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+        .setCheck("predicate_call")
+        .appendField("sequence");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['condition_BT'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+        .setCheck("predicate_call")
+        .appendField("condition");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
+    this.setColour(120);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['action_BT'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+        .setCheck("predicate_call")
+        .appendField("action");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
+    this.setColour(0);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['selector_BT'] = {
+  init: function() {
+    this.appendStatementInput("PREDICATE_CALLS")
+      .setCheck("predicate_call")
+      .appendField("selector");
+    this.setPreviousStatement(true, "predicate_call");
+    this.setNextStatement(true, "predicate_call");
+    this.setColour(60);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};

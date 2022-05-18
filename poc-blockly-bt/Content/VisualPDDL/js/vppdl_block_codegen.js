@@ -123,3 +123,27 @@ Blockly.JavaScript['not'] = function(block) {
   var code = '(not ' + statements_predicate_calls.trim() + ')';
   return code;
 };
+
+Blockly.JavaScript['sequence_BT'] = function(block) {
+  var statements_predicate_calls = Blockly.JavaScript.statementToCode(block, 'PREDICATE_CALLS');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '(not ' + statements_predicate_calls.trim() + ')';
+};
+
+Blockly.JavaScript['condition_BT'] = function(block) {
+  var statements_predicate_calls = Blockly.JavaScript.statementToCode(block, 'PREDICATE_CALLS');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '(not ' + statements_predicate_calls.trim() + ')';
+};
+
+Blockly.JavaScript['action_BT'] = function(block) {
+  var statements_predicate_calls = Blockly.JavaScript.statementToCode(block, 'PREDICATE_CALLS');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '(not ' + statements_predicate_calls.trim() + ')';
+};
+
+Blockly.JavaScript['selector_BT'] = function(block) {
+  var statements_predicate_calls = Blockly.JavaScript.statementToCode(block, 'PREDICATE_CALLS');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '(not ' + statements_predicate_calls.trim() + ')';
+};
