@@ -197,7 +197,7 @@ Blockly.Predicates.flyoutCategory = function (workspace) {
     var nameField = Blockly.utils.xml.createElement('field');
     nameField.setAttribute('name', 'NAME');
     nameField.appendChild(Blockly.utils.xml.createTextNode(
-      'predicate_name'));
+      'variable_name'));
     block.appendChild(nameField);
     xmlList.push(block);
   }

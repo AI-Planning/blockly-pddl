@@ -95,13 +95,12 @@ if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
         Blockly.Predicates.flyoutCategory);
 	// workspace.addChangeListener(Blockly.Predicates.mutatorOpenListener);
 }
-// function updateTypesList(event) {
-// 	if (event.type == 'change') {
-// 	  alert('block change event');
-// 	  workspace.removeChangeListener(updateTypesList);
-// 	}
-// }
-// workspace.addChangeListener(updateTypesList);
+function updateTypesList(event) {
+	// if (event.type == Blockly.Events.BLOCK_CREATE || event.type == Blockly.Events.CHANGE || event.type == Blockly.Events.MOVE) {
+		workspace.getToolbox().refreshSelection();
+	// }
+}
+workspace.addChangeListener(updateTypesList);
 
 /**
  * $(document).ready
@@ -126,8 +125,8 @@ function bindEvents() {
 	// Remove the previously attached click event handler attached to the element with id="browse-files"
 	$("#browse-files").unbind('click').on('click', openFilePicker);
 
-	// Attach a new click event handler to the element with id="show-javascript" that will execute the showJavaScript() function every time the element is clicked
-	$("#show-javascript").on('click', showJavaScript);
+	// Attach a new click event handler to the element with id="show-javascript" that will execute the showPDDL() function every time the element is clicked
+	$("#show-javascript").on('click', showPDDL);
 }
 
 
@@ -252,12 +251,12 @@ function download(filename, text) {
 }
 
 /**
- * showJavaScript
- * Generates JavaScript from ther user's blockly program and displays it
+ * showPDDL
+ * Generates PDDL from ther user's blockly program and displays it
  * @private
  */
-function showJavaScript() {
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
+function showPDDL() {
+	var code = Blockly.PDDL.workspaceToCode(workspace);
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
 	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
 	// console.log(code);		// writes the message contained in "code" to the console, useful for testing
