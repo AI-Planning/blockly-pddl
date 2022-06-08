@@ -8,7 +8,7 @@ Blockly.PDDL['pddl_domain'] = function(block) {
 };
 
 Blockly.PDDL['action'] = function(block) {
-  var text_action_name = block.getFieldValue('ACTION_NAME');
+  var text_action_name = block.getFieldValue('NAME');
   var statements_con = Blockly.PDDL.statementToCode(block, 'con');
   var statements_eff = Blockly.PDDL.statementToCode(block, 'eff');
   // TODO: Assemble PDDL into code variable.
@@ -17,7 +17,7 @@ Blockly.PDDL['action'] = function(block) {
 };
 
 Blockly.PDDL['parameter'] = function(block) {
-  var text_param_name = block.getFieldValue('PARAM_NAME');
+  var text_param_name = block.getFieldValue('NAME');
   var text_param_type = block.getFieldValue('PARAM_TYPE');
   // TODO: Assemble PDDL into code variable.
   var code = '...;\n';
