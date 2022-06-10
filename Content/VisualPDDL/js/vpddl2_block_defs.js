@@ -451,7 +451,7 @@ Blockly.Blocks['predicate_call'] = {
     }
 
     var option = {enabled: true};
-    option.text = 'Show corresponding predicate definition';
+    option.text = 'Show corresponding variable definition';
     var name = this.getPredicateCall();
     var workspace = this.workspace;
     option.callback = function() {

@@ -2,8 +2,27 @@ Blockly.PDDL['pddl_domain'] = function(block) {
   var text_domain_name = block.getFieldValue('DOMAIN_NAME');
   var statements_variables = Blockly.PDDL.statementToCode(block, 'VARIABLES');
   var statements_actions = Blockly.PDDL.statementToCode(block, 'ACTIONS');
-  // TODO: Assemble PDDL into code variable.
-  var code = '...;\n';
+  
+  var code = '(define (domain ' + text_domain_name + ')\n';
+
+  // Add requirements
+  code += '(:requirements';
+  code += ' :strips';
+  code += ' :fluents';
+  code += ' :timed-initial-literals';
+  code += ' :typing';
+  code += ' :negative-preconditions';
+  code += ')\n';
+
+  code += statements_variables.trim();
+
+  // Add actions
+  if (statements_actions != '') {
+    code += '\n' + statements_actions.trim();
+  }
+  
+  // End "define"
+  code += '\n)';
   return code;
 };
 
@@ -28,8 +47,19 @@ Blockly.PDDL['predicate_def'] = function(block) {
   var text_var_name = block.getFieldValue('NAME');
   var dropdown_data_type = block.getFieldValue('DATA_TYPE');
   var statements_param_input = Blockly.PDDL.statementToCode(block, 'PARAM_INPUT');
+  
+  var code_predicates = '(:predicates ';
   // TODO: Assemble PDDL into code variable.
-  var code = '...;\n';
+  if ('BOOL' == dropdown_data_type) {
+
+  }
+    
+  var code_functions = '(:functions ';
+    
+  // code_predicates += statements_predicates.trim();
+  code_predicates += ')\n';
+
+  code = code_predicates + code_functions;
   return code;
 };
 
