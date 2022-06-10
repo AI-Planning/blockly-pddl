@@ -129,6 +129,7 @@ Blockly.Blocks['predicate_def'] = {
     this.setColour(300);
  this.setTooltip("");
  this.setHelpUrl("");
+//  this.parameterNamesList_ = [];
  this.parameterTypesList_ = [];
   },
   /**
@@ -146,6 +147,7 @@ Blockly.Blocks['predicate_def'] = {
     var parTypList = this.parameterTypesList_;
     for (var i = 0; i < parTypList.length; i++) {
       var parameter = Blockly.utils.xml.createElement('par');
+      // parameter.setAttribute('parname', )
       parameter.setAttribute('partype', parTypList[i]);
       container.appendChild(parameter);
     }
@@ -220,7 +222,7 @@ Blockly.Blocks['predicate_def'] = {
       if (childParamBlocks != null) {
         for (var i = 0; i < childParamBlocks.length; i++) {
           if (childParamBlocks[i].type == 'parameter')
-            newParamterTypesList.push(childParamBlocks[i].getFieldValue('PARAM_TYPE'));
+            newParamterTypesList.push(childParamBlocks[i].getFieldValue('NAME'));
           if (i > 0 && childParamBlocks[i].type != 'parameter')
             break;
         }
