@@ -216,17 +216,30 @@ Blockly.Blocks['predicate_def'] = {
       return;
     }
     if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_CREATE || event.type == Blockly.Events.BLOCK_MOVE) {
-      var childParamBlocks = this.getDescendants();
-      // console.log(childParamBlocks);
+      // var childParamBlocks = this.getDescendants();
       var newParamterTypesList = [];
-      if (childParamBlocks != null) {
-        for (var i = 0; i < childParamBlocks.length; i++) {
-          if (childParamBlocks[i].type == 'parameter')
-            newParamterTypesList.push(childParamBlocks[i].getFieldValue('NAME'));
-          if (i > 0 && childParamBlocks[i].type != 'parameter')
-            break;
+      var childBlock = this.getInputTargetBlock('PARAM_INPUTS');
+      if (childBlock) {
+        if ('parameter' == childBlock.type)
+        newParamterTypesList.push(childBlock.getFieldValue('NAME'));
+      
+        while (childBlock.nextConnection && childBlock.nextConnection.targetBlock()) {
+          childBlock = childBlock.nextConnection.targetBlock();
+          if ('parameter' == childBlock.type)
+            newParamterTypesList.push(childBlock.getFieldValue('NAME'));
         }
       }
+
+      // console.log(childParamBlocks);
+      // if (childParamBlocks != null) {
+      //   for (var i = 0; i < childParamBlocks.length; i++) {
+      //     if (childParamBlocks[i].type == 'parameter')
+      //       newParamterTypesList.push(childParamBlocks[i].getFieldValue('NAME'));
+      //     if (i > 0 && childParamBlocks[i].type != 'parameter')
+      //       break;
+      //   }
+      // }
+
       this.parameterTypesList_ = newParamterTypesList;
       Blockly.Predicates.mutateCallers(this);
     }
