@@ -26,6 +26,41 @@ goog.require('Blockly.utils.string');
 Blockly.PDDL = new Blockly.Generator('PDDL');
 
 /**
+ * Generate a code string representing the blocks attached to the named
+ * statement input. Indent the code.
+ * This is mainly used in generators. When trying to generate code to evaluate
+ * look at using workspaceToCode or blockToCode.
+ * @param {!Blockly.Block} block The block containing the input.
+ * @param {string} name The name of the input.
+ * @return {string} Generated code or '' if no blocks are connected.
+ */
+ Blockly.PDDL.variablesToCode = function(block, name) {
+  var targetBlock = block.getInputTargetBlock(name);
+  if (!targetBlock)
+    return [];
+  var code = this.blockToCode(targetBlock, true);
+  // Value blocks must return code and order of operations info.
+  // Statement blocks must only return code.
+  if (typeof code != 'string') {
+    throw TypeError('Expecting code from statement block: ' +
+        (targetBlock && targetBlock.type));
+  }
+  if (code) {
+    code = this.prefixLines(/** @type {string} */ (code), this.INDENT);
+  }
+
+  var returnList = [];
+  returnList.push([targetBlock.getFieldValue('DATA_TYPE'), code]);
+  while (targetBlock.nextConnection && targetBlock.nextConnection.targetBlock()) {
+    targetBlock = targetBlock.nextConnection.targetBlock();
+    code = this.blockToCode(targetBlock, true);
+    returnList.push([targetBlock.getFieldValue('DATA_TYPE'), code]);
+  }
+  
+  return returnList;
+};
+
+/**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
  * so bypassing this list is trivial.  This is intended to prevent users from
@@ -235,7 +270,7 @@ Blockly.PDDL.scrub_ = function(block, code, opt_thisOnly) {
     var comment = block.getCommentText();
     if (comment) {
       comment = Blockly.utils.string.wrap(comment, this.COMMENT_WRAP - 3);
-      commentCode += this.prefixLines(comment + '\n', '// ');
+      commentCode += this.prefixLines(comment + '\n', '; ');
     }
     // Collect comments for all value arguments.
     // Don't collect comments for nested statements.
@@ -245,7 +280,7 @@ Blockly.PDDL.scrub_ = function(block, code, opt_thisOnly) {
         if (childBlock) {
           comment = this.allNestedComments(childBlock);
           if (comment) {
-            commentCode += this.prefixLines(comment, '// ');
+            commentCode += this.prefixLines(comment, '; ');
           }
         }
       }
