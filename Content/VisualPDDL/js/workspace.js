@@ -95,12 +95,12 @@ if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
         Blockly.Predicates.flyoutCategory);
 	// workspace.addChangeListener(Blockly.Predicates.mutatorOpenListener);
 }
-function updateTypesList(event) {
-	// if (event.type == Blockly.Events.BLOCK_CREATE || event.type == Blockly.Events.CHANGE || event.type == Blockly.Events.MOVE) {
-		workspace.getToolbox().refreshSelection();
-	// }
+
+// The toolbox/flyouts refresh when they are opened. Since autoClose is disabled, we refresh it on every event.
+function refreshToolbox(event) {
+	workspace.getToolbox().refreshSelection();
 }
-workspace.addChangeListener(updateTypesList);
+workspace.addChangeListener(refreshToolbox);
 
 /**
  * $(document).ready
