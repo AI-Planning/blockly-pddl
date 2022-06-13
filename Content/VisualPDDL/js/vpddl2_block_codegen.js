@@ -16,14 +16,14 @@ Blockly.PDDL['pddl_domain'] = function(block) {
 
   // Add types
   code += '(:types ';
-  code += ';; TODO';
+  code += '\n;; TODO\n';
   code += ')\n';
 
   // Add predicates and functions
   var has_predicates = false;
-  var code_predicates = '(predicates: \n';
+  var code_predicates = '(:predicates \n';
   var has_functions = false;
-  var code_functions = '(functions: \n';
+  var code_functions = '(:functions \n';
   for (var i = 0; i < statements_variables.length; i++) {
     if ('BOOL' == statements_variables[i][0]) {
       has_predicates = true;
@@ -61,7 +61,7 @@ Blockly.PDDL['action'] = function(block) {
   code += text_name;
 
   // code += '\n:parameters (' + statements_par.trim() + ')';
-  code += '\n:parameters (' + ';; TODO' + ')';
+  code += '\n:parameters (' + '\n;; TODO\n' + ')';
 
   statements_con.trim();
   code += '\n:precondition ' + statements_con.trim();
