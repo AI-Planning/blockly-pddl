@@ -16,17 +16,31 @@ Blockly.PDDL['pddl_domain'] = function(block) {
 
   // Add types
   code += '(:types ';
+  var parameters = [];
   parameter_blocks = block.workspace.getBlocksByType('parameter');
   for (var i = 0; i < parameter_blocks.length; i++) {
     if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
       continue;
-    var param_code = parameter_blocks[i].getFieldValue('PARAM_TYPE') + " - object";
-    if (!code.includes(param_code)) {
-      if (!code.endsWith('(:types '))
-        code += '\n\t';
-      code += param_code;
-    }
+    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARAM_TYPE'), 'object']))
+      parameters.push([parameter_blocks[i].getFieldValue('PARAM_TYPE'), 'object']);
   }
+  parameter_blocks = block.workspace.getBlocksByType('parameter_nested_type');
+  for (var i = 0; i < parameter_blocks.length; i++) {
+    if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
+      continue;
+    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object']))
+      parameters.push([parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object']);
+    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE')]))
+      parameters.push([parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE')]);
+  }
+
+  if (parameters.length >= 1) {
+    code += parameters[0][0] + " - " + parameters[0][1];
+  }
+  for (var i = 1; i < parameters.length; i++) {
+    code += "\n\t" + parameters[i][0] + " - " + parameters[i][1];
+  }
+
   code += ')\n';
 
   // Add predicates and functions
@@ -89,6 +103,15 @@ Blockly.PDDL['parameter'] = function(block) {
   var code = ' ?' + text_name + ' - ' + text_param_type;
   return code;
 };
+
+Blockly.PDDL['parameter_nested_type'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_param_type = block.getFieldValue('PARAM_TYPE');
+  // var text_parent_type = block.getFieldValue('PARENT_TYPE');
+  
+  var code = ' ?' + text_name + ' - ' + text_param_type;
+  return code;
+}
 
 Blockly.PDDL['predicate_def'] = function(block) {
   var text_name = block.getFieldValue('NAME');

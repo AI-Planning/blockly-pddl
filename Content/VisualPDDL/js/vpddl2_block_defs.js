@@ -86,11 +86,11 @@ Blockly.Blocks['parameter'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldTextInput("parameter_name"), "NAME")
         .appendField(new Blockly.FieldTextInput("type"), "PARAM_TYPE");
-    this.setPreviousStatement(true, "parameter");
-    this.setNextStatement(true, "parameter");
+    this.setPreviousStatement(true, ["parameter", "parameter_nested_type"]);
+    this.setNextStatement(true, ["parameter", "parameter_nested_type"]);
     this.setColour(240);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setTooltip("");
+    this.setHelpUrl("");
   },
 
   // onchange: function(event) {
@@ -110,6 +110,21 @@ Blockly.Blocks['parameter'] = {
   //       this.setWarningText(null);
   //   }
   // },
+};
+
+Blockly.Blocks['parameter_nested_type'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("parameter_name"), "NAME")
+        .appendField(new Blockly.FieldTextInput("type"), "PARAM_TYPE")
+        .appendField("-")
+        .appendField(new Blockly.FieldTextInput("parent"), "PARENT_TYPE");
+    this.setPreviousStatement(true, ["parameter", "parameter_nested_type"]);
+    this.setNextStatement(true, ["parameter", "parameter_nested_type"]);
+    this.setColour(240);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
 };
 
 Blockly.Blocks['predicate_def'] = {
@@ -225,7 +240,7 @@ Blockly.Blocks['predicate_def'] = {
       
         while (childBlock.nextConnection && childBlock.nextConnection.targetBlock()) {
           childBlock = childBlock.nextConnection.targetBlock();
-          if ('parameter' == childBlock.type)
+          if ('parameter' === childBlock.type || 'parameter_nested_type' === childBlock.type)
             newParamterTypesList.push(childBlock.getFieldValue('NAME'));
         }
       }
