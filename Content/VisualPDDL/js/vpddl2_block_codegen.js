@@ -16,7 +16,15 @@ Blockly.PDDL['pddl_domain'] = function(block) {
 
   // Add types
   code += '(:types ';
-  code += '\n;; TODO\n';
+  parameter_blocks = block.workspace.getBlocksByType('parameter');
+  for (var i = 0; i < parameter_blocks.length; i++) {
+    var param_code = parameter_blocks[i].getFieldValue('PARAM_TYPE') + " - object";
+    if (!code.includes(param_code)) {
+      if (!code.endsWith('(:types '))
+        code += '\n\t';
+      code += param_code;
+    }
+  }
   code += ')\n';
 
   // Add predicates and functions
