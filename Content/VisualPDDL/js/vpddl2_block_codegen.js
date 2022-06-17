@@ -18,6 +18,8 @@ Blockly.PDDL['pddl_domain'] = function(block) {
   code += '(:types ';
   parameter_blocks = block.workspace.getBlocksByType('parameter');
   for (var i = 0; i < parameter_blocks.length; i++) {
+    if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
+      continue;
     var param_code = parameter_blocks[i].getFieldValue('PARAM_TYPE') + " - object";
     if (!code.includes(param_code)) {
       if (!code.endsWith('(:types '))
@@ -56,7 +58,7 @@ Blockly.PDDL['pddl_domain'] = function(block) {
   }
   
   // End "define"
-  code += '\n)';
+  code += '\n)\n\n';
   return code;
 };
 

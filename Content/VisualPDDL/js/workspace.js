@@ -256,7 +256,12 @@ function download(filename, text) {
  * @private
  */
 function showPDDL() {
-	var code = Blockly.PDDL.workspaceToCode(workspace);
+	var code = "";
+	Blockly.PDDL.init(workspace);
+	var domain_blocks = workspace.getBlocksByType('pddl_domain');
+	for (var i = 0; i < domain_blocks.length; i++) {
+		code += Blockly.PDDL.blockToCode(domain_blocks[i], false);
+	}
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
 	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
 	// console.log(code);		// writes the message contained in "code" to the console, useful for testing
