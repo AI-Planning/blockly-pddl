@@ -84,8 +84,39 @@ Blockly.PDDL['action'] = function(block) {
   var code = '(:action ';
   code += text_name;
 
-  // code += '\n:parameters (' + statements_par.trim() + ')';
-  code += '\n:parameters (' + '\n;; TODO\n' + ')';
+  var parameter_types_list = [];
+  var parameter_names_lists = [];
+  child_blocks = block.getDescendants(true);
+  for (var i = 0; i < child_blocks.length; i++) {
+    console.log(child_blocks[i].getFieldValue('NAME'));
+    if (block.getNextBlock() === child_blocks[i])
+      break;
+    if ('predicate_call' === child_blocks[i].type) {
+      for (var j = 0; j < child_blocks[i].parameterTypesList_.length; j++) {
+        if (!parameter_types_list.includes(child_blocks[i].parameterTypesList_[j])) {
+          parameter_types_list.push(child_blocks[i].parameterTypesList_[j]);
+          parameter_names_lists.push([child_blocks[i].getInput('TOPROW').fieldRow[j+1].getValue()]);
+        }
+        else {
+          if (!parameter_names_lists[parameter_types_list.indexOf(child_blocks[i].parameterTypesList_[j])].includes(child_blocks[i].getInput('TOPROW').fieldRow[j+1].getValue())) {
+            parameter_names_lists[parameter_types_list.indexOf(child_blocks[i].parameterTypesList_[j])].push(child_blocks[i].getInput('TOPROW').fieldRow[j+1].getValue());
+          }
+        }
+      }
+    }
+  }
+
+  code += "\n:parameters (";
+  for (var i = 0; i < parameter_types_list.length; i++) {
+    if (!code.endsWith(":parameters (")) {
+      code += "\n\t\t";
+    }
+    for (var j = 0; j < parameter_names_lists[i].length; j++) {
+      code += " ?" + parameter_names_lists[i][j];
+    }
+    code += " - " + parameter_types_list[i];
+  }
+  code += ")";
 
   statements_con.trim();
   code += '\n:precondition ' + statements_con.trim();

@@ -144,7 +144,7 @@ Blockly.Blocks['predicate_def'] = {
     this.setColour(300);
  this.setTooltip("");
  this.setHelpUrl("");
-//  this.parameterNamesList_ = [];
+ this.parameterNamesList_ = [];
  this.parameterTypesList_ = [];
   },
   /**
@@ -159,11 +159,11 @@ Blockly.Blocks['predicate_def'] = {
     if (opt_paramIds) {
       container.setAttribute('name', this.getFieldValue('NAME'));
     }
-    var parTypList = this.parameterTypesList_;
-    for (var i = 0; i < parTypList.length; i++) {
+    // var parNamesList = this.parameterNamesList_;
+    for (var i = 0; i < this.parameterNamesList_.length; i++) {
       var parameter = Blockly.utils.xml.createElement('par');
-      // parameter.setAttribute('parname', )
-      parameter.setAttribute('partype', parTypList[i]);
+      parameter.setAttribute('parname', this.parameterNamesList_[i])
+      parameter.setAttribute('partype', this.parameterTypesList_[i]);
       container.appendChild(parameter);
     }
 
@@ -175,11 +175,13 @@ Blockly.Blocks['predicate_def'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
+    this.parameterNamesList_ = [];
     this.parameterTypesList_ = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
       if (childNode.nodeName.toLowerCase() == 'par') {
-        var parName = childNode.getAttribute('partype');
-        this.parameterTypesList_.push(parName);
+        // var parName = childNode.getAttribute('partype');
+        this.parameterNamesList_.push(childNode.getAttribute('parname'));
+        this.parameterTypesList_.push(childNode.getAttribute('partype'));
       }
     }
   },
@@ -191,7 +193,7 @@ Blockly.Blocks['predicate_def'] = {
    * @this {Blockly.Block}
    */
   getPredicateDef: function() {
-    return [this.getFieldValue('NAME'), this.parameterTypesList_, false];
+    return [this.getFieldValue('NAME'), this.parameterNamesList_, false, this.parameterTypesList_];
   },
   /**
    * Add custom menu options to this block's context menu.
@@ -210,8 +212,8 @@ Blockly.Blocks['predicate_def'] = {
     xmlMutation.setAttribute('name', name);
     for (var i = 0; i < this.parameterTypesList_.length; i++) {
       var xmlArg = Blockly.utils.xml.createElement('par');
+      xmlArg.setAttribute('parname', this.parameterNamesList_[i]);
       xmlArg.setAttribute('partype', this.parameterTypesList_[i]);
-      // xmlArg.setAttribute('parvalue', 'select');
       xmlMutation.appendChild(xmlArg);
     }
     var xmlBlock = Blockly.utils.xml.createElement('block');
@@ -231,30 +233,25 @@ Blockly.Blocks['predicate_def'] = {
       return;
     }
     if (event.type == Blockly.Events.BLOCK_CHANGE || event.type == Blockly.Events.BLOCK_CREATE || event.type == Blockly.Events.BLOCK_MOVE) {
-      // var childParamBlocks = this.getDescendants();
+      var newParamterNamesList = [];
       var newParamterTypesList = [];
       var childBlock = this.getInputTargetBlock('PARAM_INPUTS');
       if (childBlock) {
-        if ('parameter' == childBlock.type)
-        newParamterTypesList.push(childBlock.getFieldValue('NAME'));
+        if ('parameter' == childBlock.type) {
+          newParamterNamesList.push(childBlock.getFieldValue('NAME'));
+          newParamterTypesList.push(childBlock.getFieldValue('PARAM_TYPE'));
+        }
       
         while (childBlock.nextConnection && childBlock.nextConnection.targetBlock()) {
           childBlock = childBlock.nextConnection.targetBlock();
-          if ('parameter' === childBlock.type || 'parameter_nested_type' === childBlock.type)
-            newParamterTypesList.push(childBlock.getFieldValue('NAME'));
+          if ('parameter' === childBlock.type || 'parameter_nested_type' === childBlock.type) {
+            newParamterNamesList.push(childBlock.getFieldValue('NAME'));
+            newParamterTypesList.push(childBlock.getFieldValue('PARAM_TYPE'));
+          }
         }
       }
 
-      // console.log(childParamBlocks);
-      // if (childParamBlocks != null) {
-      //   for (var i = 0; i < childParamBlocks.length; i++) {
-      //     if (childParamBlocks[i].type == 'parameter')
-      //       newParamterTypesList.push(childParamBlocks[i].getFieldValue('NAME'));
-      //     if (i > 0 && childParamBlocks[i].type != 'parameter')
-      //       break;
-      //   }
-      // }
-
+      this.parameterNamesList_ = newParamterNamesList;
       this.parameterTypesList_ = newParamterTypesList;
       Blockly.Predicates.mutateCallers(this);
     }
@@ -272,8 +269,8 @@ Blockly.Blocks['predicate_call'] = {
     this.setColour(300);
 //  this.setTooltip("");
  this.setHelpUrl("");
- this.parameters_ = [];
  this.parameterTypesList_ = [];
+ this.parameterNamesList_ = [];
  this.previousEnabledState_ = true;
   },
 
@@ -309,18 +306,15 @@ Blockly.Blocks['predicate_call'] = {
    * @private
    * @this {Blockly.Block}
    */
-  setPredicateParameters_: function(paramNames, paramValues) {
+  setPredicateParameters_: function(paramTypes, paramNames) {
     // Switch off rendering while the block is rebuilt.
     // var savedRendered = this.rendered;
     // this.rendered = false;
-    this.parameterTypesList_ = paramNames;
-    // console.log(this.parameterTypesList_);
-    this.updateParameterInputs(paramNames);
-    for (var i = 0; i < paramValues.length; i++) {
-      var fieldName = 'paramField' + i + ';' + paramNames[i];
-      if (!this.isInFlyout)
-        this.getField(fieldName).setValue(paramValues[i]);
-    }
+    this.parameterNamesList_ = paramNames;
+    this.parameterTypesList_ = paramTypes;
+    // console.log(this.parameterNamesList_);
+    this.updateParameterInputs(paramTypes, paramNames);
+
     // Restore rendering and show the changes.
     // this.rendered = savedRendered;
     // if (this.rendered) {
@@ -340,7 +334,7 @@ Blockly.Blocks['predicate_call'] = {
       var parameter = Blockly.utils.xml.createElement('par');
       parameter.setAttribute('partype', this.parameterTypesList_[i]);
       var fieldName = 'paramField' + i + ';' + this.parameterTypesList_[i];
-      parameter.setAttribute('parvalue', this.getFieldValue(fieldName));
+      parameter.setAttribute('parname', this.getFieldValue(fieldName));
       container.appendChild(parameter);
     }
     return container;
@@ -355,17 +349,14 @@ Blockly.Blocks['predicate_call'] = {
     var name = xmlElement.getAttribute('name');
     this.renamePredicate(this.getPredicateCall(), name);
     var parTypes = [];
-    var parValues = [];
+    var parNames = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
       if (childNode.nodeName.toLowerCase() == 'par') {
         parTypes.push(childNode.getAttribute('partype'));
-        parValues.push(childNode.getAttribute('parvalue'));
+        parNames.push(childNode.getAttribute('parname'));
       }
     }
-    for (var i = 0; i < parValues.length; i++) {
-      this.parameters_[i] = [parValues[i], parValues[i]];
-    }
-    this.setPredicateParameters_(parTypes, parValues);
+    this.setPredicateParameters_(parTypes, parNames);
   },
 
   /**
@@ -492,13 +483,13 @@ Blockly.Blocks['predicate_call'] = {
     options.push(option);
   },
 
-  updateParameterInputs: function(parameterTypesList){
+  updateParameterInputs: function(paramTypes, parameterNamesList){
     var inputFields = this.getInput('TOPROW').fieldRow;
     var numParameterFields = inputFields.length - 1;
-    for (i = 0; i < parameterTypesList.length; i++) {
-      var fieldName = 'paramField' + i + ';' + parameterTypesList[i];
+    for (i = 0; i < parameterNamesList.length; i++) {
+      var fieldName = 'paramField' + i + ';' + paramTypes[i];
       if (i >= numParameterFields) {
-        var newTextInput = new Blockly.FieldTextInput(parameterTypesList[i]);
+        var newTextInput = new Blockly.FieldTextInput(parameterNamesList[i]);
         // console.log(fieldName);
         // Insert new field
         this.getInput('TOPROW').insertFieldAt(i+1, newTextInput, fieldName);
@@ -508,7 +499,7 @@ Blockly.Blocks['predicate_call'] = {
         if (inputFields[i+1].name == 'NAME'){
           continue;
         }
-        else if (inputFields[i+1].name.split(";")[1] == parameterTypesList[i]) {
+        else if (inputFields[i+1].name.split(";")[1] == paramTypes[i]) {
           continue;
         }
         else {
@@ -516,8 +507,8 @@ Blockly.Blocks['predicate_call'] = {
         }
       }
     }
-    if (parameterTypesList.length < numParameterFields) {
-      for (var i = numParameterFields; i > parameterTypesList.length; i--) {
+    if (parameterNamesList.length < numParameterFields) {
+      for (var i = numParameterFields; i > parameterNamesList.length; i--) {
         this.getInput('TOPROW').removeField(inputFields[i].name, true);
       }
     }
