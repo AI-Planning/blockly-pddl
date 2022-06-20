@@ -16,30 +16,52 @@ Blockly.PDDL['pddl_domain'] = function(block) {
 
   // Add types
   code += '(:types ';
-  var parameters = [];
+  var parameters = new Map();
   parameter_blocks = block.workspace.getBlocksByType('parameter');
   for (var i = 0; i < parameter_blocks.length; i++) {
     if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
       continue;
-    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARAM_TYPE'), 'object']))
-      parameters.push([parameter_blocks[i].getFieldValue('PARAM_TYPE'), 'object']);
+    if ('object' === parameter_blocks[i].getFieldValue('PARAM_TYPE'))
+      continue;
+    if (!parameters.has(parameter_blocks[i].getFieldValue('PARAM_TYPE')))
+        parameters.set(parameter_blocks[i].getFieldValue('PARAM_TYPE'), 'object');
   }
   parameter_blocks = block.workspace.getBlocksByType('parameter_nested_type');
   for (var i = 0; i < parameter_blocks.length; i++) {
     if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
       continue;
-    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object']))
-      parameters.push([parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object']);
-    if (!parameters.includes([parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE')]))
-      parameters.push([parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE')]);
+    if ('object' === parameter_blocks[i].getFieldValue('PARENT_TYPE'))
+      continue;
+      
+    if (!parameters.has(parameter_blocks[i].getFieldValue('PARENT_TYPE'))) {
+      parameters.set(parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object');
+    }
+    if (!parameters.has(parameter_blocks[i].getFieldValue('PARAM_TYPE'))) {
+      parameters.set(parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE'));
+    }
+    else {
+      // Handle the condition where the PARENT_TYPE of a parameter has been defined after it has been defined as a PARENT_TYPE itself, e.g.:
+      // c - b
+      // b - a
+      if ('object' === parameters.get(parameter_blocks[i].getFieldValue('PARAM_TYPE')))
+        parameters.set(parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE'));
+    }
   }
 
-  if (parameters.length >= 1) {
-    code += parameters[0][0] + " - " + parameters[0][1];
+  function assembleTypesCode(value, key, map) {
+    code += "\n\t" + key + " - " + value;
   }
-  for (var i = 1; i < parameters.length; i++) {
-    code += "\n\t" + parameters[i][0] + " - " + parameters[i][1];
-  }
+  
+  parameters.forEach(assembleTypesCode);
+  code.trim();
+
+  console.log(parameters);
+  // if (parameters.length >= 1) {
+  //   code += parameters[0][0] + " - " + parameters[0][1];
+  // }
+  // for (var i = 1; i < parameters.length; i++) {
+  //   code += "\n\t" + parameters[i][0] + " - " + parameters[i][1];
+  // }
 
   code += ')\n';
 
