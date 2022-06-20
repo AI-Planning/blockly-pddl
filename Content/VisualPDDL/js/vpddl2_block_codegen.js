@@ -55,14 +55,6 @@ Blockly.PDDL['pddl_domain'] = function(block) {
   parameters.forEach(assembleTypesCode);
   code.trim();
 
-  console.log(parameters);
-  // if (parameters.length >= 1) {
-  //   code += parameters[0][0] + " - " + parameters[0][1];
-  // }
-  // for (var i = 1; i < parameters.length; i++) {
-  //   code += "\n\t" + parameters[i][0] + " - " + parameters[i][1];
-  // }
-
   code += ')\n';
 
   // Add predicates and functions
@@ -110,7 +102,6 @@ Blockly.PDDL['action'] = function(block) {
   var parameter_names_lists = [];
   child_blocks = block.getDescendants(true);
   for (var i = 0; i < child_blocks.length; i++) {
-    console.log(child_blocks[i].getFieldValue('NAME'));
     if (block.getNextBlock() === child_blocks[i])
       break;
     if ('predicate_call' === child_blocks[i].type) {
