@@ -30,8 +30,12 @@ Blockly.PDDL['pddl_domain'] = function(block) {
   for (var i = 0; i < parameter_blocks.length; i++) {
     if (!(block.getRootBlock() === parameter_blocks[i].getRootBlock()))
       continue;
-    if ('object' === parameter_blocks[i].getFieldValue('PARENT_TYPE'))
+    if ('object' === parameter_blocks[i].getFieldValue('PARENT_TYPE')) {
+      if (!parameters.has(parameter_blocks[i].getFieldValue('PARAM_TYPE'))) {
+        parameters.set(parameter_blocks[i].getFieldValue('PARAM_TYPE'), parameter_blocks[i].getFieldValue('PARENT_TYPE'));
+      }
       continue;
+    }
       
     if (!parameters.has(parameter_blocks[i].getFieldValue('PARENT_TYPE'))) {
       parameters.set(parameter_blocks[i].getFieldValue('PARENT_TYPE'), 'object');
