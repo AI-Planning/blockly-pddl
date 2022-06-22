@@ -197,7 +197,7 @@ Blockly.Predicates.flyoutCategory = function (workspace) {
     var nameField = Blockly.utils.xml.createElement('field');
     nameField.setAttribute('name', 'NAME');
     nameField.appendChild(Blockly.utils.xml.createTextNode(
-      'predicate_name'));
+      'variable_name'));
     block.appendChild(nameField);
     xmlList.push(block);
   }
@@ -209,7 +209,7 @@ Blockly.Predicates.flyoutCategory = function (workspace) {
   function populatePredicates(predicateList, templateName) {
     for (var i = 0; i < predicateList.length; i++) {
       var name = predicateList[i][0];
-      var params = predicateList[i][1];
+      var params = predicateList[i][3];
       // <block type="predicate_call" gap="16">
       //   <mutation name="do something">
       //     <par name="x"></par>
@@ -223,8 +223,8 @@ Blockly.Predicates.flyoutCategory = function (workspace) {
       block.appendChild(mutation);
       for (var j = 0; j < params.length; j++) {
         var par = Blockly.utils.xml.createElement('par');
+        par.setAttribute('parname', predicateList[i][1][j]);
         par.setAttribute('partype', params[j]);
-        par.setAttribute('parvalue', 'select');
         mutation.appendChild(par);
       }
       xmlList.push(block);

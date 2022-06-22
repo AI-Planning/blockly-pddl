@@ -26,9 +26,10 @@
 	<script type="text/javascript" src="Content/Blockly/js/blockly_uncompressed.js"></script>
 	<!-- <script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script> -->
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_predicates.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_defs.js"></script>
-	<script type="text/javascript" src="generators/javascript.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_codegen.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl2_block_defs.js"></script>
+	<script type="text/javascript" src="Content/VisualPDDL/js/pddl.js"></script>
+	<!-- <script type="text/javascript" src="generators/javascript.js"></script> -->
+	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl2_block_codegen.js"></script>
 	<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
 	<!-- <script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script> -->
 
@@ -116,23 +117,20 @@
 	<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none" class="list-group">
 		<category name="PDDL Core" colour="#5b67a5" class="list-group-item">
 			<block type="pddl_domain">
-				<field name="NAME">domain_name</field>
-				<field name="STRIPS">TRUE</field>
-				<field name="FLUENTS">TRUE</field>
-				<field name="TIMED_LITERALS">TRUE</field>
-			</block>
-			<block type="action">
-				<field name="NAME">action_name</field>
-			</block>
-			<block type="type">
-				<field name="NAME">type_name</field>
-				<field name="parent_list">object</field>
+				<field name="DOMAIN_NAME">domain_name</field>
 			  </block>
-			<block type="parameter">
+			  <block type="action">
+				<field name="NAME">action_name</field>
+			  </block>
+			  <block type="parameter">
 				<field name="NAME">parameter_name</field>
-				<field name="type">object</field>
-			</block>
-			<!-- <block type="not"></block> -->
+				<field name="PARAM_TYPE">type</field>
+			  </block>
+			  <block type="parameter_nested_type">
+				<field name="NAME">parameter_name</field>
+				<field name="PARAM_TYPE">type</field>
+				<field name="PARENT_TYPE">parent</field>
+			  </block>
 		</category>
 		<category name="PDDL Logic" colour="#5ba55b">
 			<block type="not"></block>
@@ -140,7 +138,7 @@
 			  <field name="LOGIC_OPERATION">AND</field>
 			</block>
 		</category>
-		<category name="PDDL Predicates" colour="#995ba5" custom="PREDICATES"></category>
+		<category name="PDDL Variables" colour="#995ba5" custom="PREDICATES"></category>
 	</xml>
 
 	<div id="toast"></div>
