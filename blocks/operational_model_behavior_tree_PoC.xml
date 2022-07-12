@@ -789,7 +789,8 @@
         <field name="HUE">150</field>
       </block>
     </value>
-  </block><block type="factory_base" id="=gu21?lVsQZUld#HASc?" deletable="false" movable="false" x="10" y="10">
+  </block>
+	<block type="factory_base" id="=gu21?lVsQZUld#HASc?" deletable="false" movable="false" x="10" y="10">
     <mutation connections="BOTH"></mutation>
     <field name="NAME">Act</field>
     <field name="INLINE">AUTO</field>
@@ -838,4 +839,154 @@
         <field name="HUE">345</field>
       </block>
     </value>
-  </block></xml>
+  </block>
+	<block type="factory_base" id="C71eeM34YccT84S|cw)q" deletable="false" movable="false" x="10" y="10">
+		<mutation connections="NONE"/>
+		<field name="NAME">User Object</field>
+		<field name="INLINE">EXT</field>
+		<field name="CONNECTIONS">NONE</field>
+		<statement name="INPUTS">
+			<block type="input_statement" id="q{L(aZkKm)tg0shCSG+0">
+				<field name="INPUTNAME">input_name</field>
+				<field name="ALIGN">LEFT</field>
+				<statement name="FIELDS">
+					<block type="field_input" id="{:gu3NA.y8Y[rUnE{b(R">
+						<field name="TEXT">Name</field>
+						<field name="FIELDNAME">var_name</field>
+					</block>
+				</statement>
+				<value name="TYPE">
+					<shadow type="type_null" id=",Kb:T)8!f~K!dNDrc}EX"/>
+					<block type="type_string" id="){6oS-z8}%T:L?W^5gaH"/>
+				</value>
+				<next>
+					<block type="input_value" id="c^uh()2~L4-HieBg$H=[">
+						<field name="INPUTNAME">input_age</field>
+						<field name="ALIGN">LEFT</field>
+						<statement name="FIELDS">
+							<block type="field_input" id="}~b|Gc6J_un~i))=l!)N">
+								<field name="TEXT">Age</field>
+								<field name="FIELDNAME">var_age</field>
+							</block>
+						</statement>
+						<value name="TYPE">
+							<shadow type="type_null" id="BRfwAft!F9S2nSg|`%a3"/>
+							<block type="type_number" id="M~Q!t[UNN7aUIik:DXUy"/>
+						</value>
+						<next>
+							<block type="input_statement" id="`_ii:$/lWD8Mic+/GVlm">
+								<field name="INPUTNAME">input_role</field>
+								<field name="ALIGN">LEFT</field>
+								<statement name="FIELDS">
+									<block type="field_dropdown" id="1Xx8T5b@j9=(`$Df(#Oc">
+										<mutation options="["text=""","text=""","text="""]"/>
+										<field name="FIELDNAME">Role</field>
+										<field name="USER0">Admin</field>
+										<field name="CPU0">var_admin</field>
+										<field name="USER1">User</field>
+										<field name="CPU1">var_user</field>
+										<field name="USER2">Developer</field>
+										<field name="CPU2">var_dev</field>
+									</block>
+								</statement>
+								<value name="TYPE">
+									<shadow type="type_null" id="slyik{k!fQ[K/D9_)i@y"/>
+									<block type="type_string" id=";l)#I2,o9c3vyu;zfqqB"/>
+								</value>
+								<next>
+									<block type="input_value" id="5,e3RDjGUSJ*.r{$~tUI">
+										<field name="INPUTNAME">user_id</field>
+										<field name="ALIGN">LEFT</field>
+										<statement name="FIELDS">
+											<block type="field_input" id="r#UStMR@V8|P.##o2}$E">
+												<field name="TEXT">User Id</field>
+												<field name="FIELDNAME">var_user_id</field>
+											</block>
+										</statement>
+										<value name="TYPE">
+											<shadow type="type_null" id="t7a,v887hoS!6y^,8Jf0"/>
+											<block type="type_number" id="(KO%ELIKlCv#Gx(uHX~b"/>
+										</value>
+										<next>
+											<block type="input_statement" id="YgUJiq}(MWx2doVN2#{G">
+												<field name="INPUTNAME">input_manager</field>
+												<field name="ALIGN">LEFT</field>
+												<statement name="FIELDS">
+													<block type="field_input" id="#p_^KRi{QdE/a]rJK@H3">
+														<field name="TEXT">Manger</field>
+														<field name="FIELDNAME">var_manager</field>
+													</block>
+												</statement>
+												<value name="TYPE">
+													<shadow type="type_null" id="ynusGJng3a.[@`Z-WyOW"/>
+													<block type="type_group" id="a6vqYH=@VnvF5oy5k2Gj">
+														<mutation types="2"/>
+														<value name="TYPE0">
+															<block type="type_string" id="cjm@s/imh-G{h}dk*|,F"/>
+														</value>
+														<value name="TYPE1">
+															<block type="type_list" id="px:I/mHrSOp14,ut7#N9"/>
+														</value>
+													</block>
+												</value>
+												<next>
+													<block type="input_statement" id="CiU]4RHuMSNM_-#Mn|0(">
+														<field name="INPUTNAME">input_profile_photo</field>
+														<field name="ALIGN">LEFT</field>
+														<statement name="FIELDS">
+															<block type="field_input" id="UPl6rRw#`l]49LK_{J@c">
+																<field name="TEXT">Profile Photo</field>
+																<field name="FIELDNAME">var_image_address</field>
+																<next>
+																	<block type="field_image" id="=`U$2{/OLM^H^O{5G/2,">
+																		<field name="SRC">https://www.gstatic.com/codesite/ph/images/star_on.gif</field>
+																		<field name="WIDTH">15</field>
+																		<field name="HEIGHT">15</field>
+																		<field name="ALT">*</field>
+																		<field name="FLIP_RTL">FALSE</field>
+																		<next>
+																			<block type="field_colour" id="EE0GCD~cl+18rdYAV]g-">
+																				<field name="COLOUR">#ff0000</field>
+																				<field name="FIELDNAME">NAME</field>
+																			</block>
+																		</next>
+																	</block>
+																</next>
+															</block>
+														</statement>
+														<value name="TYPE">
+															<shadow type="type_null" id=")|f~6UMdxsh^[Ea0@tAM"/>
+															<block type="type_other" id="d{|oL8P8so^WZ^A.FLKF">
+																<field name="TYPE">Image address</field>
+															</block>
+														</value>
+													</block>
+												</next>
+											</block>
+										</next>
+									</block>
+								</next>
+							</block>
+						</next>
+					</block>
+				</next>
+			</block>
+		</statement>
+		<value name="TOOLTIP">
+			<block type="text" id="Rkt=:ZZz,6%T9)Okf2c7" deletable="false" movable="false">
+				<field name="TEXT"/>
+			</block>
+		</value>
+		<value name="HELPURL">
+			<block type="text" id="vbk^U|e_?+zC%vH$uT;l" deletable="false" movable="false">
+				<field name="TEXT"/>
+			</block>
+		</value>
+		<value name="COLOUR">
+			<block type="colour_hue" id="5^$D}S.r*CD7U1JdYJRB">
+				<mutation colour="#5b67a5"/>
+				<field name="HUE">230</field>
+			</block>
+		</value>
+	</block>
+</xml>
