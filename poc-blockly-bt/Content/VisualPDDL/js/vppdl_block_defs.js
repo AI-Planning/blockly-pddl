@@ -819,3 +819,21 @@ Blockly.Blocks['not'] = {
  this.setHelpUrl("");
   }
 };
+
+
+Blockly.Blocks['composite'] = {
+  init: function() {
+    this.appendValueInput("name")
+        .setCheck("String")
+        .appendField("Name");
+    this.appendValueInput("memory")
+        .setCheck("Boolean")
+        .appendField("Memory");
+    this.appendValueInput("children")
+        .setCheck("Node")
+        .appendField("Children");
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

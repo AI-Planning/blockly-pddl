@@ -123,3 +123,12 @@ Blockly.JavaScript['not'] = function(block) {
   var code = '(not ' + statements_predicate_calls.trim() + ')';
   return code;
 };
+
+Blockly.JavaScript['composite'] = function(block) {
+  var value_name = Blockly.JavaScript.valueToCode(block, 'name', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_memory = Blockly.JavaScript.valueToCode(block, 'memory', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_children = Blockly.JavaScript.valueToCode(block, 'children', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...;\n';
+  return code;
+};
