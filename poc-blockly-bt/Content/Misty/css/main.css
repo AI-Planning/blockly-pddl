@@ -16,7 +16,7 @@ label {
 }
 
 .nav-item {
-	font-family: ‘Basis Grotesque Pro Bold’, sans-serif;
+	font-family: ï¿½Basis Grotesque Pro Boldï¿½, sans-serif;
 	font-weight: 400;
 	text-align:left;
 }
@@ -44,12 +44,12 @@ img.navbar-brand {
 }
 
 
-#show-javascript, #export-session, #abort-script, #run-script, #browse-files, #help, #display-picture-button {
+#show-python, #export-session, #abort-script, #run-script, #browse-files, #help, #display-picture-button {
 	text-decoration:none;
 	color: lightgray;
 }
 
-#show-javascript:hover, #export-session:hover, #abort-script:hover, #run-script:hover, #browse-files:hover, #help:hover, #display-picture-button:hover {
+#show-pythom:hover, #export-session:hover, #abort-script:hover, #run-script:hover, #browse-files:hover, #help:hover, #display-picture-button:hover {
 	color: whitesmoke;
 }
 
@@ -74,7 +74,7 @@ button#connect-to-robot.btn.btn-outline-light.btn-outline-light:not(:disabled):n
 	height: 100%;
 }
 
-a#show-javascript.disabled, a#export-session.disabled, a#abort-script.disabled, a#run-script.disabled, a#browse-files.disabled, a#help.disabled {
+a#show-python.disabled, a#export-session.disabled, a#abort-script.disabled, a#run-script.disabled, a#browse-files.disabled, a#help.disabled {
 	/* Make the disabled links grayish*/
 	color: rgba(255,255,255,.5);
 	/* And disable the pointer events */
@@ -132,18 +132,18 @@ a#show-javascript.disabled, a#export-session.disabled, a#abort-script.disabled, 
 }
 
 @font-face {
-	font-family: ‘Basis-Grotesque-Regular’;
+	font-family: ï¿½Basis-Grotesque-Regularï¿½;
 	src: url(/Content/fonts/basis-grotesque-regular.woff2) format("woff2"),
-		url(/Content/fonts/basis-grotesque-regular.woff) format(“woff”),
-		url(/Content/fonts/basis-grotesque-regular.ttf”) format(“truetype”)
+		url(/Content/fonts/basis-grotesque-regular.woff) format(ï¿½woffï¿½),
+		url(/Content/fonts/basis-grotesque-regular.ttfï¿½) format(ï¿½truetypeï¿½)
 	}
 
 @font-face{
-	font-family:‘Basis-Grotesque-Bold’;
-	src:url(/Content/fonts/basis-grotesque-bold.eot#iefix) format(“embedded-opentype”),
+	font-family:ï¿½Basis-Grotesque-Boldï¿½;
+	src:url(/Content/fonts/basis-grotesque-bold.eot#iefix) format(ï¿½embedded-opentypeï¿½),
 		url(/Content/fonts/basis-grotesque-bold.woff2) format("woff2"),
-		url(/Content/fonts/basis-grotesque-bold.woff) format(“woff”),
-		url(/Content/fonts/basis-grotesque-bold.ttf) format(“truetype”)
+		url(/Content/fonts/basis-grotesque-bold.woff) format(ï¿½woffï¿½),
+		url(/Content/fonts/basis-grotesque-bold.ttf) format(ï¿½truetypeï¿½)
 }
 
 

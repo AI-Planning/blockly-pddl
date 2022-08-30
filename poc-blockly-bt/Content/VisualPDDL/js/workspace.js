@@ -126,8 +126,8 @@ function bindEvents() {
 	// Remove the previously attached click event handler attached to the element with id="browse-files"
 	$("#browse-files").unbind('click').on('click', openFilePicker);
 
-	// Attach a new click event handler to the element with id="show-javascript" that will execute the showJavaScript() function every time the element is clicked
-	$("#show-javascript").on('click', showJavaScript);
+	// Attach a new click event handler to the element with id="show-javascript" that will execute the showPython() function every time the element is clicked
+	$("#show-python").on('click', showPython);
 }
 
 
@@ -144,7 +144,7 @@ function disableButtons() {
 	$("#export-session").addClass("disabled");
 
 	// Disable the button with id="show-javascript" by giving it the CSS class "disabled"
-	$("#show-javascript").addClass("disabled");
+	$("#show-python").addClass("disabled");
 
 	// Disable the button with id="help" by giving it the CSS class "disabled"
 	$("#help").addClass("disabled");
@@ -164,7 +164,7 @@ function enableButtons() {
 	$("#export-session").removeClass("disabled");
 
 	// Enable the button with id="show-javascript" by giving it the CSS class "disabled"
-	$("#show-javascript").removeClass("disabled");
+	$("#show-python").removeClass("disabled");
 
 	// Enable the button with id="export-session" by giving it the CSS class "disabled"
 	$("#help").removeClass("disabled");
@@ -252,13 +252,14 @@ function download(filename, text) {
 }
 
 /**
- * showJavaScript
- * Generates JavaScript from ther user's blockly program and displays it
+ * showPython
+ * Generates Python from ther user's blockly program and displays it
  * @private
  */
-function showJavaScript() {
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
+function showPython() {
+	var code = Blockly.Python.workspaceToCode(workspace);
+	// code = "AB";
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
 	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
-	// console.log(code);		// writes the message contained in "code" to the console, useful for testing
+	console.log(code);		// writes the message contained in "code" to the console, useful for testing
 }

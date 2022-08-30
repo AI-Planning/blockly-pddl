@@ -10,7 +10,7 @@
 <html>
 
 <head>
-	<title>VisualPDDL with Blockly</title>
+	<title>Behavior Trees with Blockly</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,7 @@
 	<!-- <script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script> -->
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_predicates.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_defs.js"></script>
-	<script type="text/javascript" src="generators/javascript.js"></script>
+	<script type="text/javascript" src="generators/python.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_codegen.js"></script>
 	<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
 	<!-- <script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script> -->
@@ -81,8 +81,8 @@
 					<input
 						class="nav-item dependent disabled pl-0 pr-lg-0 pr-xl-4 btn btn-link btn-btn-light my-2 my-sm-0"
 						id="export-session" type="button" onclick="exportBlocklySession()" value="Save Project" />
-					<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-javascript" href="#">Show
-						PDDL Script</a>
+					<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-python" href="#">Show
+						Python Script</a>
 					<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link disabled" id="help" target="_blank"
 						href="https://github.com/AI-Planning/blockly-pddl/">Help</a>
 				</div>
@@ -114,15 +114,12 @@
 		</div>
 	</div>
 	<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none" class="list-group">
-		<category name="PDDL Core" colour="#5b67a5" class="list-group-item">
+		<!-- <category name="PDDL Core" colour="#5b67a5" class="list-group-item">
 			<block type="pddl_domain">
 				<field name="NAME">domain_name</field>
 				<field name="STRIPS">TRUE</field>
 				<field name="FLUENTS">TRUE</field>
 				<field name="TIMED_LITERALS">TRUE</field>
-			</block>
-			<block type="action">
-				<field name="NAME">action_name</field>
 			</block>
 			<block type="type">
 				<field name="NAME">type_name</field>
@@ -132,7 +129,7 @@
 				<field name="NAME">parameter_name</field>
 				<field name="type">object</field>
 			</block>
-			<!-- <block type="not"></block> -->
+			
 		</category>
 		<category name="PDDL Logic" colour="#5ba55b">
 			<block type="not"></block>
@@ -140,12 +137,35 @@
 			  <field name="LOGIC_OPERATION">AND</field>
 			</block>
 		</category>
-		<category name="PDDL Predicates" colour="#995ba5" custom="PREDICATES"></category>
+		<category name="PDDL Predicates" colour="#995ba5" custom="PREDICATES"></category> -->
 
 		<category name="Behavior Trees" colour="#5ba55b">
-			<block type="composite">
-				<field name="NAME">Selector</field>
+			<block type="init_node">
+				<!-- <field name="NAME">init_node</field> -->
 			</block>
+			<block type="sequence">
+				<!-- <field name="sequence_name">sequence_name_in</field> -->
+			</block>
+			<block type="selector">
+				<!-- <field name="NAME">Sequence</field> -->
+			</block>
+
+			<block type="condition">
+				<!-- <field name="NAME">Condition</field> -->
+			</block>
+
+			<block type="action">
+				<!-- <field name="NAME">Action</field> -->
+			</block>
+
+		</category>
+
+		<category name="Helper Blocks" colour="#530000">
+			<block type="textInput">
+				<!-- <field name="NAME">init_node</field> -->
+			</block>
+
+
 		</category>
 
 	</xml>

@@ -1,0 +1,70 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" id="Zhdt93.[}=AO$YH,WE(@" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">Sequence </field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="#tqTK[[$RyG~/5FA#J=8">
+        <field name="INPUTNAME">name</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=";2#.VvM|D5_jihzt){$(">
+            <field name="TEXT">Sequence name</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="3z~E}8J.oiAnL0@c[h8o"></shadow>
+          <block type="type_string" id="yvY,JIeFUC=K7OOcf*_c"></block>
+        </value>
+        <next>
+          <block type="input_value" id="h?,dLovac;4cmb?cvHsc">
+            <field name="INPUTNAME">children</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="Wo#;BN}dHjT),E+oz~5:">
+                <field name="TEXT">Children </field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="Ozd7ugi_dp{MP5VQ${-K"></shadow>
+              <block type="type_group" id="Jk9ts_#L3q]5)`PT_$yM">
+                <mutation types="2"></mutation>
+                <value name="TYPE0">
+                  <block type="type_other" id="#:PKf.Cs4$JBMgWZi:./">
+                    <field name="TYPE">action</field>
+                  </block>
+                </value>
+                <value name="TYPE1">
+                  <block type="type_other" id="bdc,+ezdT)aTTN.mf60.">
+                    <field name="TYPE">condition</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="|pI|4mbaK{e[pJq%V;DK" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="(!u)4$]L,%u^*S-8?mOg" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="jTklRA_tWSm,39Hkng/7"></shadow>
+      <block type="type_other" id="mVZA2q%Ab,5@-O[f~HEj">
+        <field name="TYPE">nodeStatus</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="LKG6Xc1~]AF)@$%$yt}p">
+        <mutation colour="#5b67a5"></mutation>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block></xml>

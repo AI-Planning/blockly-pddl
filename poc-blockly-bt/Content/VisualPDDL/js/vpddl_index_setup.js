@@ -173,7 +173,7 @@ function bindEvents() {
 	$("#abort-script").on("click", abortFunction);
 
 	// Attach a new click event handler to the element with id="show-javascript" that will execute the showJavaScript() function every time the element is clicked
-	$("#show-javascript").on('click', showJavaScript);
+	$("#show-python").on('click', showPython);
 
 	// Attach a new click event handler to the element with id="run-script" that will execute the runJavaScript() function every time the element is clicked
 	$("#run-script").on('click', runJavaScript);
@@ -193,7 +193,7 @@ function bindEvents() {
  */
 function disableButtons() {
 	// Disable the button with id="show-javascript" by giving it the CSS class "disabled"
-	$("#show-javascript").addClass("disabled");
+	$("#show-python").addClass("disabled");
 
 	// Disable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").addClass("disabled");
@@ -213,7 +213,7 @@ function disableButtons() {
  */
 function enableButtons() {
 	// Enable the button with id="show-javascript" by giving it the CSS class "disabled"
-	$("#show-javascript").removeClass("disabled");
+	$("#show-python").removeClass("disabled");
 
 	// Enable the button with id="browse-files" by giving it the CSS class "disabled"
 	$("#browse-files").removeClass("disabled");
