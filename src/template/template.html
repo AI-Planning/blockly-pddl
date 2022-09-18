@@ -6,27 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Anil Agarwal">
-  <title>PDDL with Blockly</title>
+  <!-- TODO: Update page title -->
+  <title>Template</title>
 
   <link href="../../lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../common/common-styles.css" rel="stylesheet">
   
   <!-- Custom styles for this template -->
-  <link href="visual-pddl.css" rel="stylesheet">
+  <!-- TODO: Rename custom styles css -->
+  <link href="template-styles.css" rel="stylesheet">
 </head>
 
 <body>
   
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand">Visual PDDL</a>
+      <a class="navbar-brand" href="../../index.html">Visual Planning</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="../pddl/pddl.html">PDDL</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../behavior-trees/behaviortrees.html">Behavior Trees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../state-machines/statemachines.html">State Machines</a>
+          </li>
+          <li class="nav-item">
+            <!-- TODO: Rename "Template" below. Also remember to add the new link to other pages. -->
+            <a class="nav-link active" href="#">Template</a>
+          </li>
+        </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <input type="file" id="customFileInput" style="display: none;" onchange="uploadBlocklyFile()" accept=".pddl">
+            <!-- TODO: Replace ".code" with the file extension(s) accepted for loading workspace -->
+            <input type="file" id="customFileInput" style="display: none;" onchange="uploadBlocklyFile()" accept=".code">
             <label class="nav-link disabled" for="customFileInput">Load</label>
           </li>
           <li class="nav-item">
@@ -38,8 +57,10 @@
         </ul>
         <form class="d-flex" role="code">
           <div class="input-group input-group-sm">
-            <input type="text" class="form-control" placeholder="domain_name" aria-label="saveFilename" id="downloadFilename">
-            <span class="input-group-text">.pddl</span>
+            <!-- TODO: Replace "workspace_code" with a filename suggestion / default for downloading code -->
+            <input type="text" class="form-control" placeholder="workspace_code" aria-label="downloadFilename" id="downloadFilename">
+            <!-- TODO: Replace ".code" with file extension for saved code -->
+            <span class="input-group-text">.code</span>
           </div>
         </form>
       </div>
@@ -63,34 +84,21 @@
     </div>
   </main> <!-- /container-fluid -->
   
+  <!-- TODO: Replace toolbox XML -->
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Core" colour="#5b67a5">
-      <block type="pddl_domain">
-        <field name="DOMAIN_NAME">domain_name</field>
-      </block>
-      <block type="action">
-        <field name="NAME">action_name</field>
-      </block>
-      <block type="parameter">
-        <field name="NAME">parameter_name</field>
-        <field name="PARAM_TYPE">type</field>
-      </block>
-      <block type="parameter_nested_type">
-        <field name="NAME">parameter_name</field>
-        <field name="PARAM_TYPE">type</field>
-        <field name="PARENT_TYPE">parent</field>
-      </block>
+    <category name="Logic" colour="#5b67a5">
       <block type="not"></block>
       <block type="and_or">
         <field name="LOGIC_OPERATION">AND</field>
       </block>
     </category>
-    <category name="Variables" colour="#995ba5" custom="PDDL_VARIABLES"></category>
+    <!-- <category name="Dynamic" colour="#995ba5" custom="DYNAMIC_CATEGORY"></category> -->
   </xml>
 
+  <!-- TODO: Replace workspace blocks XML -->
   <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
-    <block type="pddl_domain" id="[E+IY?TSZ7m2#z)JS,!7" x="350" y="100">
-      <field name="DOMAIN_NAME">domain_name</field>
+    <block type="and_or" id="[E+IY?TSZ7m2#z)JS,!7" x="350" y="100">
+      <field name="LOGIC_OPERATION">AND</field>
     </block>
   </xml>
   
@@ -103,10 +111,9 @@
   <script src="../../lib/google-blockly-v8.0.5/tests/deps.js"></script>
   <script src="../../lib/google-blockly-v8.0.5/blockly_compressed.js"></script>
   <script src="../../lib/google-blockly-v8.0.5/msg/js/en.js"></script>
-  <script src="pddl.js"></script>
-  <script src="vpddl_predicates.js"></script>
-  <script src="vpddl2_block_defs.js"></script>
-  <script src="vpddl2_block_codegen.js"></script>
+  <!-- TODO: Rename scripts below and add any new scripts -->
+  <script src="template_blocks.js"></script>
+  <script src="template_block_codegen.js"></script>
   <script src="workspace.js"></script>
 
 </body>
