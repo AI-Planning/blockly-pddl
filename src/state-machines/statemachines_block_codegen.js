@@ -1,4 +1,9 @@
-Blockly.JavaScript['machine'] = function(block) {
+/**
+ * @fileoverview 
+ * @author Naman Bhatia
+ */
+
+Blockly.StateMachines['machine'] = function(block) {
   var code = '';
   var text_sm_name = block.getFieldValue('sm_name');
   var statements_state = Blockly.JavaScript.statementToCode(block, 'state');
@@ -8,7 +13,7 @@ Blockly.JavaScript['machine'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['state'] = function(block) {
+Blockly.StateMachines['state'] = function(block) {
   var text_state_id = block.getFieldValue('state_id');
   var text_state_description = block.getFieldValue('state_description');
   var statements_function_1 = Blockly.JavaScript.statementToCode(block, 'function_1');
@@ -68,7 +73,7 @@ Blockly.JavaScript['state'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['action'] = function(block) {
+Blockly.StateMachines['action'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var statements_par = Blockly.JavaScript.statementToCode(block, 'par');
   var statements_con = Blockly.JavaScript.statementToCode(block, 'con');
@@ -90,7 +95,7 @@ Blockly.JavaScript['action'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['function_1'] = function(block) {
+Blockly.StateMachines['function_1'] = function(block) {
   var dropdown_action_name = block.getFieldValue('action_name');
   // var value_action_name = Blockly.JavaScript.valueToCode(block, 'action_name', Blockly.JavaScript.ORDER_ATOMIC);
   var text_param = block.getFieldValue('param');
@@ -108,7 +113,7 @@ Blockly.JavaScript['function_1'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['function_2'] = function(block) {
+Blockly.StateMachines['function_2'] = function(block) {
   var dropdown_action_name = block.getFieldValue('action_name');
   var text_param = block.getFieldValue('param');
   var text_timeout = block.getFieldValue('timeout');
@@ -126,7 +131,7 @@ Blockly.JavaScript['function_2'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['input'] = function(block) {
+Blockly.StateMachines['input'] = function(block) {
   var text_input = block.getFieldValue('input');
   // TODO: Assemble JavaScript into code variable.
   var code = '';

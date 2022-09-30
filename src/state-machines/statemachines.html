@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
-  <meta name="author" content="Anil Agarwal">
-  <title>State Machines with PDDL</title>
+  <meta name="author" content="Anil Agarwal, Naman Bhatia">
+  <title>State Machines with Blockly</title>
 
   <link href="../../lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../common/common-styles.css" rel="stylesheet">
@@ -38,9 +38,12 @@
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <!-- TODO: Replace ".py,.xml" with the file extension(s) accepted for loading workspace -->
-            <input type="file" id="customFileInput" style="display: none;" onchange="uploadBlocklyFile()" accept=".py,.xml">
-            <label class="nav-link disabled" for="customFileInput">Load</label>
+            <input type="file" id="functionFileInput" style="display: none;" onchange="uploadBagOfFunctions()" accept=".c">
+            <label class="nav-link" for="functionFileInput">Load Functions</label>
+          </li>
+          <li class="nav-item">
+            <input type="file" id="customFileInput" style="display: none;" onchange="uploadBlocklyFile()" accept=".xml">
+            <label class="nav-link disabled" for="customFileInput">Load Workspace</label>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">View Code</a>
@@ -53,7 +56,7 @@
           <div class="input-group input-group-sm">
             <!-- TODO: Replace "workspace_code" with a filename suggestion / default for downloading code -->
             <input type="text" class="form-control" placeholder="workspace_code" aria-label="downloadFilename" id="downloadFilename">
-            <span class="input-group-text">.py</span>
+            <span class="input-group-text">.txt</span>
           </div>
         </form>
       </div>
@@ -77,16 +80,32 @@
     </div>
   </main> <!-- /container-fluid -->
   
-  <!-- TODO: Replace toolbox XML -->
-  <!-- <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="#5b67a5">
-      <block type="not"></block>
-      <block type="and_or">
-        <field name="LOGIC_OPERATION">AND</field>
-      </block>
-    </category>
-    <category name="Dynamic" colour="#995ba5" custom="DYNAMIC_CATEGORY"></category>
-  </xml> -->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type = "machine">
+      <field name = "sm_name">Machine Name</field>
+    </block>
+    <block type="state">
+      <field name="state_id">0</field>
+      <field name="transition_0"></field>
+      <field name="transition_1"></field>
+      <field name="transition_2"></field>
+      <field name="transition_3"></field>
+      <field name="transition_4"></field>
+    </block>
+    <block type="action"></block>
+    <block type="function_1">
+      <field name="action_name"></field>
+      <field name="param">0</field>
+    </block>
+    <block type="function_2">
+      <field name="action_name"></field>
+      <field name="param">0</field>
+      <field name="timeout">0</field>
+    </block>
+    <block type="input">
+      <field name="input">input</field>
+    </block>
+  </xml>
 
   <!-- TODO: Replace workspace blocks XML -->
   <!-- <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
@@ -105,9 +124,9 @@
   <script src="../../lib/google-blockly-v8.0.5/blockly_compressed.js"></script>
   <script src="../../lib/google-blockly-v8.0.5/msg/js/en.js"></script>
   <!-- TODO: Rename scripts below and add any new scripts -->
-  <!-- <script src="statemachines_blocks.js"></script> -->
-  <!-- <script src="statemachines_block_codegen.js"></script> -->
-  <!-- <script src="workspace.js"></script> -->
+  <script src="statemachines_blocks.js"></script>
+  <script src="statemachines_block_codegen.js"></script>
+  <script src="workspace.js"></script>
 
 </body>
 
