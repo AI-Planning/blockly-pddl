@@ -82,11 +82,7 @@ function exportCodeFromWorkspace() {
 	code += getScriptForInitialFinalState();
 	code += Blockly.JavaScript.workspaceToCode(workspace);
 
-	var b = new Blob([code], { type: 'text/plain' });
-	var a = document.createElement('a');
-	a.href = window.URL.createObjectURL(b);
-	a.download = filename;
-	a.click();
+	writeToFileAndDownload(filename, code);
 }
 
 workspace.isNameUsed = function (name, workspace, opt_exclude) {
@@ -110,22 +106,6 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
 	}
 	return false;
 };
-
-/**
- * showCode
- * Generates JavaScript from ther user's blockly program and displays it
- * @private
- */
-function showCode() {
-	var code = getEntryFunctions();
-	code += getInputFunctions();
-	code += getTicksInfo();
-	code += getTransitionDefinitions();
-	code += getScriptForInitialFinalState();
-	code += Blockly.JavaScript.workspaceToCode(workspace);
-	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
-	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
-}
 
 /**
  * Display predefined Functions
