@@ -71,9 +71,5 @@ function downloadCode() {
 	filename += '.code';
 	var code = Blockly.JavaScript.workspaceToCode(workspace);
 
-	var b = new Blob([code], {type: 'text/plain'});
-	var a = document.createElement('a');
-	a.href = window.URL.createObjectURL(b);
-	a.download = filename;
-	a.click();
+	writeToFileAndDownload(filename, code);
 }
