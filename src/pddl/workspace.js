@@ -50,17 +50,17 @@ function refreshToolbox(event) {
 workspace.addChangeListener(refreshToolbox);
 
 /* Update the download filename placeholder text with the (first) domain name. */
-function updateDownloadFilenamePlaceholder(event) {
+function updateExportCodeFilenamePlaceholder(event) {
 	if (Blockly.Events.BLOCK_CHANGE === event.type 
 		|| Blockly.Events.BLOCK_CREATE === event.type 
 		|| Blockly.Events.BLOCK_DELETE === event.type) {
 			var domain_blocks = workspace.getBlocksByType('pddl_domain');
-			var filenameElement = document.getElementById('downloadFilename');
+			var filenameElement = document.getElementById('exportCodeFilename');
 			if (0 < domain_blocks.length)
 				filenameElement.placeholder = domain_blocks[0].getFieldValue('DOMAIN_NAME');
 		}
 }
-workspace.addChangeListener(updateDownloadFilenamePlaceholder);
+workspace.addChangeListener(updateExportCodeFilenamePlaceholder);
 
 /* Register the callback for the PDDL Variables toolbox flyout category. */
 if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
@@ -89,10 +89,10 @@ workspace.isNameUsed = function(name, workspace, opt_exclude) {
 };
 
 /* Function to convert the workspace blocks into code and trigger download. */
-function downloadCode() {
+function exportCodeFromWorkspace() {
 	Blockly.PDDL.init(workspace);
 	var domain_blocks = workspace.getBlocksByType('pddl_domain');
-	var filename = document.getElementById('downloadFilename').value;
+	var filename = document.getElementById('exportCodeFilename').value;
 	if (null === filename || '' === filename) {
 		filename = domain_blocks[0].getFieldValue('DOMAIN_NAME');
 	}
