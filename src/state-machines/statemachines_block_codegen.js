@@ -1,3 +1,8 @@
+/**
+ * @fileoverview 
+ * @author Naman Bhatia
+ */
+
 Blockly.JavaScript['machine'] = function(block) {
   var code = '';
   var text_sm_name = block.getFieldValue('sm_name');
