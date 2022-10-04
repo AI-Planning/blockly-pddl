@@ -5,34 +5,34 @@
 
 var toolbox = document.getElementById("toolbox");
 
-var options = { 
-	toolbox : toolbox, 
-	collapse : true, 
-	comments : true, 
-	disable : true, 
-	maxBlocks : Infinity, 
-	trashcan : true, 
-	horizontalLayout : false, 
-	toolboxPosition : 'start', 
-	css : true, 
-	media : '../../lib/google-blockly-v8.0.5/media/', 
-	rtl : false, 
-	scrollbars : true, 
-	sounds : true, 
-	oneBasedIndex : false, 
-	grid : {
-		spacing : 20, 
-		length : 1, 
-		colour : '#888', 
-		snap : false
-	}, 
-	zoom : {
-		controls : true, 
-		wheel : true, 
-		startScale : 0.9, 
-		maxScale : 3, 
-		minScale : 0.3, 
-		scaleSpeed : 1.2
+var options = {
+	toolbox: toolbox,
+	collapse: true,
+	comments: true,
+	disable: true,
+	maxBlocks: Infinity,
+	trashcan: true,
+	horizontalLayout: false,
+	toolboxPosition: 'start',
+	css: true,
+	media: '../../lib/google-blockly-v8.0.5/media/',
+	rtl: false,
+	scrollbars: true,
+	sounds: true,
+	oneBasedIndex: false,
+	grid: {
+		spacing: 20,
+		length: 1,
+		colour: '#888',
+		snap: false
+	},
+	zoom: {
+		controls: true,
+		wheel: true,
+		startScale: 0.9,
+		maxScale: 3,
+		minScale: 0.3,
+		scaleSpeed: 1.2
 	}
 };
 
@@ -40,7 +40,7 @@ var functions_1 = [['', '']];
 var functions_2 = [['', '']];
 var meta_Data = [''];
 
-/* Inject workspace */ 
+/* Inject workspace */
 var workspace = Blockly.inject(blocklyDiv, options);
 
 /* Load Workspace Blocks from XML to workspace. */
@@ -49,32 +49,40 @@ var workspace = Blockly.inject(blocklyDiv, options);
 
 /* Update the download filename placeholder text with the (first) domain name. */
 /* TODO: (Optional) Replace logic to dynamically update the download filename placeholder */
-function updateDownloadFilenamePlaceholder(event) {
-	if (Blockly.Events.BLOCK_CHANGE === event.type 
-		|| Blockly.Events.BLOCK_CREATE === event.type 
+function updateExportCodeFilenamePlaceholder(event) {
+	if (Blockly.Events.BLOCK_CHANGE === event.type
+		|| Blockly.Events.BLOCK_CREATE === event.type
 		|| Blockly.Events.BLOCK_DELETE === event.type) {
-			var machine_blocks = workspace.getBlocksByType('machine');
-			var filenameElement = document.getElementById('downloadFilename');
-			if (0 < machine_blocks.length)
-				filenameElement.placeholder = machine_blocks[0].getFieldValue('sm_name');
+		var machine_blocks = workspace.getBlocksByType('machine');
+		var saveWorkspaceFilenameElement = document.getElementById('saveWorkspaceFilename');
+		var exportCodeFilenameElement = document.getElementById('exportCodeFilename');
+		if (0 < machine_blocks.length) {
+			exportCodeFilenameElement.placeholder = machine_blocks[0].getFieldValue('sm_name');
+			saveWorkspaceFilenameElement.placeholder = machine_blocks[0].getFieldValue('sm_name') + 'Workspace';
 		}
+	}
 }
-workspace.addChangeListener(updateDownloadFilenamePlaceholder);
+workspace.addChangeListener(updateExportCodeFilenamePlaceholder);
 
 /* Function to convert the workspace blocks into code and trigger download. */
-function downloadCode() {
-	/* TODO: Replace JavaScript with the appropriate generator */
+function exportCodeFromWorkspace() {
 	Blockly.JavaScript.init(workspace);
 
-	var filename = document.getElementById('downloadFilename').value;
+	var filename = document.getElementById('exportCodeFilename').value;
 	if (null === filename || '' === filename) {
-		filename = document.getElementById("downloadFilename").placeholder;
+		filename = document.getElementById("exportCodeFilename").placeholder;
 	}
 	/* TODO: Replace "txt" with the appropriate file extension for downloading code */
 	filename += '.txt';
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
 
-	var b = new Blob([code], {type: 'text/plain'});
+	var code = getEntryFunctions();
+	code += getInputFunctions();
+	code += getTicksInfo();
+	code += getTransitionDefinitions();
+	code += getScriptForInitialFinalState();
+	code += Blockly.JavaScript.workspaceToCode(workspace);
+
+	var b = new Blob([code], { type: 'text/plain' });
 	var a = document.createElement('a');
 	a.href = window.URL.createObjectURL(b);
 	a.download = filename;
@@ -104,31 +112,47 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
 };
 
 /**
+ * showCode
+ * Generates JavaScript from ther user's blockly program and displays it
+ * @private
+ */
+function showCode() {
+	var code = getEntryFunctions();
+	code += getInputFunctions();
+	code += getTicksInfo();
+	code += getTransitionDefinitions();
+	code += getScriptForInitialFinalState();
+	code += Blockly.JavaScript.workspaceToCode(workspace);
+	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
+	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
+}
+
+/**
  * Display predefined Functions
  */
- function getEntryFunctions() {
+function getEntryFunctions() {
 
 	var code = '#Entry Functions:\n' + '#-------------------------------------------------------------------------------------------------------------------\n';
-	code += '# F_entry  |	                	Action	                 	|			Parameter			\n';		
+	code += '# F_entry  |	                	Action	                 	|			Parameter			\n';
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
-	for(let i=1;i<functions_2.length;i++){
-		code += '#\t' + (i-1) + '	' + '|  ' + functions_2[i] + '			' + '	| 	' +  meta_Data[i] +'\n';
+	for (let i = 1; i < functions_2.length; i++) {
+		code += '#\t' + (i - 1) + '	' + '|  ' + functions_2[i] + '			' + '	| 	' + meta_Data[i] + '\n';
 	}
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
-	 return code;
+	return code;
 }
 
 /**
  * Display predefined Input Functions
  * Generates input functions table for the reference
  */
- function getInputFunctions() {
+function getInputFunctions() {
 
 	var code = '\n#Input Functions:\n' + '#-------------------------------------------------------------------------------------------------------------------\n';
-	code += '# F_input  |	                	Action	                 	|			Parameter			\n';		
+	code += '# F_input  |	                	Action	                 	|			Parameter			\n';
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
-	for(let i=functions_2.length;i<functions_2.length+functions_1.length-1;i++){
-		code += '#\t' + (i-functions_2.length) + '	' + '|  ' + functions_1[i-functions_2.length+1] + '			' + '	| 	' +  meta_Data[i-1] + '\n';
+	for (let i = functions_2.length; i < functions_2.length + functions_1.length - 1; i++) {
+		code += '#\t' + (i - functions_2.length) + '	' + '|  ' + functions_1[i - functions_2.length + 1] + '			' + '	| 	' + meta_Data[i - 1] + '\n';
 	}
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
 
@@ -139,7 +163,7 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
  * Transition Defnitions
  * Generates transitions defininations table for the reference
  */
- function getTransitionDefinitions() {
+function getTransitionDefinitions() {
 
 	var code = '\n# States and transitions descriptions\n# By design of the Input functions, they return 4 values \n# 0 - stay in same state\n# 1 - continue, expected outcome occurred\n';
 	code += '# 2 - timeout occurred\n# 3 - command received to stop operation\n# 4 - fault occurred\n';
@@ -151,9 +175,9 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
  * Initial and Final State 
  * Displays the denotion and definition for the initial and final state 
  */
- function getScriptForInitialFinalState() {
+function getScriptForInitialFinalState() {
 
-	var states = workspace.getBlocksByType('state',false);
+	var states = workspace.getBlocksByType('state', false);
 	var start = '';
 	var end = '';
 	// Iterate through every block and check the state stype.
@@ -169,7 +193,7 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
 	}
 
 	var code = '# Start state Q_0 \n'
-	code += 'q_0 ' + start +'\n';
+	code += 'q_0 ' + start + '\n';
 	code += '#Final state F\n';
 	code += 'F ' + end + '\n';
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
@@ -184,8 +208,8 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
  * Ticks Information 
  * Displays the ticks information vs timeout assumed
  */
- function getTicksInfo() {
-	var code = '# Timer function assumes ticks of size ' + meta_Data[functions_2.length+functions_1.length-2] + '\n';
+function getTicksInfo() {
+	var code = '# Timer function assumes ticks of size ' + meta_Data[functions_2.length + functions_1.length - 2] + '\n';
 	code += '# A 10min delay/timeout is as follows: \n';
 	code += '# 10[min] * 60[s]  / 0.1[s/tick]  = 6000 \n';
 	code += '#-------------------------------------------------------------------------------------------------------------------\n';
@@ -198,11 +222,11 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
  * @param none
  * @private
  */
-function uploadBagOfFunctions() {
-	workspace.clear();
+function loadFunctions() {
+	// workspace.clear();
 
-	//finds the file given the id "functionFileInput" in index.html
-	var file = document.getElementById("functionFileInput").files[0];
+	//finds the file given the id "functionsFileInput" in index.html
+	var file = document.getElementById("functionsFileInput").files[0];
 	var reader = new FileReader();
 	reader.onload = function () {
 		//loads the bag of functions from the user inputted file
@@ -212,22 +236,22 @@ function uploadBagOfFunctions() {
 		const regex2 = /\bs+(_Entry)+[_a-zA-Z]*/g;
 		let found2 = text.match(regex2);
 		var groups = text.split('//tgroup')
-		console.log(groups);
+		// console.log(groups);
 		var lines = text.split('\n');
 		let index = 0;
 		for (let i = 0; i < lines.length; i++) {
 			let temp = lines[i];
 			var start = temp.indexOf("//ttag");
 			if (start != -1) {
-				let comment = temp.substr(start+9);
+				let comment = temp.substr(start + 9);
 				meta_Data[index] = comment;
 				index++;
-				console.log(meta_Data);
+				// console.log(meta_Data);
 				// let vars = comment.split(':');
 				// console.log(vars[1]);
 			}
 		}
-		console.log(lines);
+		// console.log(lines);
 
 
 		const hashSet1 = new Set();
@@ -254,10 +278,10 @@ function uploadBagOfFunctions() {
 				arr = [];
 			}
 		}
-		console.log(functions_1);
-		console.log(functions_2);
+		// console.log(functions_1);
+		// console.log(functions_2);
 	}
 	reader.readAsText(file);
 	//removes the selected id from the file that has just been processed
-	document.getElementById("functionFileInput").value = "";
+	document.getElementById("functionsFileInput").value = "";
 }

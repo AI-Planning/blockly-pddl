@@ -105,8 +105,6 @@ Blockly.Blocks['state'] = {
     this.statesList_.push([xmlElement.getAttribute('transition_2'), xmlElement.getAttribute('transition_2')]);
     this.statesList_.push([xmlElement.getAttribute('transition_3'), xmlElement.getAttribute('transition_3')]);
     this.statesList_.push([xmlElement.getAttribute('transition_4'), xmlElement.getAttribute('transition_4')]);
-    console.log(this.statesList_); // Hack
-    // this.updateShape_(xmlElement.getAttribute('parenttypename'));
   },
   generateStatesList: function () {
     var options = [["", ""]];

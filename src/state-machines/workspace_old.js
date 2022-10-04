@@ -191,12 +191,12 @@ function openFunctionFilePicker() {
 
 
 /**
- * uploadBlocklyFile
+ * loadWorkspace
  * Loads a blockly file provided by the user
  * @param none
  * @private
  */
-function uploadBlocklyFile() {
+function loadWorkspace() {
 	workspace.clear();
 
 	//finds the file given the id "fileSelected" in index.html, only accepts .txt files
@@ -215,11 +215,11 @@ function uploadBlocklyFile() {
 }
 
 /**
- * exportBlocklySession
+ * saveWorkspace
  * Converts the blockly file to plain text and saves it
  * @private
  */
-function exportBlocklySession() {
+function saveWorkspace() {
 	var name = window.prompt("Enter a filename:", "blockly");
 	if (name == null)
 		return;
