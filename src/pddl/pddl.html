@@ -10,18 +10,19 @@
 
   <link href="../../lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../common/common-styles.css" rel="stylesheet">
-  
+
   <!-- Custom styles for this template -->
   <link href="pddl-styles.css" rel="stylesheet">
 </head>
 
 <body>
-  
+
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="../../index.html">Visual Planning</a>
-      <button type="button" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button type="button" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -40,29 +41,33 @@
           <div class="input-group input-group-sm">
             <button type="button" class="btn btn-light disabled" disabled>Workspace</button>
             <label type="button" class="input-group-text" for="workspaceFileInput">Load</label>
-            <input type="file" id="workspaceFileInput" style="display: none;" onchange="loadWorkspace()" accept=".xml,.txt">
+            <input type="file" id="workspaceFileInput" style="display: none;" onchange="loadWorkspace()"
+              accept=".xml,.txt">
             <button type="button" class="input-group-text" onclick="saveWorkspace()">Save</button>
-            <input type="text" class="form-control" placeholder="workspace" aria-label="saveWorkspaceFilename" id="saveWorkspaceFilename">
+            <input type="text" class="form-control" placeholder="workspace" aria-label="saveWorkspaceFilename"
+              id="saveWorkspaceFilename">
             <span class="input-group-text">.xml</span>
           </div>
-          </form>
-          <form class="d-flex" role="code">
+        </form>
+        <form class="d-flex" role="code">
           <div class="input-group input-group-sm">
             <button type="button" class="btn btn-light disabled" disabled>Code</button>
-            <button type="button" class="input-group-text">View</button>
+            <button type="button" id="codeViewToggle" class="input-group-text" onclick="toggleCodeView()">View</button>
             <label type="button" class="input-group-text" for="codeFileInput">Import</label>
-            <input type="file" id="codeFileInput" style="display: none;" onchange="importWorkspaceFromCode()" accept=".pddl">
+            <input type="file" id="codeFileInput" style="display: none;" onchange="importWorkspaceFromCode()"
+              accept=".pddl">
             <button type="button" class="input-group-text" onclick="exportCodeFromWorkspace()">Export</button>
-            <input type="text" class="form-control" placeholder="domain_name" aria-label="exportCodeFilename" id="exportCodeFilename">
+            <input type="text" class="form-control" placeholder="domain_name" aria-label="exportCodeFilename"
+              id="exportCodeFilename">
             <span class="input-group-text">.pddl</span>
           </div>
         </form>
       </div>
     </div>
   </nav>
-  
+
   <main class="container-fluid">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-2">
         <div id="blocklyArea">
           <div id="blocklyDiv"></div>
@@ -75,9 +80,17 @@
           </div>
         </div>
       </div>
+    </div> -->
+    <div id="flex">
+      <div id="flex-1">
+        <div id="blocklyArea">
+          <div id="blocklyDiv"></div>
+        </div>
+      </div>
+      <div id="flex-2"></div>
     </div>
   </main> <!-- /container-fluid -->
-  
+
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
     <category name="Core" colour="#5b67a5">
       <block type="pddl_domain">
@@ -108,9 +121,29 @@
       <field name="DOMAIN_NAME">domain_name</field>
     </block>
   </xml>
-  
+
   <script src="../../lib/bootstrap-5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <!-- TODO: Replace with local splitjs -->
+  <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+  <!-- <script type="text/javascript">
+    Split(['#flex-1', '#flex-2'], {
+      gutterSize: 5,
+      ondrag: function(sizes) {
+        Blockly.svgResize(workspace);
+      },
+      elementStyle: function (dimension, size, gutterSize) {
+        return {
+          'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
+        }
+      },
+      gutterStyle: function (dimension, gutterSize) {
+        return {
+          'flex-basis': gutterSize + 'px',
+        }
+      },
+    })
+  </script> -->
+
   <script type="text/javascript">
     globalThis.CLOSURE_NO_DEPS = true;
   </script>

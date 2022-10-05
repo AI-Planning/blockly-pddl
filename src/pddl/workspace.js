@@ -38,6 +38,7 @@ var workspace = Blockly.inject(blocklyDiv, options);
 var workspaceBlocks = document.getElementById("workspaceBlocks");
 Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
 
+
 /* Disable toolbox flyout auto close. */
 flyout = workspace.getFlyout();
 flyout.autoClose = false;
@@ -69,6 +70,41 @@ workspace.addChangeListener(updateExportCodeFilenamePlaceholder);
 if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
 	workspace.registerToolboxCategoryCallback("PDDL_VARIABLES",
 		Blockly.Predicates.flyoutCategory);
+}
+
+var split = Split(['#flex-1', '#flex-2'], {
+	gutterSize: 5,
+	minSize: [500, 0],
+	elementStyle: function (dimension, size, gutterSize) {
+		return {
+			'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
+		}
+	},
+	gutterStyle: function (dimension, gutterSize) {
+		return {
+			'flex-basis': gutterSize + 'px',
+		}
+	},
+	onDrag: function (sizes) {
+		Blockly.svgResize(workspace);
+	}
+})
+Blockly.svgResize(workspace);
+
+lastSize = split.getSizes();
+toggleCodeView = function() {
+	currentSize = split.getSizes();
+	console.log(currentSize);
+	if (currentSize && currentSize[1] > 0.5) {
+		lastSize = currentSize;
+		split.setSizes([100, 0]);
+		document.getElementById("codeViewToggle").textContent = 'View';
+	}
+	else {
+		split.setSizes(lastSize);
+		document.getElementById("codeViewToggle").textContent = 'Hide';
+	}
+	Blockly.svgResize(workspace);
 }
 
 /* Default types for the workspace. */

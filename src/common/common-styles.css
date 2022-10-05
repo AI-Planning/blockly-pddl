@@ -9,9 +9,10 @@ body {
   #blocklyArea {
     margin: 15px;
     padding: 0;
-    position: absolute;
+    /* position: absolute; */
     height: calc(100vh - 115px);
-    width: calc(100vw - 60px);
+    /* width: calc(100vw - 60px); */
+    width: calc(100% - 25px);
   }
   
   #blocklyDiv {
