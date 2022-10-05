@@ -702,6 +702,7 @@ Blockly.Blocks['sequence'] = {
     this.appendDummyInput()
         .appendField("Sequence");
     this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Sequence output"), "sequence_out_name")
         .appendField(new Blockly.FieldTextInput("Sequence name"), "sequence_name");
     this.appendStatementInput("sequence_children")
         .setCheck(["action", "condition"])
@@ -719,6 +720,7 @@ Blockly.Blocks['selector'] = {
     this.appendDummyInput()
         .appendField("Selector");
     this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Selector output"), "selector_out_name")
         .appendField(new Blockly.FieldTextInput("Selector name"), "selector_name");
     this.appendStatementInput("selector_children")
         .setCheck(["action", "condition"])
@@ -733,9 +735,8 @@ Blockly.Blocks['selector'] = {
 
 Blockly.Blocks['condition'] = {
   init: function() {
-    this.appendStatementInput("condition_input")
-        .setCheck(null)
-        .appendField("Condition Statement");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Condition text"), "condition_name");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(20);
@@ -746,9 +747,8 @@ Blockly.Blocks['condition'] = {
 
 Blockly.Blocks['action'] = {
   init: function() {
-    this.appendStatementInput("action_input")
-        .setCheck(null)
-        .appendField("Action Statement");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Action text "), "action_name");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(270);
@@ -759,9 +759,11 @@ Blockly.Blocks['action'] = {
 
 Blockly.Blocks['init_node'] = {
   init: function() {
+    this.appendDummyInput()
+        .appendField("Init code");
     this.appendStatementInput("output_node")
         .setCheck(null)
-        .appendField("Nodes");
+        .appendField("Children");
     this.setOutput(true, null);
     this.setColour(75);
  this.setTooltip("");
@@ -775,5 +777,23 @@ Blockly.Blocks['textInput'] = {
         .appendField("text:")
         .appendField(new Blockly.FieldTextInput('default text'),
             'FIELDNAME');
+  }
+};
+
+Blockly.Blocks['parallel'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Parallel");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Parallel output"), "parallel_out_name")
+        .appendField(new Blockly.FieldTextInput("Parallel name"), "parallel_name");
+    this.appendStatementInput("parallel_children")
+        .setCheck(null)
+        .appendField("Children");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(345);
+ this.setTooltip("");
+ this.setHelpUrl("");
   }
 };

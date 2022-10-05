@@ -10,6 +10,7 @@
  *
  */
 
+
 var toolbox = document.getElementById("toolbox");
 
 var options = {
@@ -257,9 +258,11 @@ function download(filename, text) {
  * @private
  */
 function showPython() {
+	existing_children = [];
 	var code = Blockly.Python.workspaceToCode(workspace);
 	// code = "AB";
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size
 	textWindow.document.body.innerHTML = "<div style=\"white-space:pre-wrap\">" + code + "</div>";	// formats window
 	console.log(code);		// writes the message contained in "code" to the console, useful for testing
+	
 }
