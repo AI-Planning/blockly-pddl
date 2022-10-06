@@ -1,43 +1,31 @@
-var toolbox = document.getElementById("toolbox");
-
-var options = {
-	toolbox: toolbox,
-	collapse: true,
-	comments: true,
-	disable: true,
-	maxBlocks: Infinity,
-	trashcan: true,
-	horizontalLayout: false,
-	toolboxPosition: 'start',
-	css: true,
-	media: '../../lib/google-blockly-v8.0.5/media/',
-	rtl: false,
-	scrollbars: true,
-	sounds: true,
-	oneBasedIndex: false,
-	grid: {
-		spacing: 20,
-		length: 1,
-		colour: '#888',
-		snap: false
-	},
-	zoom: {
-		controls: true,
-		wheel: true,
-		startScale: 0.9,
-		maxScale: 3,
-		minScale: 0.3,
-		scaleSpeed: 1.2
-	}
-};
+/**
+ * @fileoverview 
+ * @author Anil Agarwal
+ */
 
 /* Inject workspace */
 var workspace = Blockly.inject(blocklyDiv, options);
+Blockly.svgResize(workspace);
+
+toggleCodeView = function() {
+	currentSize = split.getSizes();
+	if (currentSize && currentSize[1] > 0.5) {
+		lastSize = currentSize;
+		split.setSizes([100, 0]);
+		document.getElementById("codeViewToggle").textContent = 'View';
+	}
+	else {
+		split.setSizes(lastSize);
+		document.getElementById("codeViewToggle").textContent = 'Hide';
+	}
+	Blockly.svgResize(workspace);
+}
 
 /* Load Workspace Blocks from XML to workspace. */
 var workspaceBlocks = document.getElementById("workspaceBlocks");
-Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
-
+if (workspaceBlocks != null) {
+	Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+}
 
 /* Disable toolbox flyout auto close. */
 flyout = workspace.getFlyout();
@@ -70,41 +58,6 @@ workspace.addChangeListener(updateExportCodeFilenamePlaceholder);
 if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
 	workspace.registerToolboxCategoryCallback("PDDL_VARIABLES",
 		Blockly.Predicates.flyoutCategory);
-}
-
-var split = Split(['#flex-1', '#flex-2'], {
-	gutterSize: 5,
-	minSize: [500, 0],
-	elementStyle: function (dimension, size, gutterSize) {
-		return {
-			'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
-		}
-	},
-	gutterStyle: function (dimension, gutterSize) {
-		return {
-			'flex-basis': gutterSize + 'px',
-		}
-	},
-	onDrag: function (sizes) {
-		Blockly.svgResize(workspace);
-	}
-})
-Blockly.svgResize(workspace);
-
-lastSize = split.getSizes();
-toggleCodeView = function() {
-	currentSize = split.getSizes();
-	console.log(currentSize);
-	if (currentSize && currentSize[1] > 0.5) {
-		lastSize = currentSize;
-		split.setSizes([100, 0]);
-		document.getElementById("codeViewToggle").textContent = 'View';
-	}
-	else {
-		split.setSizes(lastSize);
-		document.getElementById("codeViewToggle").textContent = 'Hide';
-	}
-	Blockly.svgResize(workspace);
 }
 
 /* Default types for the workspace. */
