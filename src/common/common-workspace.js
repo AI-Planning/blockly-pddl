@@ -1,4 +1,4 @@
-var toolbox = document.getElementById("toolbox");
+var toolbox = document.getElementById('toolbox');
 
 var options = {
 	toolbox: toolbox,
@@ -49,16 +49,61 @@ var split = Split(['#flex-1', '#flex-2'], {
 		Blockly.svgResize(workspace);
 	},
 	onDragEnd: function (sizes) {
-        if (sizes[1] < 1) {
-            document.getElementById("codeViewToggle").textContent = 'View';
+        if (sizes[1] < 2) {
+			hideCodeViewer();
         }
         else {
-            document.getElementById("codeViewToggle").textContent = 'Hide';
+			unhideCodeViewer();
         }
 	}
 })
 
 lastSize = split.getSizes();
+
+updateWorkspaceCodeViewer = function() {
+	var code = generateCodeFromWorkspace();
+	
+	var encodedStr = code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+		return '&#'+i.charCodeAt(0)+';'; 
+	});
+
+	var p = document.createElement('p');
+	p.appendChild(document.createTextNode(encodedStr));
+	document.getElementById('workspaceCodeViewer').textContent = p.innerHTML;
+}
+
+updateWorkspaceCodeViewerListener = function(event) {
+	if (event && false == event.isUiEvent) {
+		updateWorkspaceCodeViewer();
+	}
+}
+
+toggleCodeView = function() {
+	currentSize = split.getSizes();
+	if (currentSize && currentSize[1] > 0.5) {
+		lastSize = currentSize;
+		hideCodeViewer();
+	}
+	else {
+		split.setSizes(lastSize);
+		unhideCodeViewer();
+	}
+	Blockly.svgResize(workspace);
+}
+
+hideCodeViewer = function() {
+	document.getElementById('workspaceCodePre').hidden = true;
+	split.setSizes([100, 0]);
+	document.getElementById("codeViewToggle").textContent = 'View';
+	workspace.removeChangeListener(updateWorkspaceCodeViewerListener);
+}
+
+unhideCodeViewer = function() {
+	document.getElementById('workspaceCodePre').hidden = false;
+	document.getElementById("codeViewToggle").textContent = 'Hide';
+	workspace.addChangeListener(updateWorkspaceCodeViewerListener);
+	updateWorkspaceCodeViewer();
+}
 
 /**
  * writeToFileAndDownload
