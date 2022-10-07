@@ -1,42 +1,19 @@
-var toolbox = document.getElementById("toolbox");
-
-var options = {
-	toolbox: toolbox,
-	collapse: true,
-	comments: true,
-	disable: true,
-	maxBlocks: Infinity,
-	trashcan: true,
-	horizontalLayout: false,
-	toolboxPosition: 'start',
-	css: true,
-	media: '../../lib/google-blockly-v8.0.5/media/',
-	rtl: false,
-	scrollbars: true,
-	sounds: true,
-	oneBasedIndex: false,
-	grid: {
-		spacing: 20,
-		length: 1,
-		colour: '#888',
-		snap: false
-	},
-	zoom: {
-		controls: true,
-		wheel: true,
-		startScale: 0.9,
-		maxScale: 3,
-		minScale: 0.3,
-		scaleSpeed: 1.2
-	}
-};
+/**
+ * @fileoverview 
+ * @author Anil Agarwal
+ */
 
 /* Inject workspace */
 var workspace = Blockly.inject(blocklyDiv, options);
+Blockly.svgResize(workspace);
 
 /* Load Workspace Blocks from XML to workspace. */
 var workspaceBlocks = document.getElementById("workspaceBlocks");
-Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+if (workspaceBlocks != null) {
+	Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+}
+
+workspace.addChangeListener(updateWorkspaceCodeViewerListener);
 
 /* Disable toolbox flyout auto close. */
 flyout = workspace.getFlyout();
@@ -91,19 +68,24 @@ workspace.isNameUsed = function (name, workspace, opt_exclude) {
 	return false;
 };
 
+generateCodeFromWorkspace = function() {
+	Blockly.PDDL.init(workspace);
+	var code = '';
+	var domain_blocks = workspace.getBlocksByType('pddl_domain');
+	for (var i = 0; i < domain_blocks.length; i++) {
+		code += Blockly.PDDL.blockToCode(domain_blocks[i], false);
+	}
+	return code;
+}
+
 /* Function to convert the workspace blocks into code and trigger download. */
 function exportCodeFromWorkspace() {
-	Blockly.PDDL.init(workspace);
 	var domain_blocks = workspace.getBlocksByType('pddl_domain');
 	var filename = document.getElementById('exportCodeFilename').value;
 	if (null === filename || '' === filename) {
 		filename = domain_blocks[0].getFieldValue('DOMAIN_NAME');
 	}
 	filename += '.pddl';
-	var code = '';
-	for (var i = 0; i < domain_blocks.length; i++) {
-		code += Blockly.PDDL.blockToCode(domain_blocks[i], false);
-	}
-
-	writeToFileAndDownload(filename, code);
+	
+	writeToFileAndDownload(filename, generateCodeFromWorkspace());
 }

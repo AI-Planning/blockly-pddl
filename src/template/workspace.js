@@ -1,56 +1,35 @@
-var toolbox = document.getElementById("toolbox");
-
-var options = { 
-	toolbox : toolbox, 
-	collapse : true, 
-	comments : true, 
-	disable : true, 
-	maxBlocks : Infinity, 
-	trashcan : true, 
-	horizontalLayout : false, 
-	toolboxPosition : 'start', 
-	css : true, 
-	media : '../../lib/google-blockly-v8.0.5/media/', 
-	rtl : false, 
-	scrollbars : true, 
-	sounds : true, 
-	oneBasedIndex : false, 
-	grid : {
-		spacing : 20, 
-		length : 1, 
-		colour : '#888', 
-		snap : false
-	}, 
-	zoom : {
-		controls : true, 
-		wheel : true, 
-		startScale : 0.9, 
-		maxScale : 3, 
-		minScale : 0.3, 
-		scaleSpeed : 1.2
-	}
-};
+/**
+ * @fileoverview 
+ * @author Anil Agarwal
+ */
 
 /* Inject workspace */ 
 var workspace = Blockly.inject(blocklyDiv, options);
+Blockly.svgResize(workspace);
 
 /* Load Workspace Blocks from XML to workspace. */
 var workspaceBlocks = document.getElementById("workspaceBlocks"); 
-Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+if (workspaceBlocks != null) {
+	Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+}
 
+workspace.addChangeListener(updateWorkspaceCodeViewerListener);
 /* Update the download filename placeholder text with the (first) domain name. */
 /* TODO: (Optional) Replace logic to dynamically update the download filename placeholder */
-// function updateDownloadFilenamePlaceholder(event) {
-// 	if (Blockly.Events.BLOCK_CHANGE === event.type 
-// 		|| Blockly.Events.BLOCK_CREATE === event.type 
+// function updateExportCodeFilenamePlaceholder(event) {
+// 	if (Blockly.Events.BLOCK_CHANGE === event.type
+// 		|| Blockly.Events.BLOCK_CREATE === event.type
 // 		|| Blockly.Events.BLOCK_DELETE === event.type) {
-// 			var domain_blocks = workspace.getBlocksByType('pddl_domain');
-// 			var filenameElement = document.getElementById('downloadFilename');
-// 			if (0 < domain_blocks.length)
-// 				filenameElement.placeholder = domain_blocks[0].getFieldValue('DOMAIN_NAME');
+// 		var domain_blocks = workspace.getBlocksByType('pddl_domain');
+// 		var exportFilenameElement = document.getElementById('exportCodeFilename');
+// 		var saveFilenameElement = document.getElementById('saveWorkspaceFilename');
+// 		if (0 < domain_blocks.length) {
+// 			exportFilenameElement.placeholder = domain_blocks[0].getFieldValue('DOMAIN_NAME');
+// 			saveFilenameElement.placeholder = domain_blocks[0].getFieldValue('DOMAIN_NAME') + '_workspace';
 // 		}
+// 	}
 // }
-// workspace.addChangeListener(updateDownloadFilenamePlaceholder);
+// workspace.addChangeListener(updateExportCodeFilenamePlaceholder);
 
 /* TODO: Register the callback for the dynamic toolbox flyout category. */
 // if (Blockly.Predicates && Blockly.Predicates.flyoutCategory) {
@@ -58,18 +37,21 @@ Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
 //         Blockly.Predicates.flyoutCategory);
 // }
 
-/* Function to convert the workspace blocks into code and trigger download. */
-function downloadCode() {
+generateCodeFromWorkspace = function() {
 	/* TODO: Replace JavaScript with the appropriate generator */
 	Blockly.JavaScript.init(workspace);
+	return Blockly.JavaScript.workspaceToCode(workspace);
+}
 
-	var filename = document.getElementById('downloadFilename').value;
+/* Function to convert the workspace blocks into code and trigger download. */
+function exportCodeFromWorkspace() {
+
+	var filename = document.getElementById('exportCodeFilename').value;
 	if (null === filename || '' === filename) {
-		filename = document.getElementById("downloadFilename").placeholder;
+		filename = document.getElementById("exportCodeFilename").placeholder;
 	}
-	/* TODO: Replace "code" with the appropriate file extension for downloading code */
-	filename += '.code';
-	var code = Blockly.JavaScript.workspaceToCode(workspace);
+	/* TODO: Replace ".js" with the appropriate file extension for downloading code */
+	filename += '.js';
 
-	writeToFileAndDownload(filename, code);
+	writeToFileAndDownload(filename, generateCodeFromWorkspace());
 }

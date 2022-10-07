@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO: Replace "Blockly.PDDL" with appropriate provide
-goog.provide('Blockly.PDDL');
+// goog.provide('Blockly.PDDL');
 
 goog.require('Blockly.Blocks');
 goog.require('Blockly');
