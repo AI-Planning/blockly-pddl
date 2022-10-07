@@ -1,3 +1,8 @@
+/**
+ * @fileoverview 
+ * @author Anil Agarwal
+ */
+
 var toolbox = document.getElementById('toolbox');
 
 var options = {
