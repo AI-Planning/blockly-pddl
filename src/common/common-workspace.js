@@ -37,7 +37,7 @@ var options = {
 };
 
 var split = Split(['#flex-1', '#flex-2'], {
-    sizes: [60, 40],
+	sizes: [60, 40],
 	gutterSize: 5,
 	minSize: [500, 0],
 	elementStyle: function (dimension, size, gutterSize) {
@@ -54,36 +54,44 @@ var split = Split(['#flex-1', '#flex-2'], {
 		Blockly.svgResize(workspace);
 	},
 	onDragEnd: function (sizes) {
-        if (sizes[1] < 2) {
+		if (sizes[1] < 2) {
 			hideCodeViewer();
-        }
-        else {
+		}
+		else {
 			unhideCodeViewer();
-        }
+		}
 	}
 })
 
 lastSize = split.getSizes();
 
-updateWorkspaceCodeViewer = function() {
+updateWorkspaceCodeViewer = function () {
 	var code = generateCodeFromWorkspace();
-	
-	var encodedStr = code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-		return '&#'+i.charCodeAt(0)+';'; 
+	var codeViewerElement = document.getElementById('workspaceCodeViewer');
+
+	var encodedStr = code.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
+		return '&#' + i.charCodeAt(0) + ';';
 	});
 
 	var p = document.createElement('p');
 	p.appendChild(document.createTextNode(encodedStr));
-	document.getElementById('workspaceCodeViewer').textContent = p.innerHTML;
+	codeViewerElement.textContent = p.innerHTML;
+
+	EnlighterJS.enlight(codeViewerElement, false);
+	EnlighterJS.enlight(codeViewerElement, {
+		language: 'pddl',
+		theme: 'bootstrap4',
+		indent: 1
+	});
 }
 
-updateWorkspaceCodeViewerListener = function(event) {
+updateWorkspaceCodeViewerListener = function (event) {
 	if (event && false == event.isUiEvent) {
 		updateWorkspaceCodeViewer();
 	}
 }
 
-toggleCodeView = function() {
+toggleCodeView = function () {
 	currentSize = split.getSizes();
 	if (currentSize && currentSize[1] > 0.5) {
 		lastSize = currentSize;
@@ -96,14 +104,14 @@ toggleCodeView = function() {
 	Blockly.svgResize(workspace);
 }
 
-hideCodeViewer = function() {
+hideCodeViewer = function () {
 	document.getElementById('workspaceCodePre').hidden = true;
 	split.setSizes([100, 0]);
 	document.getElementById("codeViewToggle").textContent = 'View';
 	workspace.removeChangeListener(updateWorkspaceCodeViewerListener);
 }
 
-unhideCodeViewer = function() {
+unhideCodeViewer = function () {
 	document.getElementById('workspaceCodePre').hidden = false;
 	document.getElementById("codeViewToggle").textContent = 'Hide';
 	workspace.addChangeListener(updateWorkspaceCodeViewerListener);
@@ -115,11 +123,11 @@ unhideCodeViewer = function() {
  * Write text to a file and trigger download
  */
 function writeToFileAndDownload(filename, content) {
-    var b = new Blob([content], { type: 'text/plain' });
-    var a = document.createElement('a');
-    a.href = window.URL.createObjectURL(b);
-    a.download = filename;
-    a.click();
+	var b = new Blob([content], { type: 'text/plain' });
+	var a = document.createElement('a');
+	a.href = window.URL.createObjectURL(b);
+	a.download = filename;
+	a.click();
 }
 
 /**
@@ -127,18 +135,18 @@ function writeToFileAndDownload(filename, content) {
  * Loads a workspace file with blockly XML
  */
 function loadWorkspace() {
-    // TODO: Alert user that workspace will be cleared and ask for confirmation
-    workspace.clear();
+	// TODO: Alert user that workspace will be cleared and ask for confirmation
+	workspace.clear();
 
-    var file = document.getElementById('workspaceFileInput').files[0];
-    var reader = new FileReader();
-    reader.onload = function () {
-        var text = reader.result;
-        var xml = Blockly.Xml.textToDom(text);
-        Blockly.Xml.domToWorkspace(xml, workspace);
-    };
-    reader.readAsText(file);
-    document.getElementById('workspaceFileInput').value = '';
+	var file = document.getElementById('workspaceFileInput').files[0];
+	var reader = new FileReader();
+	reader.onload = function () {
+		var text = reader.result;
+		var xml = Blockly.Xml.textToDom(text);
+		Blockly.Xml.domToWorkspace(xml, workspace);
+	};
+	reader.readAsText(file);
+	document.getElementById('workspaceFileInput').value = '';
 }
 
 /**
@@ -146,14 +154,14 @@ function loadWorkspace() {
  * Saves the blockly workspace as XML and triggers a download.
  */
 function saveWorkspace() {
-    var filename = document.getElementById('saveWorkspaceFilename').value;
-    if (null === filename || '' === filename) {
-        filename = document.getElementById('saveWorkspaceFilename').placeholder;
-    }
-    filename += '.xml';
+	var filename = document.getElementById('saveWorkspaceFilename').value;
+	if (null === filename || '' === filename) {
+		filename = document.getElementById('saveWorkspaceFilename').placeholder;
+	}
+	filename += '.xml';
 
-    var xml = Blockly.Xml.workspaceToDom(workspace);
-    var workspaceXml = Blockly.Xml.domToPrettyText(xml);
-    // TODO: Alert user if workspace is empty
-    writeToFileAndDownload(filename, workspaceXml);
+	var xml = Blockly.Xml.workspaceToDom(workspace);
+	var workspaceXml = Blockly.Xml.domToPrettyText(xml);
+	// TODO: Alert user if workspace is empty
+	writeToFileAndDownload(filename, workspaceXml);
 }

@@ -9,6 +9,8 @@
   <title>PDDL with Blockly</title>
 
   <link href="../../lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../lib/bootstrap-icons-1.9.1/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../lib/EnlighterJS-3.4.0/dist/enlighterjs.visualplanning.min.css" rel="stylesheet">
   <link href="../common/common-styles.css" rel="stylesheet">
 
   <link href="pddl-styles.css" rel="stylesheet">
@@ -48,7 +50,7 @@
             <span class="input-group-text">.xml</span>
           </div>
         </form>
-        <form class="d-flex" role="code">
+        <!-- <form class="d-flex" role="code">
           <div class="input-group input-group-sm">
             <button type="button" class="btn btn-light disabled" disabled>Code</button>
             <button type="button" id="codeViewToggle" class="input-group-text" onclick="toggleCodeView()">Hide</button>
@@ -60,7 +62,7 @@
               id="exportCodeFilename">
             <span class="input-group-text">.pddl</span>
           </div>
-        </form>
+        </form> -->
       </div>
     </div>
   </nav>
@@ -72,7 +74,45 @@
           <div id="blocklyDiv"></div>
         </div>
       </div>
-      <div id="flex-2">
+      <div id="flex-2" class="position-relative">
+        <div class="position-absolute top-0 end-0">
+          <!-- <div class="btn-toolbar" id="code-toolbar" role="toolbar" aria-label="Toolbar with button groups"> -->
+            <!-- <div class="btn-group me-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-dark disabled">
+                <i class="bi bi-code-slash"></i>
+              </button>
+              <button type="button" id="codeViewToggle" class="btn btn-dark"
+                  onclick="toggleCodeView()">
+                <i class="bi bi-eye"></i></button>
+            </div> -->
+            <form class="d-flex" role="code" id="code-toolbar">
+              <div class="input-group input-group-sm">
+                <button type="button" class="btn btn-dark disabled" style="width: 40px;">
+                  <i class="bi bi-code-slash"></i>
+                </button>
+                <button type="button" id="codeViewToggle" class="btn btn-dark"
+                  onclick="toggleCodeView()" style="width: 40px;"><i class="bi bi-eye"></i></button>
+                <label type="button" class="btn btn-dark" for="codeFileInput" style="width: 40px;"><i class="bi bi-box-arrow-in-down"></i></label>
+                <input type="file" id="codeFileInput" style="display: none;" onchange="importWorkspaceFromCode()"
+                  accept=".pddl">
+                <button type="button" class="btn btn-dark" onclick="exportCodeFromWorkspace()" style="width: 40px;"><i class="bi bi-box-arrow-down"></i></button>
+                <input type="text" class="form-control" placeholder="domain_name" aria-label="exportCodeFilename"
+                  id="exportCodeFilename">
+                <span class="input-group-text">.pddl</span>
+                <button type="button" class="btn btn-dark" style="width: 40px;">
+                  <svg version="1.1" id="E" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px"
+                    viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+                    <g>
+                      <path fill="white" d="M32.48,25.614H19.64l-4.933,9.826l17.746,0.037l-6.173,5.358L8.167,40.912L16.29,6.055h22.974l-5.734,5.354
+             l-13.306-0.027l0.672,8.797h12.841L32.48,25.614z" />
+                    </g>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          <!-- </div> -->
+        </div>
         <pre id="workspaceCodePre">
           <code id="workspaceCodeViewer"></code>
         </pre>
@@ -115,6 +155,7 @@
   <!-- TODO: Replace with local splitjs -->
   <!-- <script src="../../lib/splitjs/src/split.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+  <script src="../../lib/EnlighterJS-3.4.0/dist/enlighterjs.min.js"></script>
 
   <script type="text/javascript">
     globalThis.CLOSURE_NO_DEPS = true;
