@@ -702,11 +702,11 @@ Blockly.Blocks['sequence'] = {
     this.appendDummyInput()
         .appendField("Sequence");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("Sequence output"), "sequence_out_name")
+        // .appendField(new Blockly.FieldTextInput("Sequence output"), "sequence_out_name")
         .appendField(new Blockly.FieldTextInput("Sequence name"), "sequence_name");
     this.appendStatementInput("sequence_children")
         .setCheck(["action", "condition"])
-        .appendField("Children");
+        // .appendField("Children");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -720,11 +720,11 @@ Blockly.Blocks['selector'] = {
     this.appendDummyInput()
         .appendField("Selector");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("Selector output"), "selector_out_name")
+        // .appendField(new Blockly.FieldTextInput("Selector output"), "selector_out_name")
         .appendField(new Blockly.FieldTextInput("Selector name"), "selector_name");
     this.appendStatementInput("selector_children")
         .setCheck(["action", "condition"])
-        .appendField("Children");
+        // .appendField("Children");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(120);
@@ -763,7 +763,7 @@ Blockly.Blocks['init_node'] = {
         .appendField("Init code");
     this.appendStatementInput("output_node")
         .setCheck(null)
-        .appendField("Children");
+        // .appendField("Children");
     this.setOutput(true, null);
     this.setColour(75);
  this.setTooltip("");
@@ -785,14 +785,35 @@ Blockly.Blocks['parallel'] = {
     this.appendDummyInput()
         .appendField("Parallel");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("Parallel output"), "parallel_out_name")
+        // .appendField(new Blockly.FieldTextInput("Parallel output"), "parallel_out_name")
         .appendField(new Blockly.FieldTextInput("Parallel name"), "parallel_name");
     this.appendStatementInput("parallel_children")
         .setCheck(null)
-        .appendField("Children");
+        // .appendField("Children");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(345);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['bt_action'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("action"), "NAME");
+    this.appendValueInput("pre")
+        .setCheck(null)
+        .appendField(new Blockly.FieldLabelSerializable("pre"), "pre");
+    this.appendValueInput("per")
+        .setCheck(null)
+        .appendField(new Blockly.FieldLabelSerializable("per"), "per");
+    this.appendValueInput("end")
+        .setCheck(null)
+        .appendField(new Blockly.FieldLabelSerializable("end"), "ned");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(315);
  this.setTooltip("");
  this.setHelpUrl("");
   }

@@ -23,15 +23,23 @@
 	<link rel="shortcut icon" href="#" />
 	<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
 	
+
+
 	<script type="text/javascript" src="Content/Blockly/js/blockly_uncompressed.js"></script>
-	<!-- <script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script> -->
+	<script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_predicates.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_defs.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/workspace.js"></script>
 	<script type="text/javascript" src="generators/python.js"></script>
+	<script type="text/javascript" src="generators/python/logic.js"></script>
+	<script type="text/javascript" src="generators/python/math.js"></script>
+	<script type="text/javascript" src="generators/python/variables.js"></script>
 	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_block_codegen.js"></script>
 	<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
 	<!-- <script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script> -->
+
+	
+
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZ5D08YRVV"></script>
@@ -163,15 +171,30 @@
 				<!-- <field name="NAME">Action</field> -->
 			</block>
 
-		</category>
-
-		<category name="Helper Blocks" colour="#530000">
-			<block type="textInput">
-				<!-- <field name="NAME">init_node</field> -->
+			<block type="bt_action">
+				<!-- <field name="NAME">Action</field> -->
 			</block>
 
+			
 
 		</category>
+
+		<category name="Logic" colour="#530000">
+			<block type="logic_compare"></block>
+    		<block type="logic_operation"></block>
+    		<block type="logic_boolean"></block>
+			<block type="logic_negate"></block>
+		</category>
+
+		
+
+		<category name="Number" colour="#530000">
+			<block type="math_number"></block>
+
+
+		</category>
+
+		<category name="Variables" colour="#a55b80" custom="VARIABLE"></category>
 
 	</xml>
 

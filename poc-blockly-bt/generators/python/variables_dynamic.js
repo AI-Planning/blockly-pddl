@@ -6,16 +6,16 @@
 
 /**
  * @fileoverview Generating Python for dynamic variable blocks.
+ * @author fenichel@google.com (Rachel Fenichel)
  */
 'use strict';
 
-goog.module('Blockly.Python.variablesDynamic');
+goog.provide('Blockly.Python.variablesDynamic');
 
-const Python = goog.require('Blockly.Python');
-/** @suppress {extraRequire} */
+goog.require('Blockly.Python');
 goog.require('Blockly.Python.variables');
 
 
 // Python is dynamically typed.
-Python['variables_get_dynamic'] = Python['variables_get'];
-Python['variables_set_dynamic'] = Python['variables_set'];
+Blockly.Python['variables_get_dynamic'] = Blockly.Python['variables_get'];
+Blockly.Python['variables_set_dynamic'] = Blockly.Python['variables_set'];

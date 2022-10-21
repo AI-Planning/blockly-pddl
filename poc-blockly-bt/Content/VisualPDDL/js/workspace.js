@@ -259,6 +259,10 @@ function download(filename, text) {
  */
 function showPython() {
 	existing_children = [];
+	action_ind = 0;
+	seq_ind = 0;
+	sel_ind = 0;
+	parall_ind = 0;
 	var code = Blockly.Python.workspaceToCode(workspace);
 	// code = "AB";
 	var textWindow = window.open("", "MsgWindow", "width=500, height=400");		// establishes window size

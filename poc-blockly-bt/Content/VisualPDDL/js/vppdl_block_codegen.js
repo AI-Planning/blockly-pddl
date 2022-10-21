@@ -105,10 +105,15 @@
 
 
 var existing_children = [];
+var action_ind = 0;
+var seq_ind = 0;
+var sel_ind = 0;
+var parall_ind = 0;
 
 Blockly.Python['sequence'] = function(block) {
-  var text_sequence_out_name = block.getFieldValue('sequence_out_name');
+  
   var text_sequence_name = block.getFieldValue('sequence_name');
+  var text_sequence_out_name = text_sequence_name + "_out";
   var statements_sequence_children_arry = Blockly.Python.statementToCode(block, 'sequence_children').split("\n");
 
   statements_sequence_children_arry.pop();
@@ -125,7 +130,7 @@ Blockly.Python['sequence'] = function(block) {
       while(new_child.includes(".")){
         new_child = new_child.substring(new_child.indexOf(")") + 1,new_child.length);
       }
-      if(!(existing_children.includes(new_child)) && new_child != []){
+      if(!(existing_children.includes(new_child)) && new_child != [] && new_child != "pre_condition" && new_child != "name" && new_child != "per_condition" && new_child != "end_condition"){
         child.push(new_child);
       }
       statements_sequence_children += "\n"+"\t"+child_cur;
@@ -163,8 +168,9 @@ Blockly.Python['sequence'] = function(block) {
 };
 
 Blockly.Python['selector'] = function(block) {
-  var text_selector_out_name = block.getFieldValue('selector_out_name');
+  
   var text_selector_name = block.getFieldValue('selector_name');
+  var text_selector_out_name = text_selector_name+"_out";
   var statements_selector_children_arry = Blockly.Python.statementToCode(block, 'selector_children').split("\n");
 
   statements_selector_children_arry.pop();
@@ -181,7 +187,7 @@ Blockly.Python['selector'] = function(block) {
       while(new_child.includes(".")){
         new_child = new_child.substring(new_child.indexOf(")") + 1,new_child.length);
       }
-      if(!(existing_children.includes(new_child)) && new_child != []){
+      if(!(existing_children.includes(new_child)) && new_child != [] && new_child != "pre_condition" && new_child != "name" && new_child != "per_condition" && new_child != "end_condition"){
         child.push(new_child);
       }
       statements_selector_children += "\n"+"\t"+child_cur;
@@ -259,8 +265,9 @@ Blockly.Python['init_node'] = function(block) {
 };
 
 Blockly.Python['parallel'] = function(block) {
-  var text_parallel_out_name = block.getFieldValue('parallel_out_name');
+  
   var text_parallel_name = block.getFieldValue('parallel_name');
+  var text_parallel_out_name = text_parallel_name + "_out";
   var statements_parallel_children_arry = Blockly.Python.statementToCode(block, 'parallel_children').split("\n");
   
   statements_parallel_children_arry.pop();
@@ -277,7 +284,7 @@ Blockly.Python['parallel'] = function(block) {
       while(new_child.includes(".")){
         new_child = new_child.substring(new_child.indexOf(")") + 1,new_child.length);
       }
-      if(!(existing_children.includes(new_child)) && new_child != []){
+      if(!(existing_children.includes(new_child)) && new_child != []  && new_child != "pre_condition" && new_child != "name" && new_child != "per_condition" && new_child != "end_condition"){
         child.push(new_child);
       }
       statements_parallel_children += "\n"+"\t"+child_cur;
@@ -311,5 +318,20 @@ Blockly.Python['parallel'] = function(block) {
     existing_children.push(child[index]);
   }
   
+  return code;
+};
+
+Blockly.Python['bt_action'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var value_pre = Blockly.Python.valueToCode(block, 'pre', Blockly.Python.ORDER_ATOMIC);
+  var value_per = Blockly.Python.valueToCode(block, 'per', Blockly.Python.ORDER_ATOMIC);
+  var value_end = Blockly.Python.valueToCode(block, 'end', Blockly.Python.ORDER_ATOMIC);
+  
+  var code = text_name + "_act" + " = ExecuteAction(" + "\n\t";
+  action_ind += 1;
+  code += "name = '" + text_name + "',\n\t";
+  code += "pre_condition = " + value_pre + ",\n\t";
+  code += "per_condition = " + value_per + ",\n\t";
+  code += "end_condition = " + value_end + ");\n\t";
   return code;
 };

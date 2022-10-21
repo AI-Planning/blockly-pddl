@@ -6,27 +6,27 @@
 
 /**
  * @fileoverview Generating Python for variable blocks.
+ * @author q.neutron@gmail.com (Quynh Neutron)
  */
 'use strict';
 
-goog.module('Blockly.Python.variables');
+goog.provide('Blockly.Python.variables');
 
-const Python = goog.require('Blockly.Python');
-const {NameType} = goog.require('Blockly.Names');
+goog.require('Blockly.Python');
 
 
-Python['variables_get'] = function(block) {
+Blockly.Python['variables_get'] = function(block) {
   // Variable getter.
-  const code =
-      Python.nameDB_.getName(block.getFieldValue('VAR'), NameType.VARIABLE);
-  return [code, Python.ORDER_ATOMIC];
+  var code = Blockly.Python.nameDB_.getName(block.getFieldValue('VAR'),
+      Blockly.VARIABLE_CATEGORY_NAME);
+  return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
-Python['variables_set'] = function(block) {
+Blockly.Python['variables_set'] = function(block) {
   // Variable setter.
-  const argument0 =
-      Python.valueToCode(block, 'VALUE', Python.ORDER_NONE) || '0';
-  const varName =
-      Python.nameDB_.getName(block.getFieldValue('VAR'), NameType.VARIABLE);
+  var argument0 = Blockly.Python.valueToCode(block, 'VALUE',
+      Blockly.Python.ORDER_NONE) || '0';
+  var varName = Blockly.Python.nameDB_.getName(block.getFieldValue('VAR'),
+      Blockly.VARIABLE_CATEGORY_NAME);
   return varName + ' = ' + argument0 + '\n';
 };
