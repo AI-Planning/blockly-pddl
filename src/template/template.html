@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Anil Agarwal">
+  <!-- TODO: Update page title -->
+  <title>Template</title>
+
+  <link href="../../lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../common/common-styles.css" rel="stylesheet">
+  
+  <!-- Custom styles for this template -->
+  <!-- TODO: Rename custom styles css -->
+  <link href="template-styles.css" rel="stylesheet">
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="../../index.html">Visual Planning</a>
+      <button type="button" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+      aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="../pddl/pddl.html">PDDL</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../behavior-trees/behaviortrees.html">Behavior Trees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../state-machines/statemachines.html">State Machines</a>
+          </li>
+          <li class="nav-item">
+            <!-- TODO: Rename "Template" below. Also remember to add the new link to other pages. -->
+            <a class="nav-link active" href="#">Template</a>
+          </li>
+        </ul>
+        <form class="d-flex me-2" role="workspace">
+          <div class="input-group input-group-sm">
+            <button type="button" class="btn btn-light disabled" disabled>Workspace</button>
+            <label type="button" class="input-group-text" for="workspaceFileInput">Load</label>
+            <input type="file" id="workspaceFileInput" style="display: none;" onchange="loadWorkspace()"
+            accept=".xml,.txt">
+            <button type="button" class="input-group-text" onclick="saveWorkspace()">Save</button>
+            <input type="text" class="form-control" placeholder="workspace" aria-label="saveWorkspaceFilename"
+            id="saveWorkspaceFilename">
+            <span class="input-group-text">.xml</span>
+          </div>
+          </form>
+          <form class="d-flex" role="code">
+          <div class="input-group input-group-sm">
+            <button type="button" class="btn btn-light disabled" disabled>Code</button>
+            <button type="button" id="codeViewToggle" class="input-group-text" onclick="toggleCodeView()">Hide</button>
+            <label type="button" class="input-group-text" for="codeFileInput">Import</label>
+            <!-- TODO: Replace ".js" with file extension for imported code -->
+            <input type="file" id="codeFileInput" style="display: none;" onchange="importWorkspaceFromCode()" accept=".js">
+            <button type="button" class="input-group-text" onclick="exportCodeFromWorkspace()">Export</button>
+            <!-- TODO: Replace "code" with a filename suggestion / default for downloading code -->
+            <input type="text" class="form-control" placeholder="code" aria-label="exportCodeFilename" id="exportCodeFilename">
+            <!-- TODO: Replace ".js" with file extension for saved code -->
+            <span class="input-group-text">.js</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="container-fluid">
+    <div id="flex">
+      <div id="flex-1">
+        <div id="blocklyArea">
+          <div id="blocklyDiv"></div>
+        </div>
+      </div>
+      <div id="flex-2">
+        <pre id="workspaceCodePre">
+          <code id="workspaceCodeViewer"></code>
+        </pre>
+      </div>
+    </div>
+  </main> <!-- /container-fluid -->
+  
+  <!-- TODO: Replace toolbox XML -->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <category name="Logic" colour="#5b67a5">
+      <block type="not"></block>
+      <block type="and_or">
+        <field name="LOGIC_OPERATION">AND</field>
+      </block>
+    </category>
+    <!-- <category name="Dynamic" colour="#995ba5" custom="DYNAMIC_CATEGORY"></category> -->
+  </xml>
+
+  <!-- TODO: Replace workspace blocks XML -->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
+    <block type="and_or" id="[E+IY?TSZ7m2#z)JS,!7" x="350" y="100">
+      <field name="LOGIC_OPERATION">AND</field>
+    </block>
+  </xml>
+  
+  <script src="../../lib/bootstrap-5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- TODO: Replace with local splitjs -->
+  <!-- <script src="../../lib/splitjs/src/split.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+  
+  <script type="text/javascript">
+    globalThis.CLOSURE_NO_DEPS = true;
+  </script>
+  <script src="../../lib/google-blockly-v8.0.5/closure/goog/base.js"></script>
+  <script src="../../lib/google-blockly-v8.0.5/tests/deps.js"></script>
+  <script src="../../lib/google-blockly-v8.0.5/blockly_compressed.js"></script>
+  <!-- TODO: Uncomment line below if using built-in Blockly blocks -->
+  <!-- <script src="../../lib/google-blockly-v8.0.5/blocks_compressed.js"></script>  -->
+  <script src="../../lib/google-blockly-v8.0.5/msg/js/en.js"></script>
+  <script src="../../lib/google-blockly-v8.0.5/javascript_compressed.js"></script>
+  <!-- TODO: Rename scripts below and add any new scripts -->
+  <script src="template_blocks.js"></script>
+  <script src="template_block_codegen.js"></script>
+  <script src="../common/common-workspace.js"></script>
+  <script src="workspace.js"></script>
+
+</body>
+
+</html>

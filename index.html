@@ -1,186 +1,54 @@
-﻿<!--
- * MODIFIED:
- *    By team of VisualPDDL project (JUN-2021)
- *
- * ORIGIN:
- *    Apache 2.0 License - Copyright 2020 Misty Robotics
- *    Created/Revised April 2020 by Matthew Hageman, Caden Kulp and Caleb Richardson 
--->
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 
 <head>
-	<title>VisualPDDL with Blockly</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="Content/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="Content/animate.css">
-	<link rel="stylesheet" type="text/javascript" href="Content/jquery-ui-1.12.1.custom/jquery-ui.min.css">
-	<script type="text/javascript" src="Scripts/jquery/jquery-3.6.0.min.js"></script>
-	<script type="text/javascript" src="Content/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<link rel="shortcut icon" href="#" />
-	<link rel="stylesheet" type="text/css" href="Content/Misty/css/main.css">
-	
-	<script type="text/javascript" src="Content/Blockly/js/blockly_uncompressed.js"></script>
-	<!-- <script type="text/javascript" src="Content/Blockly/js/blocks_compressed.js"></script> -->
-	<script type="text/javascript" src="Content/VisualPDDL/js/vppdl_predicates.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl2_block_defs.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/pddl.js"></script>
-	<!-- <script type="text/javascript" src="generators/javascript.js"></script> -->
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl2_block_codegen.js"></script>
-	<script type="text/javascript" src="Content/Blockly/js/msg/en.js"></script>
-	<!-- <script type="text/javascript" src="Content/Blockly/js/msg/messages.js"></script> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Anil Agarwal">
+  <!-- TODO: Update page title -->
+  <title>Visual Planning</title>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XZ5D08YRVV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XZ5D08YRVV');
-</script>
-	
+  <link href="lib/bootstrap-5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="src/common/common-styles.css" rel="stylesheet">
+  
+  <!-- Custom styles for this template -->
+  <!-- TODO: Rename custom styles css -->
+  <!-- <link href="template-styles.css" rel="stylesheet"> -->
 </head>
 
 <body>
-	<div id="4k-modal" class="modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">4K photo</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<img id="display-picture" class="display-picture" src="">
-				</div>
-			</div>
-		</div>
-	</div>
-	<section class="dashboard">
-		<nav class="navbar navbar-expand-xl navbar-dark">
-			<img class="navbar-brand d-none d-md-block" src="Content/media/logo1_508x40.png" width="245" height="20"
-				alt="VisualPDDL with Blockly" srcset="Content/media/logo1_508x40.png 508w"
-				sizes="(max-width: 508px) 100vw, 508px">
-			<div class="text"></div>
+  
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Visual Planning</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="src/pddl/pddl.html">PDDL</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="src/behavior-trees/behaviortrees.html">Behavior Trees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="src/state-machines/statemachines.html">State Machines</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="container-fluid">
+    <!-- TODO: Insert main body content -->
+  </main> <!-- /container-fluid -->
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<div class="navbar-nav ml-auto">
-					<!-- <a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link" id="run-script" href="#">Run<span
-							class="sr-only">(current)</span></a> -->
-					<!-- <a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link run-abort" id="abort-script"
-						href="#">Abort</a> -->
-					<a class="nav-item pr-lg-0 pr-xl-4 nav-link disabled" href="#" id="browse-files">Load Project</a>
-					<input
-						class="nav-item dependent disabled pl-0 pr-lg-0 pr-xl-4 btn btn-link btn-btn-light my-2 my-sm-0"
-						id="export-session" type="button" onclick="exportBlocklySession()" value="Save Project" />
-					<a class="nav-item dependent disabled pr-lg-0 pr-xl-4 nav-link" id="show-javascript" href="#">Show
-						PDDL Script</a>
-					<a class="nav-item dependent pr-lg-0 pr-xl-4 nav-link disabled" id="help" target="_blank"
-						href="https://github.com/AI-Planning/blockly-pddl/">Help</a>
-				</div>
-			</div>
-		</nav>
-		<input type="file" id="fileSelected" onchange="uploadBlocklyFile()" accept=".txt"
-			onabort="fileSelectionCanceled()" />
-		<!--
-			<input type="file" id="image-file" onchange="validateImageFile()" onabort="fileSelectionCanceled()" />
-			<input type="file" id="audio-file" onchange="validateAudioFile()" onabort="fileSelectionCanceled()" />
--->
-	</section>
-
-
-	<div id="blocklyArea" class="container-fluid">
-		<div id="blocklyDiv">
-			<!--
-				<form id="levelForm" method="post">
-					<label for="level">Choose a level:</label>
-					<select name="level" id="level" onchange="change()">
-						<option value="Beginner" selected="selected">Beginner</option>
-						<option value="Standard">Standard</option>
-						<option value="Advanced">Advanced</option>
-						<option value="Expert">Expert</option>
-					</select>
-				</form>
--->
-
-		</div>
-	</div>
-	<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none" class="list-group">
-		<category name="PDDL Core" colour="#5b67a5" class="list-group-item">
-			<block type="pddl_domain">
-				<field name="DOMAIN_NAME">domain_name</field>
-			  </block>
-			  <block type="action">
-				<field name="NAME">action_name</field>
-			  </block>
-			  <block type="parameter">
-				<field name="NAME">parameter_name</field>
-				<field name="PARAM_TYPE">type</field>
-			  </block>
-			  <block type="parameter_nested_type">
-				<field name="NAME">parameter_name</field>
-				<field name="PARAM_TYPE">type</field>
-				<field name="PARENT_TYPE">parent</field>
-			  </block>
-		</category>
-		<category name="PDDL Logic" colour="#5ba55b">
-			<block type="not"></block>
-			<block type="and_or">
-			  <field name="LOGIC_OPERATION">AND</field>
-			</block>
-		</category>
-		<category name="PDDL Variables" colour="#995ba5" custom="PREDICATES"></category>
-	</xml>
-
-	<div id="toast"></div>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101328068-1"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-
-		gtag('config', 'UA-101328068-1');
-	</script> -->
-
-	<!--
- NOTE: order of invokation is important
--->
-
-<script type="text/javascript" src="Content/VisualPDDL/js/workspace.js"></script>
-
-	<!-- <script type="text/javascript" src="Content/Misty/js/misty_helper_functions.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_dispatcher.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_blocks.js"></script>
-	<script type="text/javascript" src="Content/Blockly/js/acorn_interpreter.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddl_index_setup.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/vpddlAPI.js"></script>
-	<script type="text/javascript" src="Content/VisualPDDL/js/levels.js"></script> -->
-	<!--
-		<script type="text/javascript" src="Content/Misty/js/GetHelp.js"></script>
--->
-
-	<!--
- TODO: web-browser blocks access to XML rendering when trying to modify set of original Blockly blocks
--->
-	<!-- <script type="text/javascript">
-		// change();
-		workspace.registerToolboxCategoryCallback(
-			'COLOUR_PALETTE', coloursFlyoutCallback);
-	</script> -->
-
+  
+  <script src="lib/bootstrap-5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
-
 
 </html>

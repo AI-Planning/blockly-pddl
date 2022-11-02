@@ -1,2 +1,5 @@
 
-blocks/.DS_Store
+*.DS_Store
+*.vscode
+*.vs
+*.code-workspace
