@@ -1,16 +1,19 @@
-# blockly-pddl
+# Blockly Behavior Trees 
 
 Industrialization of automated planning leads to a need to manage the life-cycle of planning models, and quite often the
 life cycle will include non-expert users, for whom the verbose logical models in planning languages are not the best
 communication instrument.
 
 We are attempting to bridge the gap using popular drag-and-drop visual framework Blockly, developing an open-source
-tool that would seamlessly translate between Problem Domain Definition Language (PDDL) and Blockly.
+tool that would seamlessly translate between Blockly blocks to Python code.
 
 # Installation
 1. Clone the repo
-2. Run static/block_factory.html to load, modify and save blockly blocks contained in blocks/.
-3. Run static/block_workspace.html to build and save PDDL domains.
+2. Open project on preferred IDE (preferably Visual Studio Code)
+3. On right bottom corner press on "Go Live" button
+4. The home page will launch, press on the Behavior Trees domain on top left corner 
+5. Drag and drop blocks, the python code will automatically be generated on the left pane.
+6. The interface allows to save and load using the top right corner buttons.
 
 # Google's Blockly References
 
@@ -18,32 +21,16 @@ tool that would seamlessly translate between Problem Domain Definition Language 
 2. [Tips for creating a block language with blockly](https://ieeexplore.ieee.org/document/8120404) - when developers create an app using Blockly, they should carefully consider the style, which blocks to use, and what APIs and language features are right for their audience
 3. [Blockly Factory](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html) - basic playground for block definitions and workspaces.
 
-# Planning Domain Definition Language
+# Behavior Trees 
 
-1. [Overview of PDDL versions, extensions and historical development](https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language)
+1. [Overview of Behavior Trees](https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work)
 
-2. [Classical PDDL domains](https://github.com/AI-Planning/pddl-generators)  
+2. [PyTrees API](https://py-trees.readthedocs.io/en/devel/composites.html#selector)  
 
-
-# VisualPDDL with Blockly - Playground
-
-To see how it works, download Repo, use eng-r_bfactory_1 branch, and open [HTML](index.html) from Playground folder in your browser locally.
-
-## General Notes
-
-1. The **VisualPDDL with Blockly** Ecosystem inherits HTML/JavaScript/CSS and APP's Workspace layout (with Blockly script running capability) from 
-[Misty Robotics](https://github.com/MistyCommunity) Community Edition [![Google Blockly](https://tinyurl.com/built-on-Blockly)](https://github.com/google/blockly) 
-
-## WIP - refs
-* https://developers.google.com/blockly/guides/configure/web/custom-blocks
-* https://developers.google.com/blockly/guides/configure/web/toolbox
-* https://blockly-demo.appspot.com/static/demos/index.html
 
 
 # Known Issues
-* Access to XMLHttpRequest at (e.g.) 'advanced.xml' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: 
-http, data, chrome, chrome-extension, chrome-untrusted, https.
-	* see loadBlocklyBlocksXMLperLevel() in change() in [here](Content/VisualPDDL/js/vpddl_index_setup.js)
+* Smaller or equal and similar comparison logical blocks do not get converted correctly by blockly python generator.
 
 
 
